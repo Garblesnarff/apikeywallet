@@ -11,4 +11,6 @@ def encrypt_key(api_key):
     return fernet.encrypt(api_key.encode()).decode()
 
 def decrypt_key(encrypted_key):
-    return fernet.decrypt(encrypted_key.encode()).decode()
+    if isinstance(encrypted_key, str):
+        encrypted_key = encrypted_key.encode()
+    return fernet.decrypt(encrypted_key).decode()
