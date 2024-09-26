@@ -1,32 +1,51 @@
 import os
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from supabase import create_client, Client
 from flask_login import LoginManager
-from flask_wtf.csrf import CSRFProtect
+from urllib.parse import urlparse
 
-db = SQLAlchemy()
+# Initialize Supabase client
+supabase_url = os.environ.get("SUPABASE_URL")
+supabase_key = os.environ.get("SUPABASE_KEY")
+
+if not supabase_url or not supabase_key:
+    raise ValueError("SUPABASE_URL and SUPABASE_KEY must be set in environment variables")
+
+# Validate Supabase URL
+parsed_url = urlparse(supabase_url)
+if not all([parsed_url.scheme, parsed_url.netloc]):
+    raise ValueError("Invalid SUPABASE_URL")
+
+try:
+    supabase: Client = create_client(supabase_url, supabase_key)
+except Exception as e:
+    print(f"Error initializing Supabase client: {str(e)}")
+    raise
+
+# Create the app
+app = Flask(__name__)
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', os.urandom(24))
+
+# Setup LoginManager
 login_manager = LoginManager()
-csrf = CSRFProtect()
+login_manager.init_app(app)
+login_manager.login_view = 'auth.login'
 
-def create_app():
-    app = Flask(__name__)
-    app.config['SECRET_KEY'] = os.urandom(24)
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+@login_manager.user_loader
+def load_user(user_id):
+    # Implement user loading logic here
+    user_data = supabase.table('users').select('*').eq('id', user_id).execute()
+    if user_data.data:
+        from models import User
+        return User(user_data.data[0]['id'], user_data.data[0]['email'], '')
+    return None
 
-    db.init_app(app)
-    login_manager.init_app(app)
-    csrf.init_app(app)
+# Import and register blueprints
+from routes import main as main_blueprint
+app.register_blueprint(main_blueprint)
 
-    login_manager.login_view = 'auth.login'
+from routes import auth as auth_blueprint
+app.register_blueprint(auth_blueprint)
 
-    from routes import main as main_blueprint
-    app.register_blueprint(main_blueprint)
-
-    from routes import auth as auth_blueprint
-    app.register_blueprint(auth_blueprint)
-
-    with app.app_context():
-        db.create_all()
-
-    return app
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)

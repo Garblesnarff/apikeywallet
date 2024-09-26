@@ -1,24 +1,16 @@
-from app import db
-from flask_login import UserMixin
-from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
-class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password_hash = db.Column(db.String(256), nullable=False)
-    date_joined = db.Column(db.DateTime, default=datetime.utcnow)
-    api_keys = db.relationship('APIKey', backref='owner', lazy='dynamic')
+class User:
+    def __init__(self, id, email, password_hash, date_joined=None):
+        self.id = id
+        self.email = email
+        self.password_hash = password_hash
+        self.date_joined = date_joined or datetime.utcnow()
 
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
-
-    def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
-
-class APIKey(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    key_name = db.Column(db.String(100), nullable=False)
-    encrypted_key = db.Column(db.LargeBinary, nullable=False)
-    date_added = db.Column(db.DateTime, default=datetime.utcnow)
+class APIKey:
+    def __init__(self, id, user_id, key_name, encrypted_key, date_added=None):
+        self.id = id
+        self.user_id = user_id
+        self.key_name = key_name
+        self.encrypted_key = encrypted_key
+        self.date_added = date_added or datetime.utcnow()
