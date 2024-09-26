@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Your API Key Wallet</h2>
+{% if api_keys %}
+    {% for key in api_keys %}
+        <div class="api-key">
+            <h3>{{ key.key_name }}</h3>
+            <p class="masked-key">••••••••••••••••</p>
+            <button class="copy-btn" data-key-id="{{ key.id }}">Copy Key</button>
+            <p>Added on: {{ key.date_added.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>You don't have any API keys yet. <a href="{{ url_for('main.add_key') }}">Add one now</a>.</p>
+{% endif %}
+<a href="{{ url_for('main.add_key') }}" class="btn">Add New API Key</a>
+{% endblock %}
