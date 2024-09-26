@@ -3,7 +3,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import User, APIKey
 from forms import RegistrationForm, LoginForm, AddAPIKeyForm
-from app import supabase
+from app import db
 from utils import encrypt_key, decrypt_key
 
 main = Blueprint('main', __name__)
@@ -17,22 +17,19 @@ def register():
         password = form.password.data
         
         # Check if user already exists
-        user = supabase.table('users').select('*').eq('email', email).execute()
-        if user.data:
+        user = User.query.filter_by(email=email).first()
+        if user:
             flash('Email already exists.', 'danger')
             return redirect(url_for('auth.register'))
         
         # Create new user
-        new_user = supabase.auth.sign_up({
-            'email': email,
-            'password': password
-        })
+        new_user = User(email=email)
+        new_user.set_password(password)
+        db.session.add(new_user)
+        db.session.commit()
         
-        if new_user.user:
-            flash('Registration successful. Please log in.', 'success')
-            return redirect(url_for('auth.login'))
-        else:
-            flash('Registration failed. Please try again.', 'danger')
+        flash('Registration successful. Please log in.', 'success')
+        return redirect(url_for('auth.login'))
     
     return render_template('register.html', form=form)
 
@@ -43,11 +40,9 @@ def login():
         email = form.email.data
         password = form.password.data
         
-        # Authenticate user
-        user = supabase.auth.sign_in_with_password({'email': email, 'password': password})
-        
-        if user.user:
-            login_user(User(user.user.id, email, ''))  # We don't store the password hash
+        user = User.query.filter_by(email=email).first()
+        if user and user.check_password(password):
+            login_user(user)
             return redirect(url_for('main.wallet'))
         else:
             flash('Invalid email or password.', 'danger')
@@ -57,7 +52,6 @@ def login():
 @auth.route('/logout')
 @login_required
 def logout():
-    supabase.auth.sign_out()
     logout_user()
     return redirect(url_for('auth.login'))
 
@@ -69,8 +63,8 @@ def index():
 @main.route('/wallet')
 @login_required
 def wallet():
-    api_keys = supabase.table('api_keys').select('*').eq('user_id', current_user.id).execute()
-    return render_template('wallet.html', api_keys=api_keys.data)
+    api_keys = current_user.api_keys.all()
+    return render_template('wallet.html', api_keys=api_keys)
 
 @main.route('/add_key', methods=['GET', 'POST'])
 @login_required
@@ -78,12 +72,13 @@ def add_key():
     form = AddAPIKeyForm()
     if form.validate_on_submit():
         encrypted_key = encrypt_key(form.api_key.data)
-        new_key = {
-            'user_id': current_user.id,
-            'key_name': form.key_name.data,
-            'encrypted_key': encrypted_key
-        }
-        supabase.table('api_keys').insert(new_key).execute()
+        new_key = APIKey(
+            user_id=current_user.id,
+            key_name=form.key_name.data,
+            encrypted_key=encrypted_key
+        )
+        db.session.add(new_key)
+        db.session.commit()
         flash('API Key added successfully.', 'success')
         return redirect(url_for('main.wallet'))
     return render_template('add_key.html', form=form)
@@ -91,8 +86,8 @@ def add_key():
 @main.route('/copy_key/<int:key_id>', methods=['POST'])
 @login_required
 def copy_key(key_id):
-    api_key = supabase.table('api_keys').select('*').eq('id', key_id).eq('user_id', current_user.id).execute()
-    if not api_key.data:
+    api_key = APIKey.query.filter_by(id=key_id, user_id=current_user.id).first()
+    if not api_key:
         return jsonify({'error': 'Unauthorized'}), 403
-    decrypted_key = decrypt_key(api_key.data[0]['encrypted_key'])
+    decrypted_key = decrypt_key(api_key.encrypted_key)
     return jsonify({'key': decrypted_key})

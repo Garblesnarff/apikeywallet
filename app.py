@@ -1,30 +1,20 @@
 import os
 from flask import Flask
-from supabase import create_client, Client
+from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from urllib.parse import urlparse
 
-# Initialize Supabase client
-supabase_url = os.environ.get("SUPABASE_URL")
-supabase_key = os.environ.get("SUPABASE_KEY")
-
-if not supabase_url or not supabase_key:
-    raise ValueError("SUPABASE_URL and SUPABASE_KEY must be set in environment variables")
-
-# Validate Supabase URL
-parsed_url = urlparse(supabase_url)
-if not all([parsed_url.scheme, parsed_url.netloc]):
-    raise ValueError("Invalid SUPABASE_URL")
-
-try:
-    supabase: Client = create_client(supabase_url, supabase_key)
-except Exception as e:
-    print(f"Error initializing Supabase client: {str(e)}")
-    raise
+# Initialize SQLAlchemy
+db = SQLAlchemy()
 
 # Create the app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', os.urandom(24))
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Initialize SQLAlchemy with the app
+db.init_app(app)
 
 # Setup LoginManager
 login_manager = LoginManager()
@@ -33,12 +23,15 @@ login_manager.login_view = 'auth.login'
 
 @login_manager.user_loader
 def load_user(user_id):
-    # Implement user loading logic here
-    user_data = supabase.table('users').select('*').eq('id', user_id).execute()
-    if user_data.data:
-        from models import User
-        return User(user_data.data[0]['id'], user_data.data[0]['email'], '')
-    return None
+    from models import User
+    return User.query.get(int(user_id))
+
+# Import models
+from models import User, APIKey
+
+# Create tables
+with app.app_context():
+    db.create_all()
 
 # Import and register blueprints
 from routes import main as main_blueprint
