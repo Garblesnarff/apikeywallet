@@ -8,46 +8,50 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    function copyApiKey(keyId) {
-        fetch(`/copy_key/${keyId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrf_token')
+    async function copyApiKey(keyId) {
+        try {
+            const response = await fetch(`/copy_key/${keyId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrf_token')
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
-        })
-        .then(response => response.json())
-        .then(data => {
+
+            const data = await response.json();
+
             if (data.key) {
-                navigator.clipboard.writeText(data.key)
-                    .then(() => {
-                        alert('API Key copied to clipboard!');
-                    })
-                    .catch(err => {
-                        console.error('Failed to copy text: ', err);
-                    });
+                await navigator.clipboard.writeText(data.key);
+                showFeedback('API Key copied to clipboard!', 'success');
+            } else if (data.error) {
+                showFeedback(data.error, 'error');
             } else {
-                alert('Failed to retrieve API Key');
+                throw new Error('Unexpected response from server');
             }
-        })
-        .catch(error => {
+        } catch (error) {
             console.error('Error:', error);
-            alert('An error occurred while copying the API Key');
-        });
+            showFeedback('An error occurred while copying the API Key', 'error');
+        }
+    }
+
+    function showFeedback(message, type) {
+        const feedbackElement = document.createElement('div');
+        feedbackElement.textContent = message;
+        feedbackElement.className = `feedback ${type}`;
+        document.body.appendChild(feedbackElement);
+
+        setTimeout(() => {
+            feedbackElement.remove();
+        }, 3000);
     }
 
     function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
     }
 });

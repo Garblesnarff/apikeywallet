@@ -86,8 +86,12 @@ def add_key():
 @main.route('/copy_key/<int:key_id>', methods=['POST'])
 @login_required
 def copy_key(key_id):
-    api_key = APIKey.query.filter_by(id=key_id, user_id=current_user.id).first()
-    if not api_key:
-        return jsonify({'error': 'Unauthorized'}), 403
-    decrypted_key = decrypt_key(api_key.encrypted_key)
-    return jsonify({'key': decrypted_key})
+    try:
+        api_key = APIKey.query.filter_by(id=key_id, user_id=current_user.id).first()
+        if not api_key:
+            return jsonify({'error': 'API key not found or unauthorized'}), 403
+        decrypted_key = decrypt_key(api_key.encrypted_key)
+        return jsonify({'key': decrypted_key})
+    except Exception as e:
+        print(f"Error decrypting key: {str(e)}")
+        return jsonify({'error': 'An error occurred while decrypting the API key'}), 500
