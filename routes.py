@@ -5,6 +5,7 @@ from models import User, APIKey
 from forms import RegistrationForm, LoginForm, AddAPIKeyForm
 from app import db
 from utils import encrypt_key, decrypt_key
+import logging
 
 main = Blueprint('main', __name__)
 auth = Blueprint('auth', __name__)
@@ -16,13 +17,11 @@ def register():
         email = form.email.data
         password = form.password.data
         
-        # Check if user already exists
         user = User.query.filter_by(email=email).first()
         if user:
             flash('Email already exists.', 'danger')
             return redirect(url_for('auth.register'))
         
-        # Create new user
         new_user = User(email=email)
         new_user.set_password(password)
         db.session.add(new_user)
@@ -99,11 +98,15 @@ def copy_key(key_id):
 @main.route('/delete_key/<int:key_id>', methods=['POST'])
 @login_required
 def delete_key(key_id):
-    api_key = APIKey.query.filter_by(id=key_id, user_id=current_user.id).first()
-    if api_key:
-        db.session.delete(api_key)
-        db.session.commit()
-        flash('API Key deleted successfully.', 'success')
-    else:
-        flash('API Key not found or unauthorized.', 'danger')
-    return redirect(url_for('main.wallet'))
+    try:
+        api_key = APIKey.query.filter_by(id=key_id, user_id=current_user.id).first()
+        if api_key:
+            db.session.delete(api_key)
+            db.session.commit()
+            return jsonify({'message': 'API Key deleted successfully.'}), 200
+        else:
+            return jsonify({'error': 'API Key not found or unauthorized.'}), 404
+    except Exception as e:
+        db.session.rollback()
+        logging.error(f'Error in delete_key route: {str(e)}')
+        return jsonify({'error': 'An error occurred while deleting the API key.'}), 500

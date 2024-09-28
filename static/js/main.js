@@ -77,11 +77,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
 
+            const data = await response.json();
+
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                throw new Error(data.error || `HTTP error! status: ${response.status}`);
             }
 
-            location.reload(); // Reload the page to reflect the changes
+            showFeedback(data.message, 'success');
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
         } catch (error) {
             console.error('Error:', error);
             showFeedback(`Error: ${error.message}`, 'error');
