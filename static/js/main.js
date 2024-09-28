@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     const copyButtons = document.querySelectorAll('.copy-btn');
     const deleteButtons = document.querySelectorAll('.delete-btn');
+    const modal = document.getElementById('deleteModal');
+    const confirmDeleteBtn = document.getElementById('confirmDelete');
+    const cancelDeleteBtn = document.getElementById('cancelDelete');
+    let currentKeyId = null;
     
     copyButtons.forEach(button => {
         button.addEventListener('click', function() {
@@ -11,11 +15,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
     deleteButtons.forEach(button => {
         button.addEventListener('click', function() {
-            const keyId = this.getAttribute('data-key-id');
-            if (confirm('Are you sure you want to delete this API key?')) {
-                deleteApiKey(keyId);
-            }
+            currentKeyId = this.getAttribute('data-key-id');
+            modal.style.display = 'block';
         });
+    });
+
+    confirmDeleteBtn.addEventListener('click', function() {
+        if (currentKeyId) {
+            deleteApiKey(currentKeyId);
+            modal.style.display = 'none';
+        }
+    });
+
+    cancelDeleteBtn.addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', function(event) {
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
     });
 
     async function copyApiKey(keyId) {
@@ -76,7 +95,14 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.appendChild(feedbackElement);
 
         setTimeout(() => {
-            feedbackElement.remove();
+            feedbackElement.classList.add('show');
+        }, 100);
+
+        setTimeout(() => {
+            feedbackElement.classList.remove('show');
+            setTimeout(() => {
+                feedbackElement.remove();
+            }, 300);
         }, 3000);
     }
 
