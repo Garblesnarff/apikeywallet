@@ -8,8 +8,8 @@
             <h3>{{ key.key_name }}</h3>
             <p class="masked-key">••••••••••••••••</p>
             <button class="copy-btn" data-key-id="{{ key.id }}">Copy Key</button>
-            <button class="delete-btn" data-key-id="{{ key.id }}">🗑️</button>
-            <p>Added on: {{ key.date_added.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+            <button class="delete-btn" data-key-id="{{ key.id }}">Delete</button>
+            <p class="date-added">Added on: {{ key.date_added.strftime('%Y-%m-%d %H:%M:%S') }}</p>
         </div>
     {% endfor %}
 {% else %}
