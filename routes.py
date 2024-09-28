@@ -93,5 +93,5 @@ def copy_key(key_id):
         decrypted_key = decrypt_key(api_key.encrypted_key)
         return jsonify({'key': decrypted_key})
     except Exception as e:
-        print(f"Error decrypting key: {str(e)}")
-        return jsonify({'error': 'An error occurred while decrypting the API key'}), 500
+        print(f'Error in copy_key route: {str(e)}')
+        return jsonify({'error': 'An error occurred while processing the request'}), 500

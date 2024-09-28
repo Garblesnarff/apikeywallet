@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
 
             const data = await response.json();
@@ -28,13 +28,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 await navigator.clipboard.writeText(data.key);
                 showFeedback('API Key copied to clipboard!', 'success');
             } else if (data.error) {
-                showFeedback(data.error, 'error');
+                throw new Error(data.error);
             } else {
                 throw new Error('Unexpected response from server');
             }
         } catch (error) {
             console.error('Error:', error);
-            showFeedback('An error occurred while copying the API Key', 'error');
+            showFeedback(`Error: ${error.message}`, 'error');
         }
     }
 
