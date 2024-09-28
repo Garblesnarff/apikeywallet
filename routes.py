@@ -95,3 +95,15 @@ def copy_key(key_id):
     except Exception as e:
         print(f'Error in copy_key route: {str(e)}')
         return jsonify({'error': 'An error occurred while processing the request'}), 500
+
+@main.route('/delete_key/<int:key_id>', methods=['POST'])
+@login_required
+def delete_key(key_id):
+    api_key = APIKey.query.filter_by(id=key_id, user_id=current_user.id).first()
+    if api_key:
+        db.session.delete(api_key)
+        db.session.commit()
+        flash('API Key deleted successfully.', 'success')
+    else:
+        flash('API Key not found or unauthorized.', 'danger')
+    return redirect(url_for('main.wallet'))

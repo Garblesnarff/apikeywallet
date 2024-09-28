@@ -17,6 +17,8 @@ def decrypt_key(encrypted_key):
     try:
         if isinstance(encrypted_key, str):
             encrypted_key = encrypted_key.encode()
+        elif isinstance(encrypted_key, memoryview):
+            encrypted_key = encrypted_key.tobytes()
         logging.debug(f'Encrypted key type: {type(encrypted_key)}')
         logging.debug(f'Encrypted key: {encrypted_key}')
         decrypted_key = fernet.decrypt(encrypted_key)
