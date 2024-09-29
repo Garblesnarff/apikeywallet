@@ -3,6 +3,10 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from urllib.parse import urlparse
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
 
 # Initialize SQLAlchemy
 db = SQLAlchemy()
@@ -31,7 +35,11 @@ from models import User, APIKey, Category
 
 # Create tables
 with app.app_context():
-    db.create_all()
+    try:
+        db.create_all()
+        logging.info("All database tables created successfully")
+    except Exception as e:
+        logging.error(f"Error creating database tables: {str(e)}")
 
 # Import and register blueprints
 from routes import main as main_blueprint
