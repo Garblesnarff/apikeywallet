@@ -62,6 +62,17 @@ h1, h2, h3 {
     background: #2980b9;
 }
 
+.add-key-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.add-key-btn {
+    font-size: 1.1em;
+    padding: 10px 20px;
+}
+
 .api-key-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));

@@ -2,6 +2,9 @@
 
 {% block content %}
 <h2>Your API Key Wallet</h2>
+<div class="add-key-container">
+    <a href="{{ url_for('main.add_key') }}" class="btn add-key-btn">Add New API Key</a>
+</div>
 <div class="api-key-container">
     {% if api_keys %}
         {% for key in api_keys %}
@@ -19,7 +22,6 @@
         <p>You don't have any API keys yet.</p>
     {% endif %}
 </div>
-<a href="{{ url_for('main.add_key') }}" class="btn">Add New API Key</a>
 
 <div id="deleteModal" class="modal">
     <div class="modal-content">
