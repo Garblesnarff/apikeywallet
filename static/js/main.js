@@ -1,9 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
     const copyButtons = document.querySelectorAll('.copy-btn');
     const deleteButtons = document.querySelectorAll('.delete-btn');
-    const modal = document.getElementById('deleteModal');
+    const deleteModal = document.getElementById('deleteModal');
     const confirmDeleteBtn = document.getElementById('confirmDelete');
     const cancelDeleteBtn = document.getElementById('cancelDelete');
+    const addCategoryBtn = document.getElementById('add-category-btn');
+    const addCategoryModal = document.getElementById('addCategoryModal');
+    const confirmAddCategoryBtn = document.getElementById('confirmAddCategory');
+    const cancelAddCategoryBtn = document.getElementById('cancelAddCategory');
+    const newCategoryNameInput = document.getElementById('newCategoryName');
     let currentKeyId = null;
     
     copyButtons.forEach(button => {
@@ -16,24 +21,46 @@ document.addEventListener('DOMContentLoaded', function() {
     deleteButtons.forEach(button => {
         button.addEventListener('click', function() {
             currentKeyId = this.getAttribute('data-key-id');
-            modal.style.display = 'block';
+            deleteModal.style.display = 'block';
         });
     });
 
     confirmDeleteBtn.addEventListener('click', function() {
         if (currentKeyId) {
             deleteApiKey(currentKeyId);
-            modal.style.display = 'none';
+            deleteModal.style.display = 'none';
         }
     });
 
     cancelDeleteBtn.addEventListener('click', function() {
-        modal.style.display = 'none';
+        deleteModal.style.display = 'none';
+    });
+
+    addCategoryBtn.addEventListener('click', function() {
+        addCategoryModal.style.display = 'block';
+    });
+
+    confirmAddCategoryBtn.addEventListener('click', function() {
+        const categoryName = newCategoryNameInput.value.trim();
+        if (categoryName) {
+            addCategory(categoryName);
+            addCategoryModal.style.display = 'none';
+            newCategoryNameInput.value = '';
+        }
+    });
+
+    cancelAddCategoryBtn.addEventListener('click', function() {
+        addCategoryModal.style.display = 'none';
+        newCategoryNameInput.value = '';
     });
 
     window.addEventListener('click', function(event) {
-        if (event.target == modal) {
-            modal.style.display = 'none';
+        if (event.target == deleteModal) {
+            deleteModal.style.display = 'none';
+        }
+        if (event.target == addCategoryModal) {
+            addCategoryModal.style.display = 'none';
+            newCategoryNameInput.value = '';
         }
     });
 
@@ -91,6 +118,38 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error:', error);
             showFeedback(`Error: ${error.message}`, 'error');
         }
+    }
+
+    async function addCategory(categoryName) {
+        try {
+            const response = await fetch('/add_category', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrf_token')
+                },
+                body: JSON.stringify({ name: categoryName })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || `HTTP error! status: ${response.status}`);
+            }
+
+            showFeedback(data.message, 'success');
+            updateCategoryList(data);
+        } catch (error) {
+            console.error('Error:', error);
+            showFeedback(`Error: ${error.message}`, 'error');
+        }
+    }
+
+    function updateCategoryList(newCategory) {
+        const categoryList = document.getElementById('category-list');
+        const newItem = document.createElement('li');
+        newItem.innerHTML = `<a href="/view_category/${newCategory.id}">${newCategory.name}</a>`;
+        categoryList.appendChild(newItem);
     }
 
     function showFeedback(message, type) {

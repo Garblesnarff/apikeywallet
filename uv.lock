@@ -767,6 +767,8 @@ dependencies = [
     { name = "flask-wtf" },
     { name = "psycopg2-binary" },
     { name = "supabase" },
+    { name = "werkzeug" },
+    { name = "wtforms" },
 ]
 
 [package.metadata]
@@ -779,6 +781,8 @@ requires-dist = [
     { name = "flask-wtf", specifier = ">=1.2.1" },
     { name = "psycopg2-binary", specifier = ">=2.9.9" },
     { name = "supabase", specifier = ">=2.7.4" },
+    { name = "werkzeug", specifier = ">=3.0.4" },
+    { name = "wtforms", specifier = ">=3.1.2" },
 ]
 
 [[package]]

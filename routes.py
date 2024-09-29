@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import User, APIKey
-from forms import RegistrationForm, LoginForm, AddAPIKeyForm
+from models import User, APIKey, Category
+from forms import RegistrationForm, LoginForm, AddAPIKeyForm, AddCategoryForm
 from app import db
 from utils import encrypt_key, decrypt_key
 import logging
@@ -63,18 +63,22 @@ def index():
 @login_required
 def wallet():
     api_keys = current_user.api_keys.all()
-    return render_template('wallet.html', api_keys=api_keys)
+    categories = current_user.categories.all()
+    return render_template('wallet.html', api_keys=api_keys, categories=categories)
 
 @main.route('/add_key', methods=['GET', 'POST'])
 @login_required
 def add_key():
     form = AddAPIKeyForm()
+    form.category.choices = [(0, 'Uncategorized')] + [(c.id, c.name) for c in current_user.categories]
+    
     if form.validate_on_submit():
         encrypted_key = encrypt_key(form.api_key.data)
         new_key = APIKey(
             user_id=current_user.id,
             key_name=form.key_name.data,
-            encrypted_key=encrypted_key
+            encrypted_key=encrypted_key,
+            category_id=form.category.data if form.category.data != 0 else None
         )
         db.session.add(new_key)
         db.session.commit()
@@ -92,7 +96,7 @@ def copy_key(key_id):
         decrypted_key = decrypt_key(api_key.encrypted_key)
         return jsonify({'key': decrypted_key})
     except Exception as e:
-        print(f'Error in copy_key route: {str(e)}')
+        logging.error(f'Error in copy_key route: {str(e)}')
         return jsonify({'error': 'An error occurred while processing the request'}), 500
 
 @main.route('/delete_key/<int:key_id>', methods=['POST'])
@@ -110,3 +114,29 @@ def delete_key(key_id):
         db.session.rollback()
         logging.error(f'Error in delete_key route: {str(e)}')
         return jsonify({'error': 'An error occurred while deleting the API key.'}), 500
+
+@main.route('/add_category', methods=['POST'])
+@login_required
+def add_category():
+    try:
+        category_name = request.json.get('name')
+        if not category_name:
+            return jsonify({'error': 'Category name is required.'}), 400
+        
+        new_category = Category(name=category_name, user_id=current_user.id)
+        db.session.add(new_category)
+        db.session.commit()
+        
+        return jsonify({'message': 'Category added successfully.', 'id': new_category.id, 'name': new_category.name}), 201
+    except Exception as e:
+        db.session.rollback()
+        logging.error(f'Error in add_category route: {str(e)}')
+        return jsonify({'error': 'An error occurred while adding the category.'}), 500
+
+@main.route('/view_category/<int:category_id>')
+@login_required
+def view_category(category_id):
+    category = Category.query.filter_by(id=category_id, user_id=current_user.id).first_or_404()
+    api_keys = category.api_keys.all()
+    categories = current_user.categories.all()
+    return render_template('wallet.html', api_keys=api_keys, categories=categories, current_category=category)
