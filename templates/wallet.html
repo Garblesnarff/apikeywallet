@@ -1,39 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="page-container">
-    <div class="sidebar">
-        <h3>Categories</h3>
-        <ul id="category-list">
-            {% for category in categories %}
-                <li><a href="{{ url_for('main.view_category', category_id=category.id) }}">{{ category.name }}</a></li>
-            {% endfor %}
-        </ul>
-        <button id="add-category-btn" class="btn">Add Category</button>
-    </div>
-    <div class="main-content">
-        <h2>Your API Key Wallet</h2>
-        <a href="{{ url_for('main.add_key') }}" class="btn center-btn">Add New API Key</a>
-        <div class="api-key-container">
-            {% if api_keys %}
-                {% for key in api_keys %}
-                    <div class="api-key">
-                        <h3>{{ key.key_name }}</h3>
-                        <p class="masked-key">••••••••••••••••</p>
-                        <div class="key-actions">
-                            <button class="copy-btn" data-key-id="{{ key.id }}">Copy Key</button>
-                            <button class="delete-btn" data-key-id="{{ key.id }}">Delete</button>
-                        </div>
-                        <p class="date-added">Added on: {{ key.date_added.strftime('%Y-%m-%d %H:%M:%S') }}</p>
-                        <p class="category">Category: {{ key.category.name if key.category else 'Uncategorized' }}</p>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p>You don't have any API keys yet. Click "Add New API Key" to get started.</p>
-            {% endif %}
-        </div>
-    </div>
+<h2>Your API Key Wallet</h2>
+<div class="api-key-container">
+    {% if api_keys %}
+        {% for key in api_keys %}
+            <div class="api-key">
+                <h3>{{ key.key_name }}</h3>
+                <p class="masked-key">••••••••••••••••</p>
+                <div class="key-actions">
+                    <button class="copy-btn" data-key-id="{{ key.id }}">Copy Key</button>
+                    <button class="delete-btn" data-key-id="{{ key.id }}">Delete</button>
+                </div>
+                <p class="date-added">Added on: {{ key.date_added.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>You don't have any API keys yet.</p>
+    {% endif %}
 </div>
+<a href="{{ url_for('main.add_key') }}" class="btn">Add New API Key</a>
 
 <div id="deleteModal" class="modal">
     <div class="modal-content">
@@ -42,17 +28,6 @@
         <div class="modal-buttons">
             <button id="confirmDelete" class="btn">Delete</button>
             <button id="cancelDelete" class="btn">Cancel</button>
-        </div>
-    </div>
-</div>
-
-<div id="addCategoryModal" class="modal">
-    <div class="modal-content">
-        <h3>Add New Category</h3>
-        <input type="text" id="newCategoryName" placeholder="Enter category name">
-        <div class="modal-buttons">
-            <button id="confirmAddCategory" class="btn">Add</button>
-            <button id="cancelAddCategory" class="btn">Cancel</button>
         </div>
     </div>
 </div>
