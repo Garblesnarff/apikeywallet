@@ -27,7 +27,7 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 # Import models
-from models import User, APIKey
+from models import User, APIKey, Category
 
 # Create tables
 with app.app_context():
