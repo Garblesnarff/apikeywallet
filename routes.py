@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify
+from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, g
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import User, APIKey
@@ -6,6 +6,7 @@ from forms import RegistrationForm, LoginForm, AddAPIKeyForm
 from app import db
 from utils import encrypt_key, decrypt_key
 import logging
+from sqlalchemy.exc import SQLAlchemyError
 
 main = Blueprint('main', __name__)
 auth = Blueprint('auth', __name__)
@@ -39,12 +40,16 @@ def login():
         email = form.email.data
         password = form.password.data
         
-        user = User.query.filter_by(email=email).first()
-        if user and user.check_password(password):
-            login_user(user)
-            return redirect(url_for('main.wallet'))
-        else:
-            flash('Invalid email or password.', 'danger')
+        try:
+            user = User.query.filter_by(email=email).first()
+            if user and user.check_password(password):
+                login_user(user)
+                return redirect(url_for('main.wallet'))
+            else:
+                flash('Invalid email or password.', 'danger')
+        except SQLAlchemyError as e:
+            logging.error(f"Database error: {str(e)}")
+            flash('An error occurred while processing your request. Please try again later.', 'danger')
     
     return render_template('login.html', form=form)
 
@@ -92,7 +97,7 @@ def copy_key(key_id):
         decrypted_key = decrypt_key(api_key.encrypted_key)
         return jsonify({'key': decrypted_key})
     except Exception as e:
-        print(f'Error in copy_key route: {str(e)}')
+        logging.error(f'Error in copy_key route: {str(e)}')
         return jsonify({'error': 'An error occurred while processing the request'}), 500
 
 @main.route('/delete_key/<int:key_id>', methods=['POST'])

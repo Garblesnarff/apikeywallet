@@ -1,7 +1,10 @@
 import os
-from flask import Flask
+from flask import Flask, g
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.exc import SQLAlchemyError
 from urllib.parse import urlparse
 
 # Initialize SQLAlchemy
@@ -25,6 +28,21 @@ login_manager.login_view = 'auth.login'
 def load_user(user_id):
     from models import User
     return User.query.get(int(user_id))
+
+def get_db_session():
+    engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'], pool_pre_ping=True, pool_recycle=3600)
+    db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
+    return db_session
+
+@app.before_request
+def before_request():
+    g.db = get_db_session()
+
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db = g.pop('db', None)
+    if db is not None:
+        db.close()
 
 # Import models
 from models import User, APIKey
