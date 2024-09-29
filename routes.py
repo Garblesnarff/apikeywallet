@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, g
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import User, APIKey
-from forms import RegistrationForm, LoginForm, AddAPIKeyForm
+from models import User, APIKey, Category
+from forms import RegistrationForm, LoginForm, AddAPIKeyForm, AddCategoryForm
 from app import db
 from utils import encrypt_key, decrypt_key
 import logging
@@ -76,7 +76,8 @@ def index():
 @login_required
 def wallet():
     api_keys = current_user.api_keys.all()
-    return render_template('wallet.html', api_keys=api_keys)
+    categories = current_user.categories.all()
+    return render_template('wallet.html', api_keys=api_keys, categories=categories)
 
 @main.route('/add_key', methods=['GET', 'POST'])
 @login_required
@@ -123,3 +124,26 @@ def delete_key(key_id):
         db.session.rollback()
         logging.error(f'Error in delete_key route: {str(e)}')
         return jsonify({'error': 'An error occurred while deleting the API key.'}), 500
+
+@main.route('/add_category', methods=['GET', 'POST'])
+@login_required
+def add_category():
+    form = AddCategoryForm()
+    if form.validate_on_submit():
+        new_category = Category(name=form.name.data, user_id=current_user.id)
+        db.session.add(new_category)
+        db.session.commit()
+        flash('Category added successfully.', 'success')
+        return redirect(url_for('main.wallet'))
+    return render_template('add_category.html', form=form)
+
+@main.route('/update_key_category/<int:key_id>', methods=['POST'])
+@login_required
+def update_key_category(key_id):
+    category_id = request.json.get('category_id')
+    api_key = APIKey.query.filter_by(id=key_id, user_id=current_user.id).first()
+    if api_key:
+        api_key.category_id = category_id
+        db.session.commit()
+        return jsonify({'message': 'Category updated successfully.'}), 200
+    return jsonify({'error': 'API Key not found or unauthorized.'}), 404

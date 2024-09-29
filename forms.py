@@ -17,3 +17,7 @@ class AddAPIKeyForm(FlaskForm):
     key_name = StringField('Key Name', validators=[DataRequired()])
     api_key = StringField('API Key', validators=[DataRequired()])
     submit = SubmitField('Add Key')
+
+class AddCategoryForm(FlaskForm):
+    name = StringField('Category Name', validators=[DataRequired()])
+    submit = SubmitField('Add Category')

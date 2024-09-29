@@ -116,4 +116,65 @@ document.addEventListener('DOMContentLoaded', function() {
         const parts = value.split(`; ${name}=`);
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
+
+    // New code for category filtering and updating
+    const categoryList = document.getElementById('category-list');
+    const categorySelects = document.querySelectorAll('.category-select');
+    const apiKeys = document.querySelectorAll('.api-key');
+
+    categoryList.addEventListener('click', function(e) {
+        if (e.target.tagName === 'LI') {
+            const categoryId = e.target.getAttribute('data-category-id');
+            filterApiKeys(categoryId);
+            document.querySelectorAll('#category-list li').forEach(li => li.classList.remove('active'));
+            e.target.classList.add('active');
+        }
+    });
+
+    categorySelects.forEach(select => {
+        select.addEventListener('change', function() {
+            const keyId = this.getAttribute('data-key-id');
+            const categoryId = this.value;
+            updateKeyCategory(keyId, categoryId);
+        });
+    });
+
+    function filterApiKeys(categoryId) {
+        apiKeys.forEach(key => {
+            if (categoryId === 'all' || key.getAttribute('data-category-id') === categoryId) {
+                key.style.display = 'block';
+            } else {
+                key.style.display = 'none';
+            }
+        });
+    }
+
+    async function updateKeyCategory(keyId, categoryId) {
+        try {
+            const response = await fetch('/update_key_category/' + keyId, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrf_token')
+                },
+                body: JSON.stringify({ key_id: keyId, category_id: categoryId })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update category');
+            }
+
+            const data = await response.json();
+            showFeedback(data.message, 'success');
+            
+            // Update the data-category-id attribute of the API key element
+            const apiKeyElement = document.querySelector(`.api-key[data-key-id="${keyId}"]`);
+            if (apiKeyElement) {
+                apiKeyElement.setAttribute('data-category-id', categoryId || 'none');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showFeedback('Failed to update category', 'error');
+        }
+    }
 });
