@@ -56,7 +56,15 @@ def login():
 @auth.route('/logout')
 @login_required
 def logout():
-    logout_user()
+    try:
+        logout_user()
+        flash('You have been logged out successfully.', 'success')
+    except SQLAlchemyError as e:
+        logging.error(f"Database error during logout: {str(e)}")
+        flash('An error occurred during logout. Please try again.', 'danger')
+    except Exception as e:
+        logging.error(f"Unexpected error during logout: {str(e)}")
+        flash('An unexpected error occurred. Please try again.', 'danger')
     return redirect(url_for('auth.login'))
 
 @main.route('/')
