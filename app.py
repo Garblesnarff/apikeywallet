@@ -54,5 +54,14 @@ app.register_blueprint(main_blueprint)
 from routes import auth as auth_blueprint
 app.register_blueprint(auth_blueprint)
 
+# Check API key table schema
+with app.app_context():
+    try:
+        result = db.session.execute("SELECT * FROM api_key LIMIT 1")
+        columns = result.keys()
+        logging.info(f"API key table columns: {columns}")
+    except Exception as e:
+        logging.error(f"Error querying API key table: {str(e)}")
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

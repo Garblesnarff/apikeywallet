@@ -68,9 +68,14 @@ def index():
 @main.route('/wallet')
 @login_required
 def wallet():
-    api_keys = current_user.api_keys.all()
-    categories = current_user.categories.all()
-    return render_template('wallet.html', api_keys=api_keys, categories=categories)
+    try:
+        api_keys = current_user.api_keys.all()
+        categories = current_user.categories.all()
+        return render_template('wallet.html', api_keys=api_keys, categories=categories)
+    except Exception as e:
+        logging.error(f"Error in wallet route: {str(e)}")
+        flash('An error occurred while loading your wallet. Please try again later.', 'danger')
+        return redirect(url_for('main.index'))
 
 @main.route('/add_key', methods=['GET', 'POST'])
 @login_required
