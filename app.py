@@ -17,6 +17,9 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', os.urandom(24))
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# Log database configuration
+logging.debug(f"Database URL: {app.config['SQLALCHEMY_DATABASE_URI']}")
+
 # Initialize SQLAlchemy with the app
 db.init_app(app)
 
@@ -38,6 +41,9 @@ with app.app_context():
     try:
         db.create_all()
         logging.info("All database tables created successfully")
+        # Log table names
+        table_names = db.engine.table_names()
+        logging.debug(f"Created tables: {table_names}")
     except Exception as e:
         logging.error(f"Error creating database tables: {str(e)}")
 

@@ -39,12 +39,18 @@ def login():
         email = form.email.data
         password = form.password.data
         
-        user = User.query.filter_by(email=email).first()
-        if user and user.check_password(password):
-            login_user(user)
-            return redirect(url_for('main.wallet'))
-        else:
-            flash('Invalid email or password.', 'danger')
+        try:
+            user = User.query.filter_by(email=email).first()
+            if user and user.check_password(password):
+                login_user(user)
+                logging.info(f"User {email} logged in successfully")
+                return redirect(url_for('main.wallet'))
+            else:
+                logging.warning(f"Failed login attempt for user {email}")
+                flash('Invalid email or password.', 'danger')
+        except Exception as e:
+            logging.error(f"Error during login process: {str(e)}")
+            flash('An error occurred during login. Please try again.', 'danger')
     
     return render_template('login.html', form=form)
 
