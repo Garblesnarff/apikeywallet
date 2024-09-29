@@ -6,9 +6,27 @@ from forms import RegistrationForm, LoginForm, AddAPIKeyForm, AddCategoryForm
 from app import db
 from utils import encrypt_key, decrypt_key
 import logging
+from sqlalchemy.exc import SQLAlchemyError
+from functools import wraps
+import time
 
 main = Blueprint('main', __name__)
 auth = Blueprint('auth', __name__)
+
+def retry_db_operation(max_retries=3, delay=1):
+    def decorator(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            for attempt in range(max_retries):
+                try:
+                    return f(*args, **kwargs)
+                except SQLAlchemyError as e:
+                    logging.error(f"Database error (attempt {attempt + 1}/{max_retries}): {str(e)}")
+                    if attempt == max_retries - 1:
+                        raise
+                    time.sleep(delay)
+        return wrapper
+    return decorator
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
@@ -44,7 +62,8 @@ def login():
             if user and user.check_password(password):
                 login_user(user)
                 logging.info(f"User {email} logged in successfully")
-                return redirect(url_for('main.wallet'))
+                next_page = request.args.get('next')
+                return redirect(next_page or url_for('main.wallet'))
             else:
                 logging.warning(f"Failed login attempt for user {email}")
                 flash('Invalid email or password.', 'danger')
@@ -67,13 +86,15 @@ def index():
 
 @main.route('/wallet')
 @login_required
+@retry_db_operation()
 def wallet():
     try:
         api_keys = current_user.api_keys.all()
         categories = current_user.categories.all()
+        logging.info(f"Successfully loaded wallet for user {current_user.id}")
         return render_template('wallet.html', api_keys=api_keys, categories=categories)
     except Exception as e:
-        logging.error(f"Error in wallet route: {str(e)}")
+        logging.error(f"Error in wallet route for user {current_user.id}: {str(e)}")
         flash('An error occurred while loading your wallet. Please try again later.', 'danger')
         return redirect(url_for('main.index'))
 
