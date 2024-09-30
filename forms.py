@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, SelectField
-from wtforms.validators import DataRequired, Email, EqualTo, Length, Optional
+from wtforms.validators import DataRequired, Email, EqualTo, Length
 
 class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -16,7 +16,7 @@ class LoginForm(FlaskForm):
 class AddAPIKeyForm(FlaskForm):
     key_name = StringField('Key Name', validators=[DataRequired(), Length(max=120)])
     api_key = StringField('API Key', validators=[DataRequired()])
-    category = SelectField('Category', coerce=int, validators=[Optional()])
+    category = SelectField('Category', coerce=int, validators=[DataRequired()])
     submit = SubmitField('Add Key')
 
 class AddCategoryForm(FlaskForm):
