@@ -6,6 +6,7 @@ from forms import RegistrationForm, LoginForm, AddAPIKeyForm, AddCategoryForm
 from app import db
 from utils import encrypt_key, decrypt_key
 import logging
+import traceback
 from sqlalchemy.exc import SQLAlchemyError
 
 main = Blueprint('main', __name__)
@@ -117,9 +118,15 @@ def wallet():
 @login_required
 def add_key():
     form = AddAPIKeyForm()
-    categories = Category.query.filter_by(user_id=current_user.id).all()
-    form.category.choices = [(0, 'Uncategorized')] + [(c.id, c.name) for c in categories]
-    
+    try:
+        categories = Category.query.filter_by(user_id=current_user.id).all()
+        form.category.choices = [(0, 'Uncategorized')] + [(c.id, c.name) for c in categories]
+    except SQLAlchemyError as e:
+        current_app.logger.error(f"Database error while fetching categories: {str(e)}")
+        current_app.logger.error(traceback.format_exc())
+        flash('An error occurred while loading categories. Please try again later.', 'danger')
+        return render_template('add_key.html', form=form)
+
     if request.method == 'POST':
         current_app.logger.info(f"Received POST request for add_key: {request.form}")
         if form.validate_on_submit():
@@ -137,16 +144,22 @@ def add_key():
                 current_app.logger.info(f"API Key '{form.key_name.data}' added successfully for user {current_user.id}")
                 flash('API Key added successfully.', 'success')
                 return redirect(url_for('main.wallet'))
+            except SQLAlchemyError as e:
+                db.session.rollback()
+                current_app.logger.error(f"Database error while adding API key: {str(e)}")
+                current_app.logger.error(traceback.format_exc())
+                flash('An error occurred while adding the API key. Please try again later.', 'danger')
             except Exception as e:
                 db.session.rollback()
-                current_app.logger.error(f"Error adding API key: {str(e)}")
-                flash('An error occurred while adding the API key. Please try again.', 'danger')
+                current_app.logger.error(f"Unexpected error while adding API key: {str(e)}")
+                current_app.logger.error(traceback.format_exc())
+                flash('An unexpected error occurred. Please try again later.', 'danger')
         else:
             current_app.logger.error(f"Form validation failed: {form.errors}")
             for field, errors in form.errors.items():
                 for error in errors:
                     flash(f"{field}: {error}", 'danger')
-    
+
     current_app.logger.info(f"Rendering add_key template with form: {form}")
     return render_template('add_key.html', form=form)
 
