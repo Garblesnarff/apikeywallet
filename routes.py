@@ -93,7 +93,15 @@ def wallet():
         categories = Category.query.filter_by(user_id=current_user.id).all()
         current_app.logger.info(f"Fetched {len(categories)} categories")
         
-        return render_template('wallet.html', api_keys=api_keys, categories=categories)
+        # Group API keys by category
+        grouped_keys = {}
+        for category in categories:
+            grouped_keys[category] = [key for key in api_keys if key.category_id == category.id]
+        
+        # Add uncategorized keys
+        grouped_keys['Uncategorized'] = [key for key in api_keys if key.category_id is None]
+        
+        return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories)
     except SQLAlchemyError as e:
         current_app.logger.error(f"Database error in wallet route: {str(e)}")
         current_app.logger.error(f"Error type: {type(e).__name__}")
@@ -111,13 +119,17 @@ def wallet():
 @login_required
 def add_key():
     form = AddAPIKeyForm()
+    form.category.choices = [(c.id, c.name) for c in Category.query.filter_by(user_id=current_user.id).all()]
+    form.category.choices.insert(0, (0, 'Uncategorized'))
+    
     if form.validate_on_submit():
         try:
             encrypted_key = encrypt_key(form.api_key.data)
             new_key = APIKey(
                 user_id=current_user.id,
                 key_name=form.key_name.data,
-                encrypted_key=encrypted_key
+                encrypted_key=encrypted_key,
+                category_id=form.category.data if form.category.data != 0 else None
             )
             db.session.add(new_key)
             db.session.commit()
@@ -182,7 +194,7 @@ def update_key_category(key_id):
         category_id = request.json.get('category_id')
         api_key = APIKey.query.filter_by(id=key_id, user_id=current_user.id).first()
         if api_key:
-            api_key.category_id = category_id
+            api_key.category_id = category_id if category_id != 0 else None
             db.session.commit()
             return jsonify({'message': 'Category updated successfully.'}), 200
         return jsonify({'error': 'API Key not found or unauthorized.'}), 404
@@ -190,3 +202,41 @@ def update_key_category(key_id):
         db.session.rollback()
         current_app.logger.error(f'Database error in update_key_category route: {str(e)}')
         return jsonify({'error': 'An error occurred while updating the category.'}), 500
+
+@main.route('/manage_categories')
+@login_required
+def manage_categories():
+    categories = Category.query.filter_by(user_id=current_user.id).all()
+    return render_template('manage_categories.html', categories=categories)
+
+@main.route('/edit_category/<int:category_id>', methods=['GET', 'POST'])
+@login_required
+def edit_category(category_id):
+    category = Category.query.filter_by(id=category_id, user_id=current_user.id).first_or_404()
+    form = AddCategoryForm(obj=category)
+    if form.validate_on_submit():
+        try:
+            category.name = form.name.data
+            db.session.commit()
+            flash('Category updated successfully.', 'success')
+            return redirect(url_for('main.manage_categories'))
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            current_app.logger.error(f'Database error in edit_category route: {str(e)}')
+            flash('An error occurred while updating the category. Please try again later.', 'danger')
+    return render_template('edit_category.html', form=form, category=category)
+
+@main.route('/delete_category/<int:category_id>', methods=['POST'])
+@login_required
+def delete_category(category_id):
+    try:
+        category = Category.query.filter_by(id=category_id, user_id=current_user.id).first_or_404()
+        db.session.delete(category)
+        db.session.commit()
+        flash('Category deleted successfully.', 'success')
+        return redirect(url_for('main.manage_categories'))
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        current_app.logger.error(f'Database error in delete_category route: {str(e)}')
+        flash('An error occurred while deleting the category. Please try again later.', 'danger')
+        return redirect(url_for('main.manage_categories'))

@@ -9,8 +9,10 @@
             {% for category in categories %}
                 <li data-category-id="{{ category.id }}">{{ category.name }}</li>
             {% endfor %}
+            <li data-category-id="uncategorized">Uncategorized</li>
         </ul>
         <a href="{{ url_for('main.add_category') }}" class="btn btn-sm btn-primary">Add Category</a>
+        <a href="{{ url_for('main.manage_categories') }}" class="btn btn-sm btn-secondary">Manage Categories</a>
     </div>
     <div class="api-key-content">
         <h2>Your API Key Wallet</h2>
@@ -18,27 +20,28 @@
             <a href="{{ url_for('main.add_key') }}" class="btn add-key-btn">Add New API Key</a>
         </div>
         <div class="api-key-container">
-            {% if api_keys %}
-                {% for key in api_keys %}
-                    <div class="api-key" data-category-id="{{ key.category_id or 'none' }}">
-                        <h3>{{ key.key_name }}</h3>
-                        <p class="masked-key">••••••••••••••••</p>
-                        <div class="key-actions">
-                            <button class="copy-btn" data-key-id="{{ key.id }}">Copy Key</button>
-                            <button class="delete-btn" data-key-id="{{ key.id }}">Delete</button>
-                            <select class="category-select" data-key-id="{{ key.id }}">
-                                <option value="">No Category</option>
-                                {% for category in categories %}
-                                    <option value="{{ category.id }}" {% if key.category_id == category.id %}selected{% endif %}>{{ category.name }}</option>
-                                {% endfor %}
-                            </select>
+            {% for category, keys in grouped_keys.items() %}
+                <div class="category-group" data-category-id="{{ category.id if category != 'Uncategorized' else 'uncategorized' }}">
+                    <h3>{{ category.name if category != 'Uncategorized' else 'Uncategorized' }}</h3>
+                    {% for key in keys %}
+                        <div class="api-key" data-category-id="{{ key.category_id or 'uncategorized' }}">
+                            <h4>{{ key.key_name }}</h4>
+                            <p class="masked-key">••••••••••••••••</p>
+                            <div class="key-actions">
+                                <button class="copy-btn" data-key-id="{{ key.id }}">Copy Key</button>
+                                <button class="delete-btn" data-key-id="{{ key.id }}">Delete</button>
+                                <select class="category-select" data-key-id="{{ key.id }}">
+                                    <option value="0">Uncategorized</option>
+                                    {% for cat in categories %}
+                                        <option value="{{ cat.id }}" {% if key.category_id == cat.id %}selected{% endif %}>{{ cat.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <p class="date-added">Added on: {{ key.date_added.strftime('%Y-%m-%d %H:%M:%S') }}</p>
                         </div>
-                        <p class="date-added">Added on: {{ key.date_added.strftime('%Y-%m-%d %H:%M:%S') }}</p>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p>You don't have any API keys yet.</p>
-            {% endif %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
         </div>
     </div>
 </div>
