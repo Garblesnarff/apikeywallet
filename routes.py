@@ -124,8 +124,7 @@ def add_key():
     
     if form.validate_on_submit():
         try:
-            current_app.logger.debug(f"Form data: {form.data}")
-            current_app.logger.debug(f"Category data: {form.category.data}")
+            current_app.logger.debug(f"Form data: key_name={form.key_name.data}, category={form.category.data}")
             
             encrypted_key = encrypt_key(form.api_key.data)
             new_key = APIKey(
