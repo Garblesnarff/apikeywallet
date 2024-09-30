@@ -124,12 +124,15 @@ def add_key():
     
     if form.validate_on_submit():
         try:
+            current_app.logger.debug(f"Form data: {form.data}")
+            current_app.logger.debug(f"Category data: {form.category.data}")
+            
             encrypted_key = encrypt_key(form.api_key.data)
             new_key = APIKey(
                 user_id=current_user.id,
                 key_name=form.key_name.data,
                 encrypted_key=encrypted_key,
-                category_id=form.category.data if form.category.data != 0 else None
+                category_id=form.category.data if form.category.data not in [0, '0'] else None
             )
             db.session.add(new_key)
             db.session.commit()
