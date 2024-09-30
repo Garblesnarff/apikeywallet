@@ -117,16 +117,18 @@ def wallet():
 @login_required
 def add_key():
     form = AddAPIKeyForm()
-    form.category.choices = [(0, 'Uncategorized')] + [(c.id, c.name) for c in Category.query.filter_by(user_id=current_user.id).all()]
+    categories = Category.query.filter_by(user_id=current_user.id).all()
+    form.category.choices = [(0, 'Uncategorized')] + [(c.id, c.name) for c in categories]
     
     if form.validate_on_submit():
         try:
+            current_app.logger.info(f"Form submitted: {form.data}")
             encrypted_key = encrypt_key(form.api_key.data)
             new_key = APIKey(
                 user_id=current_user.id,
                 key_name=form.key_name.data,
                 encrypted_key=encrypted_key,
-                category_id=form.category.data if form.category.data != 0 else None
+                category_id=form.category.data if form.category.data and form.category.data != 0 else None
             )
             db.session.add(new_key)
             db.session.commit()
@@ -142,6 +144,7 @@ def add_key():
             current_app.logger.error(f"Unexpected error in add_key route: {str(e)}")
             flash('An unexpected error occurred. Please try again later.', 'danger')
     else:
+        current_app.logger.info(f"Form validation failed: {form.errors}")
         for field, errors in form.errors.items():
             for error in errors:
                 current_app.logger.error(f"Form validation error in add_key route: {field} - {error}")
