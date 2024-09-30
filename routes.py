@@ -8,6 +8,7 @@ from utils import encrypt_key, decrypt_key
 import logging
 import traceback
 from sqlalchemy.exc import SQLAlchemyError
+import os
 
 main = Blueprint('main', __name__)
 auth = Blueprint('auth', __name__)
@@ -119,19 +120,31 @@ def wallet():
 def add_key():
     form = AddAPIKeyForm()
     try:
+        if not os.environ.get('DATABASE_URL') or not os.environ.get('ENCRYPTION_KEY'):
+            current_app.logger.error("Missing required environment variables")
+            return jsonify({'error': 'Server configuration error'}), 500
+
+        try:
+            db.session.execute('SELECT 1')
+        except SQLAlchemyError as e:
+            current_app.logger.error(f"Database connection error: {str(e)}")
+            return jsonify({'error': 'Database connection error'}), 500
+
         categories = Category.query.filter_by(user_id=current_user.id).all()
         form.category.choices = [(0, 'Uncategorized')] + [(c.id, c.name) for c in categories]
-    except SQLAlchemyError as e:
-        current_app.logger.error(f"Database error while fetching categories: {str(e)}")
+    except Exception as e:
+        current_app.logger.error(f"Error in add_key route: {str(e)}")
         current_app.logger.error(traceback.format_exc())
-        flash('An error occurred while loading categories. Please try again later.', 'danger')
-        return render_template('add_key.html', form=form)
+        return jsonify({'error': 'An unexpected error occurred'}), 500
 
     if request.method == 'POST':
-        current_app.logger.info(f"Received POST request for add_key: {request.form}")
+        current_app.logger.info(f"Received POST request for add_key")
+        safe_form_data = {k: v if k != 'api_key' else '********' for k, v in form.data.items()}
+        current_app.logger.info(f"Form data: {safe_form_data}")
+
         if form.validate_on_submit():
             try:
-                current_app.logger.info(f"Form validated successfully: {form.data}")
+                current_app.logger.info(f"Form validated successfully")
                 encrypted_key = encrypt_key(form.api_key.data)
                 new_key = APIKey(
                     user_id=current_user.id,
@@ -142,26 +155,22 @@ def add_key():
                 db.session.add(new_key)
                 db.session.commit()
                 current_app.logger.info(f"API Key '{form.key_name.data}' added successfully for user {current_user.id}")
-                flash('API Key added successfully.', 'success')
-                return redirect(url_for('main.wallet'))
+                return jsonify({'success': True, 'message': 'API Key added successfully.'})
             except SQLAlchemyError as e:
                 db.session.rollback()
                 current_app.logger.error(f"Database error while adding API key: {str(e)}")
                 current_app.logger.error(traceback.format_exc())
-                flash('An error occurred while adding the API key. Please try again later.', 'danger')
+                return jsonify({'error': 'Database error occurred while adding the API key'}), 500
             except Exception as e:
                 db.session.rollback()
                 current_app.logger.error(f"Unexpected error while adding API key: {str(e)}")
                 current_app.logger.error(traceback.format_exc())
-                flash('An unexpected error occurred. Please try again later.', 'danger')
+                return jsonify({'error': 'An unexpected error occurred while adding the API key'}), 500
         else:
             current_app.logger.error(f"Form validation failed: {form.errors}")
-            for field, errors in form.errors.items():
-                for error in errors:
-                    flash(f"{field}: {error}", 'danger')
+            return jsonify({'error': 'Form validation failed', 'form_errors': form.errors}), 400
 
-    current_app.logger.info(f"Rendering add_key template with form: {form}")
-    return render_template('add_key.html', form=form)
+    return jsonify({'error': 'Invalid request method'}), 405
 
 @main.route('/copy_key/<int:key_id>', methods=['POST'])
 @login_required
