@@ -13,6 +13,8 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.wallet'))
     form = RegistrationForm()
     if form.validate_on_submit():
         email = form.email.data
@@ -35,6 +37,9 @@ def register():
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.wallet'))
+    
     form = LoginForm()
     if form.validate_on_submit():
         email = form.email.data
@@ -71,9 +76,10 @@ def logout():
     return redirect(url_for('auth.login'))
 
 @main.route('/')
-@login_required
 def index():
-    return redirect(url_for('main.wallet'))
+    if current_user.is_authenticated:
+        return redirect(url_for('main.wallet'))
+    return render_template('index.html')
 
 @main.route('/wallet')
 @login_required
