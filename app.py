@@ -45,7 +45,7 @@ def shutdown_session(exception=None):
         db.close()
 
 # Import models
-from models import User, APIKey
+from models import User, APIKey, Category
 
 # Create tables
 with app.app_context():

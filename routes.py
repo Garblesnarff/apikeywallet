@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, g
+from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, g, current_app
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import User, APIKey, Category
@@ -48,8 +48,11 @@ def login():
             else:
                 flash('Invalid email or password.', 'danger')
         except SQLAlchemyError as e:
-            logging.error(f"Database error: {str(e)}")
+            current_app.logger.error(f"Database error during login: {str(e)}")
             flash('An error occurred while processing your request. Please try again later.', 'danger')
+        except Exception as e:
+            current_app.logger.error(f"Unexpected error during login: {str(e)}")
+            flash('An unexpected error occurred. Please try again later.', 'danger')
     
     return render_template('login.html', form=form)
 
@@ -60,10 +63,10 @@ def logout():
         logout_user()
         flash('You have been logged out successfully.', 'success')
     except SQLAlchemyError as e:
-        logging.error(f"Database error during logout: {str(e)}")
+        current_app.logger.error(f"Database error during logout: {str(e)}")
         flash('An error occurred during logout. Please try again.', 'danger')
     except Exception as e:
-        logging.error(f"Unexpected error during logout: {str(e)}")
+        current_app.logger.error(f"Unexpected error during logout: {str(e)}")
         flash('An unexpected error occurred. Please try again.', 'danger')
     return redirect(url_for('auth.login'))
 
@@ -75,25 +78,35 @@ def index():
 @main.route('/wallet')
 @login_required
 def wallet():
-    api_keys = current_user.api_keys.all()
-    categories = current_user.categories.all()
-    return render_template('wallet.html', api_keys=api_keys, categories=categories)
+    try:
+        api_keys = current_user.api_keys.all()
+        categories = current_user.categories.all()
+        return render_template('wallet.html', api_keys=api_keys, categories=categories)
+    except SQLAlchemyError as e:
+        current_app.logger.error(f"Database error in wallet route: {str(e)}")
+        flash('An error occurred while retrieving your wallet. Please try again later.', 'danger')
+        return redirect(url_for('main.index'))
 
 @main.route('/add_key', methods=['GET', 'POST'])
 @login_required
 def add_key():
     form = AddAPIKeyForm()
     if form.validate_on_submit():
-        encrypted_key = encrypt_key(form.api_key.data)
-        new_key = APIKey(
-            user_id=current_user.id,
-            key_name=form.key_name.data,
-            encrypted_key=encrypted_key
-        )
-        db.session.add(new_key)
-        db.session.commit()
-        flash('API Key added successfully.', 'success')
-        return redirect(url_for('main.wallet'))
+        try:
+            encrypted_key = encrypt_key(form.api_key.data)
+            new_key = APIKey(
+                user_id=current_user.id,
+                key_name=form.key_name.data,
+                encrypted_key=encrypted_key
+            )
+            db.session.add(new_key)
+            db.session.commit()
+            flash('API Key added successfully.', 'success')
+            return redirect(url_for('main.wallet'))
+        except SQLAlchemyError as e:
+            current_app.logger.error(f"Database error in add_key route: {str(e)}")
+            db.session.rollback()
+            flash('An error occurred while adding the API key. Please try again later.', 'danger')
     return render_template('add_key.html', form=form)
 
 @main.route('/copy_key/<int:key_id>', methods=['POST'])
@@ -106,7 +119,7 @@ def copy_key(key_id):
         decrypted_key = decrypt_key(api_key.encrypted_key)
         return jsonify({'key': decrypted_key})
     except Exception as e:
-        logging.error(f'Error in copy_key route: {str(e)}')
+        current_app.logger.error(f'Error in copy_key route: {str(e)}')
         return jsonify({'error': 'An error occurred while processing the request'}), 500
 
 @main.route('/delete_key/<int:key_id>', methods=['POST'])
@@ -120,9 +133,9 @@ def delete_key(key_id):
             return jsonify({'message': 'API Key deleted successfully.'}), 200
         else:
             return jsonify({'error': 'API Key not found or unauthorized.'}), 404
-    except Exception as e:
+    except SQLAlchemyError as e:
         db.session.rollback()
-        logging.error(f'Error in delete_key route: {str(e)}')
+        current_app.logger.error(f'Database error in delete_key route: {str(e)}')
         return jsonify({'error': 'An error occurred while deleting the API key.'}), 500
 
 @main.route('/add_category', methods=['GET', 'POST'])
@@ -130,20 +143,30 @@ def delete_key(key_id):
 def add_category():
     form = AddCategoryForm()
     if form.validate_on_submit():
-        new_category = Category(name=form.name.data, user_id=current_user.id)
-        db.session.add(new_category)
-        db.session.commit()
-        flash('Category added successfully.', 'success')
-        return redirect(url_for('main.wallet'))
+        try:
+            new_category = Category(name=form.name.data, user_id=current_user.id)
+            db.session.add(new_category)
+            db.session.commit()
+            flash('Category added successfully.', 'success')
+            return redirect(url_for('main.wallet'))
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            current_app.logger.error(f'Database error in add_category route: {str(e)}')
+            flash('An error occurred while adding the category. Please try again later.', 'danger')
     return render_template('add_category.html', form=form)
 
 @main.route('/update_key_category/<int:key_id>', methods=['POST'])
 @login_required
 def update_key_category(key_id):
-    category_id = request.json.get('category_id')
-    api_key = APIKey.query.filter_by(id=key_id, user_id=current_user.id).first()
-    if api_key:
-        api_key.category_id = category_id
-        db.session.commit()
-        return jsonify({'message': 'Category updated successfully.'}), 200
-    return jsonify({'error': 'API Key not found or unauthorized.'}), 404
+    try:
+        category_id = request.json.get('category_id')
+        api_key = APIKey.query.filter_by(id=key_id, user_id=current_user.id).first()
+        if api_key:
+            api_key.category_id = category_id
+            db.session.commit()
+            return jsonify({'message': 'Category updated successfully.'}), 200
+        return jsonify({'error': 'API Key not found or unauthorized.'}), 404
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        current_app.logger.error(f'Database error in update_key_category route: {str(e)}')
+        return jsonify({'error': 'An error occurred while updating the category.'}), 500
