@@ -120,32 +120,34 @@ def add_key():
     categories = Category.query.filter_by(user_id=current_user.id).all()
     form.category.choices = [(0, 'Uncategorized')] + [(c.id, c.name) for c in categories]
     
-    if form.validate_on_submit():
-        try:
-            current_app.logger.info(f"Form submitted: {form.data}")
-            encrypted_key = encrypt_key(form.api_key.data)
-            new_key = APIKey(
-                user_id=current_user.id,
-                key_name=form.key_name.data,
-                encrypted_key=encrypted_key,
-                category_id=form.category.data if form.category.data and form.category.data != 0 else None
-            )
-            db.session.add(new_key)
-            db.session.commit()
-            current_app.logger.info(f"API Key '{form.key_name.data}' added successfully for user {current_user.id}")
-            return jsonify({'success': True, 'message': 'API Key added successfully.'})
-        except SQLAlchemyError as e:
-            db.session.rollback()
-            current_app.logger.error(f"Database error in add_key route: {str(e)}")
-            return jsonify({'success': False, 'error': 'An error occurred while adding the API key. Please try again later.'})
-        except Exception as e:
-            db.session.rollback()
-            current_app.logger.error(f"Unexpected error in add_key route: {str(e)}")
-            return jsonify({'success': False, 'error': 'An unexpected error occurred. Please try again later.'})
-    else:
-        current_app.logger.info(f"Form validation failed: {form.errors}")
-        return jsonify({'success': False, 'errors': form.errors})
-
+    if request.method == 'POST':
+        current_app.logger.info(f"Received POST request for add_key: {request.form}")
+        if form.validate_on_submit():
+            try:
+                current_app.logger.info(f"Form validated successfully: {form.data}")
+                encrypted_key = encrypt_key(form.api_key.data)
+                new_key = APIKey(
+                    user_id=current_user.id,
+                    key_name=form.key_name.data,
+                    encrypted_key=encrypted_key,
+                    category_id=form.category.data if form.category.data != 0 else None
+                )
+                db.session.add(new_key)
+                db.session.commit()
+                current_app.logger.info(f"API Key '{form.key_name.data}' added successfully for user {current_user.id}")
+                flash('API Key added successfully.', 'success')
+                return redirect(url_for('main.wallet'))
+            except Exception as e:
+                db.session.rollback()
+                current_app.logger.error(f"Error adding API key: {str(e)}")
+                flash('An error occurred while adding the API key. Please try again.', 'danger')
+        else:
+            current_app.logger.error(f"Form validation failed: {form.errors}")
+            for field, errors in form.errors.items():
+                for error in errors:
+                    flash(f"{field}: {error}", 'danger')
+    
+    current_app.logger.info(f"Rendering add_key template with form: {form}")
     return render_template('add_key.html', form=form)
 
 @main.route('/copy_key/<int:key_id>', methods=['POST'])
