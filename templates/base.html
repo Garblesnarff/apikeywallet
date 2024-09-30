@@ -3,18 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Key Wallet</title>
+    <title>KeyGuardian</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
     <header>
         <div class="container">
             <div id="branding">
-                <h1><span class="highlight">API</span> Key Wallet</h1>
+                <img src="{{ url_for('static', filename='img/keyguardian-logo.png') }}" alt="KeyGuardian Logo" class="logo">
+                <h1>KeyGuardian</h1>
             </div>
             <nav>
                 <ul>
                     {% if current_user.is_authenticated %}
+                        <li><a href="{{ url_for('main.wallet') }}">Wallet</a></li>
                         <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
                     {% else %}
                         <li><a href="{{ url_for('auth.login') }}">Login</a></li>
@@ -25,7 +29,7 @@
         </div>
     </header>
 
-    <div class="container">
+    <main class="container">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -36,7 +40,7 @@
 
         {% block content %}
         {% endblock %}
-    </div>
+    </main>
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>

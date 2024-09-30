@@ -220,19 +220,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function showFeedback(message, type) {
         const feedbackElement = document.createElement('div');
         feedbackElement.textContent = message;
-        feedbackElement.className = `feedback ${type}`;
-        document.body.appendChild(feedbackElement);
+        feedbackElement.className = `alert alert-${type}`;
+        document.querySelector('main').insertBefore(feedbackElement, document.querySelector('main').firstChild);
 
         setTimeout(() => {
-            feedbackElement.classList.add('show');
-        }, 100);
-
-        setTimeout(() => {
-            feedbackElement.classList.remove('show');
-            setTimeout(() => {
-                feedbackElement.remove();
-            }, 300);
-        }, 3000);
+            feedbackElement.remove();
+        }, 5000);
     }
 
     function getCookie(name) {
