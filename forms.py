@@ -14,11 +14,11 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 class AddAPIKeyForm(FlaskForm):
-    key_name = StringField('Key Name', validators=[DataRequired()])
+    key_name = StringField('Key Name', validators=[DataRequired(), Length(max=120)])
     api_key = StringField('API Key', validators=[DataRequired()])
     category = SelectField('Category', coerce=int, validators=[DataRequired()])
     submit = SubmitField('Add Key')
 
 class AddCategoryForm(FlaskForm):
-    name = StringField('Category Name', validators=[DataRequired()])
+    name = StringField('Category Name', validators=[DataRequired(), Length(max=50)])
     submit = SubmitField('Add Category')

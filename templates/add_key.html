@@ -18,6 +18,13 @@
             <span class="text-danger">{{ error }}</span>
         {% endfor %}
     </div>
-    {{ form.submit(class="btn") }}
+    <div class="form-group">
+        {{ form.category.label }}
+        {{ form.category(class="form-control") }}
+        {% for error in form.category.errors %}
+            <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+    </div>
+    {{ form.submit(class="btn btn-primary") }}
 </form>
 {% endblock %}

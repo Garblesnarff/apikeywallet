@@ -93,12 +93,10 @@ def wallet():
         categories = Category.query.filter_by(user_id=current_user.id).all()
         current_app.logger.info(f"Fetched {len(categories)} categories")
         
-        # Group API keys by category
         grouped_keys = {}
         for category in categories:
             grouped_keys[category] = [key for key in api_keys if key.category_id == category.id]
         
-        # Add uncategorized keys
         grouped_keys['Uncategorized'] = [key for key in api_keys if key.category_id is None]
         
         return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories)
@@ -119,8 +117,7 @@ def wallet():
 @login_required
 def add_key():
     form = AddAPIKeyForm()
-    form.category.choices = [(c.id, c.name) for c in Category.query.filter_by(user_id=current_user.id).all()]
-    form.category.choices.insert(0, (0, 'Uncategorized'))
+    form.category.choices = [(0, 'Uncategorized')] + [(c.id, c.name) for c in Category.query.filter_by(user_id=current_user.id).all()]
     
     if form.validate_on_submit():
         try:
@@ -136,9 +133,19 @@ def add_key():
             flash('API Key added successfully.', 'success')
             return redirect(url_for('main.wallet'))
         except SQLAlchemyError as e:
-            current_app.logger.error(f"Database error in add_key route: {str(e)}")
             db.session.rollback()
+            current_app.logger.error(f"Database error in add_key route: {str(e)}")
             flash('An error occurred while adding the API key. Please try again later.', 'danger')
+        except Exception as e:
+            db.session.rollback()
+            current_app.logger.error(f"Unexpected error in add_key route: {str(e)}")
+            flash('An unexpected error occurred. Please try again later.', 'danger')
+    else:
+        for field, errors in form.errors.items():
+            for error in errors:
+                current_app.logger.error(f"Form validation error in add_key route: {field} - {error}")
+                flash(f"{field}: {error}", 'danger')
+
     return render_template('add_key.html', form=form)
 
 @main.route('/copy_key/<int:key_id>', methods=['POST'])
