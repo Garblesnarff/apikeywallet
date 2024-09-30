@@ -131,6 +131,7 @@ def add_key():
             db.session.add(new_key)
             db.session.commit()
             flash('API Key added successfully.', 'success')
+            current_app.logger.info(f"API Key '{form.key_name.data}' added successfully for user {current_user.id}")
             return redirect(url_for('main.wallet'))
         except SQLAlchemyError as e:
             db.session.rollback()
