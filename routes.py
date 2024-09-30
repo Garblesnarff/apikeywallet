@@ -120,7 +120,7 @@ def wallet():
 def add_key():
     form = AddAPIKeyForm()
     categories = Category.query.filter_by(user_id=current_user.id).all()
-    form.category.choices = [(0, 'Uncategorized')] + [(c.id, c.name) for c in categories]
+    form.category.choices = [(None, 'Uncategorized')] + [(c.id, c.name) for c in categories]
     
     if form.validate_on_submit():
         try:
@@ -132,7 +132,7 @@ def add_key():
                 user_id=current_user.id,
                 key_name=form.key_name.data,
                 encrypted_key=encrypted_key,
-                category_id=form.category.data if form.category.data not in [0, '0'] else None
+                category_id=form.category.data if form.category.data is not None else None
             )
             db.session.add(new_key)
             db.session.commit()
