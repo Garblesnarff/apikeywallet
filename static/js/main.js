@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const categorySelects = document.querySelectorAll('.category-select');
     let currentKeyId = null;
     
+    modal.style.display = 'none';
+
     copyButtons.forEach(button => {
         button.addEventListener('click', function() {
             const keyId = this.getAttribute('data-key-id');
