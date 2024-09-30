@@ -21,7 +21,7 @@
     <div class="form-group">
         {{ form.category.label }}
         <select name="category" id="category" class="form-control">
-            <option value="0">Uncategorized</option>
+            <option value="">Uncategorized</option>
             {% for value, label in form.category.choices[1:] %}
                 <option value="{{ value }}">{{ label }}</option>
             {% endfor %}
