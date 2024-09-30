@@ -2,28 +2,22 @@
 
 {% block content %}
 <h2>Add New API Key</h2>
-<form method="POST">
+<form method="POST" id="add-key-form">
     {{ form.hidden_tag() }}
     <div class="form-group">
         {{ form.key_name.label }}
         {{ form.key_name(class="form-control") }}
-        {% for error in form.key_name.errors %}
-            <span class="text-danger">{{ error }}</span>
-        {% endfor %}
+        <span id="key_name-error" class="text-danger"></span>
     </div>
     <div class="form-group">
         {{ form.api_key.label }}
         {{ form.api_key(class="form-control") }}
-        {% for error in form.api_key.errors %}
-            <span class="text-danger">{{ error }}</span>
-        {% endfor %}
+        <span id="api_key-error" class="text-danger"></span>
     </div>
     <div class="form-group">
         {{ form.category.label }}
         {{ form.category(class="form-control") }}
-        {% for error in form.category.errors %}
-            <span class="text-danger">{{ error }}</span>
-        {% endfor %}
+        <span id="category-error" class="text-danger"></span>
     </div>
     {{ form.submit(class="btn btn-primary") }}
 </form>

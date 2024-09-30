@@ -132,23 +132,19 @@ def add_key():
             )
             db.session.add(new_key)
             db.session.commit()
-            flash('API Key added successfully.', 'success')
             current_app.logger.info(f"API Key '{form.key_name.data}' added successfully for user {current_user.id}")
-            return redirect(url_for('main.wallet'))
+            return jsonify({'success': True, 'message': 'API Key added successfully.'})
         except SQLAlchemyError as e:
             db.session.rollback()
             current_app.logger.error(f"Database error in add_key route: {str(e)}")
-            flash('An error occurred while adding the API key. Please try again later.', 'danger')
+            return jsonify({'success': False, 'error': 'An error occurred while adding the API key. Please try again later.'})
         except Exception as e:
             db.session.rollback()
             current_app.logger.error(f"Unexpected error in add_key route: {str(e)}")
-            flash('An unexpected error occurred. Please try again later.', 'danger')
+            return jsonify({'success': False, 'error': 'An unexpected error occurred. Please try again later.'})
     else:
         current_app.logger.info(f"Form validation failed: {form.errors}")
-        for field, errors in form.errors.items():
-            for error in errors:
-                current_app.logger.error(f"Form validation error in add_key route: {field} - {error}")
-                flash(f"{field}: {error}", 'danger')
+        return jsonify({'success': False, 'errors': form.errors})
 
     return render_template('add_key.html', form=form)
 

@@ -56,8 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Add event listener for form submission
-    const addKeyForm = document.querySelector('form');
+    const addKeyForm = document.getElementById('add-key-form');
     if (addKeyForm) {
         addKeyForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -165,13 +164,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
             showFeedback(data.message, 'success');
             
-            // Update the data-category-id attribute of the API key element
             const apiKeyElement = document.querySelector(`.api-key[data-key-id="${keyId}"]`);
             if (apiKeyElement) {
                 apiKeyElement.setAttribute('data-category-id', categoryId === '0' ? 'uncategorized' : categoryId);
             }
 
-            // Refresh the page to reflect the changes
             setTimeout(() => {
                 location.reload();
             }, 1000);
@@ -196,15 +193,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            const result = await response.text();
-            if (result.includes('API Key added successfully')) {
-                showFeedback('API Key added successfully', 'success');
+            const result = await response.json();
+            if (result.success) {
+                showFeedback(result.message, 'success');
                 setTimeout(() => {
                     window.location.href = '/wallet';
                 }, 1000);
             } else {
-                // If there are form errors, they will be displayed in the form itself
-                console.log('Form submission failed. Check the form for error messages.');
+                if (result.errors) {
+                    Object.keys(result.errors).forEach(field => {
+                        const errorElement = document.querySelector(`#${field}-error`);
+                        if (errorElement) {
+                            errorElement.textContent = result.errors[field].join(', ');
+                        }
+                    });
+                } else {
+                    showFeedback(result.error, 'error');
+                }
             }
         } catch (error) {
             console.error('Error submitting form:', error);
