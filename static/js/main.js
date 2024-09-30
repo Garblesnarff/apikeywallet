@@ -56,6 +56,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Add event listener for form submission
+    const addKeyForm = document.querySelector('form');
+    if (addKeyForm) {
+        addKeyForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            submitAddKeyForm(this);
+        });
+    }
+
     async function copyApiKey(keyId) {
         try {
             const response = await fetch(`/copy_key/${keyId}`, {
@@ -169,6 +178,37 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (error) {
             console.error('Error:', error);
             showFeedback('Failed to update category', 'error');
+        }
+    }
+
+    async function submitAddKeyForm(form) {
+        try {
+            const formData = new FormData(form);
+            const response = await fetch('/add_key', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': getCookie('csrf_token')
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.text();
+            if (result.includes('API Key added successfully')) {
+                showFeedback('API Key added successfully', 'success');
+                setTimeout(() => {
+                    window.location.href = '/wallet';
+                }, 1000);
+            } else {
+                // If there are form errors, they will be displayed in the form itself
+                console.log('Form submission failed. Check the form for error messages.');
+            }
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            showFeedback(`Error: ${error.message}`, 'error');
         }
     }
 
