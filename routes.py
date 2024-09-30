@@ -85,12 +85,26 @@ def index():
 @login_required
 def wallet():
     try:
-        api_keys = current_user.api_keys.all()
-        categories = current_user.categories.all()
+        current_app.logger.info(f"Fetching API keys for user {current_user.id}")
+        api_keys = APIKey.query.filter_by(user_id=current_user.id).all()
+        current_app.logger.info(f"Fetched {len(api_keys)} API keys")
+        
+        current_app.logger.info(f"Fetching categories for user {current_user.id}")
+        categories = Category.query.filter_by(user_id=current_user.id).all()
+        current_app.logger.info(f"Fetched {len(categories)} categories")
+        
         return render_template('wallet.html', api_keys=api_keys, categories=categories)
     except SQLAlchemyError as e:
         current_app.logger.error(f"Database error in wallet route: {str(e)}")
+        current_app.logger.error(f"Error type: {type(e).__name__}")
+        current_app.logger.error(f"Error details: {e.args}")
         flash('An error occurred while retrieving your wallet. Please try again later.', 'danger')
+        return redirect(url_for('main.index'))
+    except Exception as e:
+        current_app.logger.error(f"Unexpected error in wallet route: {str(e)}")
+        current_app.logger.error(f"Error type: {type(e).__name__}")
+        current_app.logger.error(f"Error details: {e.args}")
+        flash('An unexpected error occurred. Please try again later.', 'danger')
         return redirect(url_for('main.index'))
 
 @main.route('/add_key', methods=['GET', 'POST'])
