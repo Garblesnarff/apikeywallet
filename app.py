@@ -7,6 +7,11 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 from urllib.parse import urlparse
 from flask_migrate import Migrate
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 # Initialize SQLAlchemy
 db = SQLAlchemy()
@@ -17,6 +22,10 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', os.urandom(24))
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True  # Enable SQLAlchemy echo mode for debugging
+
+# Log the database URL (make sure to remove any sensitive information)
+parsed_url = urlparse(app.config['SQLALCHEMY_DATABASE_URI'])
+logger.info(f"Database URL: {parsed_url.scheme}://{parsed_url.hostname}:{parsed_url.port}{parsed_url.path}")
 
 # Initialize SQLAlchemy with the app
 db.init_app(app)
@@ -55,7 +64,11 @@ from models import User, APIKey, Category
 
 # Create tables
 with app.app_context():
-    db.create_all()
+    try:
+        db.create_all()
+        logger.info("Database tables created successfully")
+    except SQLAlchemyError as e:
+        logger.error(f"Error creating database tables: {str(e)}")
 
 # Import and register blueprints
 from routes import main as main_blueprint

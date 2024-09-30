@@ -138,10 +138,20 @@ def add_key():
             db.session.commit()
             flash('API Key added successfully.', 'success')
             return redirect(url_for('main.wallet'))
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            current_app.logger.error(f"Database error in add_key route: {str(e)}")
+            current_app.logger.error(f"Error type: {type(e).__name__}")
+            current_app.logger.error(f"Error details: {e.args}")
+            current_app.logger.error(f"Traceback: {traceback.format_exc()}")
+            flash('An error occurred while adding the API key. Please try again.', 'danger')
         except Exception as e:
             db.session.rollback()
-            current_app.logger.error(f"Error adding API key: {str(e)}")
-            flash('An error occurred while adding the API key. Please try again.', 'danger')
+            current_app.logger.error(f"Unexpected error in add_key route: {str(e)}")
+            current_app.logger.error(f"Error type: {type(e).__name__}")
+            current_app.logger.error(f"Error details: {e.args}")
+            current_app.logger.error(f"Traceback: {traceback.format_exc()}")
+            flash('An unexpected error occurred. Please try again.', 'danger')
 
     return render_template('add_key.html', form=form)
 
