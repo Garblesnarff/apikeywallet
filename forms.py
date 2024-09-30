@@ -16,7 +16,7 @@ class LoginForm(FlaskForm):
 class AddAPIKeyForm(FlaskForm):
     key_name = StringField('Key Name', validators=[DataRequired(), Length(max=120)])
     api_key = StringField('API Key', validators=[DataRequired()])
-    category = SelectField('Category', coerce=int, validators=[Optional()], allow_none=True)
+    category = SelectField('Category', coerce=int, validators=[Optional()])
     submit = SubmitField('Add Key')
 
 class AddCategoryForm(FlaskForm):
