@@ -13,4 +13,5 @@ dependencies = [
     "flask-wtf>=1.2.1",
     "cryptography>=43.0.1",
     "supabase>=2.7.4",
+    "flask-migrate>=4.0.7",
 ]

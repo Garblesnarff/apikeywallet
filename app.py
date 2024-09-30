@@ -6,6 +6,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 from urllib.parse import urlparse
+from flask_migrate import Migrate
 
 # Initialize SQLAlchemy
 db = SQLAlchemy()
@@ -19,6 +20,9 @@ app.config['SQLALCHEMY_ECHO'] = True  # Enable SQLAlchemy echo mode for debuggin
 
 # Initialize SQLAlchemy with the app
 db.init_app(app)
+
+# Initialize Flask-Migrate
+migrate = Migrate(app, db)
 
 # Setup LoginManager
 login_manager = LoginManager()
