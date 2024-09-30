@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const copyButtons = document.querySelectorAll('.copy-btn');
-    const deleteButtons = document.querySelectorAll('.delete-btn');
     const modal = document.getElementById('deleteModal');
+    const deleteButtons = document.querySelectorAll('.delete-btn');
     const confirmDeleteBtn = document.getElementById('confirmDelete');
     const cancelDeleteBtn = document.getElementById('cancelDelete');
+    const copyButtons = document.querySelectorAll('.copy-btn');
     const categoryList = document.getElementById('category-list');
     const categorySelects = document.querySelectorAll('.category-select');
     let currentKeyId = null;
