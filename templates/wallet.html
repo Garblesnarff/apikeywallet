@@ -20,11 +20,11 @@
             <a href="{{ url_for('main.add_key') }}" class="btn add-key-btn"><i class="fas fa-plus"></i> Add New API Key</a>
         </div>
         <div class="api-key-container">
-            {% for category in ['Groq', 'Google', 'Uncategorized'] %}
+            {% for category, keys in grouped_keys.items() %}
                 <div class="category-group" data-category-id="{{ category if category != 'Uncategorized' else 'uncategorized' }}">
                     <h3>{{ category }}</h3>
                     <div class="api-key-row">
-                        {% for key in grouped_keys.get(category, []) %}
+                        {% for key in keys %}
                             <div class="api-key" data-category-id="{{ key.category_id or 'uncategorized' }}">
                                 <h4>{{ key.key_name }}</h4>
                                 <p class="masked-key">••••••••••••••••</p>

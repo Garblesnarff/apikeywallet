@@ -97,22 +97,14 @@ def wallet():
         
         grouped_keys = {}
         for category in categories:
-            grouped_keys[category] = [key for key in api_keys if key.category_id == category.id]
+            grouped_keys[category.name] = [key for key in api_keys if key.category_id == category.id]
         
         grouped_keys['Uncategorized'] = [key for key in api_keys if key.category_id is None]
         
         return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories)
-    except SQLAlchemyError as e:
-        current_app.logger.error(f"Database error in wallet route: {str(e)}")
-        current_app.logger.error(f"Error type: {type(e).__name__}")
-        current_app.logger.error(f"Error details: {e.args}")
-        flash('An error occurred while retrieving your wallet. Please try again later.', 'danger')
-        return redirect(url_for('main.index'))
     except Exception as e:
-        current_app.logger.error(f"Unexpected error in wallet route: {str(e)}")
-        current_app.logger.error(f"Error type: {type(e).__name__}")
-        current_app.logger.error(f"Error details: {e.args}")
-        flash('An unexpected error occurred. Please try again later.', 'danger')
+        current_app.logger.error(f"Error in wallet route: {str(e)}")
+        flash('An error occurred while retrieving your wallet. Please try again later.', 'danger')
         return redirect(url_for('main.index'))
 
 @main.route('/add_key', methods=['GET', 'POST'])
