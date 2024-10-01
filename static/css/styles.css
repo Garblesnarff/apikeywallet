@@ -168,16 +168,20 @@ h2 {
 
 .api-key-carousel {
     position: relative;
-    overflow: hidden;
+    overflow-x: auto; /* Allow horizontal scrolling */
+    padding: 0 40px; /* Make space for navigation buttons */
 }
 
 .carousel-inner {
     display: flex;
     transition: transform 0.3s ease;
+    padding: 10px 0; /* Add some vertical padding */
 }
 
 .api-key {
-    flex: 0 0 100%;
+    flex: 0 0 auto;
+    width: 300px; /* Set a fixed width */
+    margin-right: 20px; /* Add some space between cards */
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -238,6 +242,7 @@ h2 {
     border: none;
     padding: 10px;
     cursor: pointer;
+    z-index: 10; /* Ensure buttons are above cards */
 }
 
 .carousel-control.prev { left: 0; }
