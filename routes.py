@@ -277,3 +277,17 @@ def edit_key(key_id):
         db.session.rollback()
         current_app.logger.error(f'Database error in edit_key route: {str(e)}')
         return jsonify({'error': 'An error occurred while updating the API key name.'}), 500
+
+@main.route('/get_key/<int:key_id>', methods=['POST'])
+@login_required
+def get_key(key_id):
+    try:
+        api_key = APIKey.query.filter_by(id=key_id, user_id=current_user.id).first()
+        if api_key:
+            decrypted_key = decrypt_key(api_key.encrypted_key)
+            return jsonify({'key': decrypted_key}), 200
+        else:
+            return jsonify({'error': 'API Key not found or unauthorized.'}), 404
+    except Exception as e:
+        current_app.logger.error(f'Error in get_key route: {str(e)}')
+        return jsonify({'error': 'An error occurred while retrieving the API key.'}), 500

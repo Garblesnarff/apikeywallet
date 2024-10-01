@@ -335,11 +335,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         maskedKeyElement.textContent = data.key;
                         this.querySelector('i').classList.remove('fa-eye');
                         this.querySelector('i').classList.add('fa-eye-slash');
+                    } else if (data.error) {
+                        throw new Error(data.error);
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    showFeedback('Failed to retrieve API key', 'error');
+                    showFeedback('Failed to retrieve API key: ' + error.message, 'error');
                 });
             } else {
                 maskedKeyElement.textContent = '••••••••••••••••';
