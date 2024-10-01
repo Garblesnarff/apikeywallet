@@ -112,14 +112,16 @@ h2 {
 
 .wallet-container {
     display: flex;
-    gap: 20px;
+    height: calc(100vh - 60px); /* Adjust based on your header height */
+    overflow: hidden;
 }
 
 .category-panel {
     width: 200px;
     background-color: #f8f9fa;
     padding: 20px;
-    border-radius: 8px;
+    overflow-y: auto;
+    height: 100%;
 }
 
 .category-panel h3 {
@@ -148,6 +150,8 @@ h2 {
 
 .api-key-content {
     flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
 }
 
 .api-key-container {
@@ -162,15 +166,18 @@ h2 {
     padding: 20px;
 }
 
-.api-key-row {
+.api-key-carousel {
+    position: relative;
+    overflow: hidden;
+}
+
+.carousel-inner {
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    transition: transform 0.3s ease;
 }
 
 .api-key {
-    width: calc(33.33% - 20px);
-    min-width: 250px;
+    flex: 0 0 100%;
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -221,6 +228,20 @@ h2 {
     color: #777;
     margin-top: 10px;
 }
+
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.carousel-control.prev { left: 0; }
+.carousel-control.next { right: 0; }
 
 .alert {
     padding: 15px;

@@ -31,25 +31,29 @@
             {% for category, keys in grouped_keys.items() %}
                 <div class="category-group" data-category-id="{{ category if category != 'Uncategorized' else 'uncategorized' }}">
                     <h3>{{ category }}</h3>
-                    <div class="api-key-row">
-                        {% for key in keys %}
-                            <div class="api-key" data-category-id="{{ key.category_id or 'uncategorized' }}">
-                                <h4>{{ key.key_name }}</h4>
-                                <p class="masked-key">••••••••••••••••</p>
-                                <div class="key-actions">
-                                    <button class="copy-btn" data-key-id="{{ key.id }}" title="Copy Key"><i class="fas fa-copy"></i></button>
-                                    <button class="edit-btn" data-key-id="{{ key.id }}" title="Edit Key"><i class="fas fa-edit"></i></button>
-                                    <button class="delete-btn" data-key-id="{{ key.id }}" title="Delete Key"><i class="fas fa-trash-alt"></i></button>
-                                    <select class="category-select" data-key-id="{{ key.id }}">
-                                        <option value="0">Uncategorized</option>
-                                        {% for cat in categories %}
-                                            <option value="{{ cat.id }}" {% if key.category_id == cat.id %}selected{% endif %}>{{ cat.name }}</option>
-                                        {% endfor %}
-                                    </select>
+                    <div class="api-key-carousel">
+                        <div class="carousel-inner">
+                            {% for key in keys %}
+                                <div class="api-key" data-category-id="{{ key.category_id or 'uncategorized' }}">
+                                    <h4>{{ key.key_name }}</h4>
+                                    <p class="masked-key">••••••••••••••••</p>
+                                    <div class="key-actions">
+                                        <button class="copy-btn" data-key-id="{{ key.id }}" title="Copy Key"><i class="fas fa-copy"></i></button>
+                                        <button class="edit-btn" data-key-id="{{ key.id }}" title="Edit Key"><i class="fas fa-edit"></i></button>
+                                        <button class="delete-btn" data-key-id="{{ key.id }}" title="Delete Key"><i class="fas fa-trash-alt"></i></button>
+                                        <select class="category-select" data-key-id="{{ key.id }}">
+                                            <option value="0">Uncategorized</option>
+                                            {% for cat in categories %}
+                                                <option value="{{ cat.id }}" {% if key.category_id == cat.id %}selected{% endif %}>{{ cat.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <p class="date-added">Added on: {{ key.date_added.strftime('%Y-%m-%d %H:%M:%S') }}</p>
                                 </div>
-                                <p class="date-added">Added on: {{ key.date_added.strftime('%Y-%m-%d %H:%M:%S') }}</p>
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
+                        <button class="carousel-control prev">&lt;</button>
+                        <button class="carousel-control next">&gt;</button>
                     </div>
                 </div>
             {% endfor %}

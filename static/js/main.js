@@ -93,6 +93,30 @@ document.addEventListener('DOMContentLoaded', function() {
         editApiKey(keyId, newKeyName);
     });
 
+    const carousels = document.querySelectorAll('.api-key-carousel');
+    carousels.forEach(carousel => {
+        const inner = carousel.querySelector('.carousel-inner');
+        const prevBtn = carousel.querySelector('.prev');
+        const nextBtn = carousel.querySelector('.next');
+        let position = 0;
+
+        nextBtn.addEventListener('click', () => {
+            position--;
+            updateCarouselPosition();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            position++;
+            updateCarouselPosition();
+        });
+
+        function updateCarouselPosition() {
+            const items = inner.querySelectorAll('.api-key');
+            position = Math.min(Math.max(position, -items.length + 1), 0);
+            inner.style.transform = `translateX(${position * 100}%)`;
+        }
+    });
+
     async function copyApiKey(keyId) {
         try {
             const response = await fetch(`/copy_key/${keyId}`, {
