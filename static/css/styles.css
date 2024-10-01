@@ -155,12 +155,14 @@ h2 {
 }
 
 .api-key-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 20px;
 }
 
 .api-key {
+    width: calc(33.33% - 20px);
+    min-width: 250px;
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -241,7 +243,11 @@ h2 {
     }
 
     .api-key-container {
-        grid-template-columns: 1fr;
+        flex-direction: column;
+    }
+
+    .api-key {
+        width: 100%;
     }
 }
 
