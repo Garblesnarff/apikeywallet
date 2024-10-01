@@ -6,6 +6,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const copyButtons = document.querySelectorAll('.copy-btn');
     const categoryList = document.getElementById('category-list');
     const categorySelects = document.querySelectorAll('.category-select');
+    const editButtons = document.querySelectorAll('.edit-btn');
+    const editModal = document.getElementById('editModal');
+    const editForm = document.getElementById('editKeyForm');
+    const editKeyNameInput = document.getElementById('editKeyName');
+    const editKeyIdInput = document.getElementById('editKeyId');
+    const cancelEditBtn = document.getElementById('cancelEdit');
     let currentKeyId = null;
     
     modal.style.display = 'none';
@@ -65,6 +71,27 @@ document.addEventListener('DOMContentLoaded', function() {
             submitAddKeyForm(this);
         });
     }
+
+    editButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const keyId = this.getAttribute('data-key-id');
+            const keyName = this.closest('.api-key').querySelector('h4').textContent;
+            editKeyIdInput.value = keyId;
+            editKeyNameInput.value = keyName;
+            editModal.style.display = 'block';
+        });
+    });
+
+    cancelEditBtn.addEventListener('click', function() {
+        editModal.style.display = 'none';
+    });
+
+    editForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const keyId = editKeyIdInput.value;
+        const newKeyName = editKeyNameInput.value;
+        editApiKey(keyId, newKeyName);
+    });
 
     async function copyApiKey(keyId) {
         try {
@@ -215,6 +242,35 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } catch (error) {
             console.error('Error submitting form:', error);
+            showFeedback(`Error: ${error.message}`, 'error');
+        }
+    }
+
+    async function editApiKey(keyId, newKeyName) {
+        try {
+            const response = await fetch(`/edit_key/${keyId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrf_token')
+                },
+                body: JSON.stringify({ key_name: newKeyName })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                showFeedback(data.message, 'success');
+                editModal.style.display = 'none';
+                const keyElement = document.querySelector(`.api-key[data-key-id="${keyId}"] h4`);
+                if (keyElement) {
+                    keyElement.textContent = newKeyName;
+                }
+            } else {
+                throw new Error(data.error || 'Failed to update API key name');
+            }
+        } catch (error) {
+            console.error('Error:', error);
             showFeedback(`Error: ${error.message}`, 'error');
         }
     }

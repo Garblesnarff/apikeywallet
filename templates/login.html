@@ -2,8 +2,8 @@
 
 {% block content %}
 <div class="auth-container">
-    <h2>Welcome to KeyGuardian</h2>
-    <p class="auth-description">Securely store and manage your API keys</p>
+    <h2 class="centered-text">Welcome to KeyGuardian</h2>
+    <p class="auth-description centered-text">Securely store and manage your API keys</p>
     <form method="POST" class="auth-form">
         {{ form.hidden_tag() }}
         <div class="form-group">
@@ -20,6 +20,6 @@
         </div>
         {{ form.submit(class="btn btn-primary btn-block") }}
     </form>
-    <p class="mt-3">Don't have an account? <a href="{{ url_for('auth.register') }}">Register here</a></p>
+    <p class="mt-3 centered-text">Don't have an account? <a href="{{ url_for('auth.register') }}">Register here</a></p>
 </div>
 {% endblock %}

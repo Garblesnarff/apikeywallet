@@ -253,3 +253,23 @@ def delete_category(category_id):
         current_app.logger.error(f'Database error in delete_category route: {str(e)}')
         flash('An error occurred while deleting the category. Please try again later.', 'danger')
         return redirect(url_for('main.manage_categories'))
+
+@main.route('/edit_key/<int:key_id>', methods=['POST'])
+@login_required
+def edit_key(key_id):
+    try:
+        api_key = APIKey.query.filter_by(id=key_id, user_id=current_user.id).first()
+        if api_key:
+            new_name = request.json.get('key_name')
+            if new_name:
+                api_key.key_name = new_name
+                db.session.commit()
+                return jsonify({'message': 'API Key name updated successfully.'}), 200
+            else:
+                return jsonify({'error': 'New key name is required.'}), 400
+        else:
+            return jsonify({'error': 'API Key not found or unauthorized.'}), 404
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        current_app.logger.error(f'Database error in edit_key route: {str(e)}')
+        return jsonify({'error': 'An error occurred while updating the API key name.'}), 500

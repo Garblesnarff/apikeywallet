@@ -15,31 +15,34 @@
         <a href="{{ url_for('main.manage_categories') }}" class="btn btn-sm btn-secondary"><i class="fas fa-cog"></i> Manage Categories</a>
     </div>
     <div class="api-key-content">
-        <h2>Your API Key Wallet</h2>
+        <h2>Your KeyGuardian Wallet</h2>
         <div class="add-key-container">
             <a href="{{ url_for('main.add_key') }}" class="btn add-key-btn"><i class="fas fa-plus"></i> Add New API Key</a>
         </div>
         <div class="api-key-container">
-            {% for category, keys in grouped_keys.items() %}
-                <div class="category-group" data-category-id="{{ category.id if category != 'Uncategorized' else 'uncategorized' }}">
-                    <h3>{{ category.name if category != 'Uncategorized' else 'Uncategorized' }}</h3>
-                    {% for key in keys %}
-                        <div class="api-key" data-category-id="{{ key.category_id or 'uncategorized' }}">
-                            <h4>{{ key.key_name }}</h4>
-                            <p class="masked-key">••••••••••••••••</p>
-                            <div class="key-actions">
-                                <button class="copy-btn" data-key-id="{{ key.id }}" title="Copy Key"><i class="fas fa-copy"></i></button>
-                                <button class="delete-btn" data-key-id="{{ key.id }}" title="Delete Key"><i class="fas fa-trash-alt"></i></button>
-                                <select class="category-select" data-key-id="{{ key.id }}">
-                                    <option value="0">Uncategorized</option>
-                                    {% for cat in categories %}
-                                        <option value="{{ cat.id }}" {% if key.category_id == cat.id %}selected{% endif %}>{{ cat.name }}</option>
-                                    {% endfor %}
-                                </select>
+            {% for category in ['Groq', 'Google', 'Uncategorized'] %}
+                <div class="category-group" data-category-id="{{ category if category != 'Uncategorized' else 'uncategorized' }}">
+                    <h3>{{ category }}</h3>
+                    <div class="api-key-row">
+                        {% for key in grouped_keys.get(category, []) %}
+                            <div class="api-key" data-category-id="{{ key.category_id or 'uncategorized' }}">
+                                <h4>{{ key.key_name }}</h4>
+                                <p class="masked-key">••••••••••••••••</p>
+                                <div class="key-actions">
+                                    <button class="copy-btn" data-key-id="{{ key.id }}" title="Copy Key"><i class="fas fa-copy"></i></button>
+                                    <button class="edit-btn" data-key-id="{{ key.id }}" title="Edit Key"><i class="fas fa-edit"></i></button>
+                                    <button class="delete-btn" data-key-id="{{ key.id }}" title="Delete Key"><i class="fas fa-trash-alt"></i></button>
+                                    <select class="category-select" data-key-id="{{ key.id }}">
+                                        <option value="0">Uncategorized</option>
+                                        {% for cat in categories %}
+                                            <option value="{{ cat.id }}" {% if key.category_id == cat.id %}selected{% endif %}>{{ cat.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <p class="date-added">Added on: {{ key.date_added.strftime('%Y-%m-%d %H:%M:%S') }}</p>
                             </div>
-                            <p class="date-added">Added on: {{ key.date_added.strftime('%Y-%m-%d %H:%M:%S') }}</p>
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
                 </div>
             {% endfor %}
         </div>
@@ -54,6 +57,23 @@
             <button id="confirmDelete" class="btn btn-danger">Delete</button>
             <button id="cancelDelete" class="btn btn-secondary">Cancel</button>
         </div>
+    </div>
+</div>
+
+<div id="editModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <h3>Edit API Key</h3>
+        <form id="editKeyForm">
+            <input type="hidden" id="editKeyId">
+            <div class="form-group">
+                <label for="editKeyName">Key Name</label>
+                <input type="text" id="editKeyName" class="form-control" required>
+            </div>
+            <div class="modal-buttons">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" id="cancelEdit" class="btn btn-secondary">Cancel</button>
+            </div>
+        </form>
     </div>
 </div>
 {% endblock %}
