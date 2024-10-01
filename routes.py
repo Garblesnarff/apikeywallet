@@ -95,15 +95,22 @@ def wallet():
         categories = Category.query.filter_by(user_id=current_user.id).all()
         current_app.logger.info(f"Fetched {len(categories)} categories")
         
-        grouped_keys = {}
-        for category in categories:
-            grouped_keys[category.name] = [key for key in api_keys if key.category_id == category.id]
+        grouped_keys = {category.name: [] for category in categories}
+        grouped_keys['Uncategorized'] = []
         
-        grouped_keys['Uncategorized'] = [key for key in api_keys if key.category_id is None]
+        for key in api_keys:
+            if key.category:
+                grouped_keys[key.category.name].append(key)
+            else:
+                grouped_keys['Uncategorized'].append(key)
         
-        return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories)
+        for category, keys in grouped_keys.items():
+            current_app.logger.info(f"Category '{category}' has {len(keys)} keys")
+        
+        return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
     except Exception as e:
         current_app.logger.error(f"Error in wallet route: {str(e)}")
+        current_app.logger.error(traceback.format_exc())
         flash('An error occurred while retrieving your wallet. Please try again later.', 'danger')
         return redirect(url_for('main.index'))
 

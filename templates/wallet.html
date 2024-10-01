@@ -1,6 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% if debug %}
+<div class="debug-info" style="background-color: #f0f0f0; padding: 10px; margin-bottom: 20px;">
+    <h4>Debug Information</h4>
+    {% for category, keys in grouped_keys.items() %}
+    <p>{{ category }}: {{ keys|length }} keys</p>
+    {% endfor %}
+</div>
+{% endif %}
 <div class="wallet-container">
     <div class="category-panel">
         <h3>Categories</h3>
