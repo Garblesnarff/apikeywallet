@@ -3,8 +3,10 @@
     --secondary-color: #020E1C;
     --accent-color: #031F2F;
     --background-color: #011320;
-    --text-color: #333;
+    --text-color: #E0E0E0;
     --light-gray: #e0e0e0;
+    --button-color: #0299C9;
+    --button-hover-color: #03A9F4;
 }
 
 * {
@@ -72,7 +74,7 @@ nav a {
 }
 
 nav a:hover {
-    color: var(--primary-color);
+    color: var(--button-color);
 }
 
 main {
@@ -82,13 +84,14 @@ main {
 h2 {
     font-size: 1.8rem;
     margin-bottom: 1rem;
-    color: var(--secondary-color);
+    color: var(--text-color);
+    font-weight: 600;
 }
 
 .btn {
     display: inline-block;
-    background: var(--primary-color);
-    color: #fff;
+    background: var(--button-color);
+    color: #F0F0F0;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -99,7 +102,7 @@ h2 {
 }
 
 .btn:hover {
-    background: var(--secondary-color);
+    background: var(--button-hover-color);
 }
 
 .btn-secondary {
@@ -118,7 +121,7 @@ h2 {
 
 .category-panel {
     width: 200px;
-    background-color: #010C18;
+    background-color: #010F1D;
     padding: 20px;
     overflow-y: auto;
     height: 100%;
@@ -127,7 +130,8 @@ h2 {
 .category-panel h3 {
     margin-bottom: 15px;
     font-size: 1.2rem;
-    color: var(--secondary-color);
+    color: var(--text-color);
+    font-weight: 600;
 }
 
 #category-list {
@@ -140,14 +144,14 @@ h2 {
     padding: 10px;
     margin-bottom: 5px;
     border-radius: 5px;
-    transition: background-color 0.3s;
-    color: #022A44;
+    transition: background-color 0.3s, color 0.3s;
+    color: var(--text-color);
 }
 
 #category-list li:hover,
 #category-list li.active {
-    background-color: #031F2F;
-    color: #fff;
+    background-color: #022A44;
+    color: #F0F0F0;
 }
 
 .api-key-content {
@@ -184,11 +188,12 @@ h2 {
     flex: 0 0 auto;
     width: 300px;
     margin-right: 20px;
-    background: #fff;
+    background: #031F2F;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     padding: 20px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #022A44;
 }
 
 .api-key:hover {
@@ -198,16 +203,18 @@ h2 {
 
 .api-key h4 {
     margin-bottom: 10px;
-    color: var(--secondary-color);
+    color: var(--text-color);
+    font-weight: 600;
 }
 
 .masked-key {
     font-family: monospace;
-    background-color: var(--light-gray);
+    background-color: var(--secondary-color);
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 15px;
     font-size: 0.9rem;
+    color: var(--text-color);
 }
 
 .key-actions {
@@ -221,12 +228,12 @@ h2 {
     border: none;
     cursor: pointer;
     font-size: 1.2rem;
-    color: var(--secondary-color);
+    color: var(--button-color);
     transition: color 0.3s ease;
 }
 
 .key-actions button:hover {
-    color: var(--primary-color);
+    color: var(--button-hover-color);
 }
 
 .date-added {
@@ -284,7 +291,7 @@ h2 {
 .auth-content {
     width: 100%;
     max-width: 400px;
-    background-color: #fff;
+    background-color: #031F2F;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -317,19 +324,22 @@ h2 {
     display: block;
     margin-bottom: 5px;
     font-weight: 500;
+    color: var(--text-color);
 }
 
 .form-control {
     width: 100%;
     padding: 10px;
-    border: 1px solid var(--light-gray);
+    border: 1px solid var(--secondary-color);
     border-radius: 5px;
     font-size: 16px;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
 }
 
 .form-control:focus {
     outline: none;
-    border-color: var(--primary-color);
+    border-color: var(--button-color);
 }
 
 .modal {
@@ -345,12 +355,13 @@ h2 {
 }
 
 .modal-content {
-    background-color: #fefefe;
+    background-color: #031F2F;
     margin: 15% auto;
     padding: 20px;
-    border: 1px solid #888;
+    border: 1px solid #022A44;
     width: 80%;
     max-width: 500px;
+    color: var(--text-color);
 }
 
 .toggle-visibility-btn {
@@ -358,10 +369,10 @@ h2 {
     border: none;
     cursor: pointer;
     font-size: 1.2rem;
-    color: var(--secondary-color);
+    color: var(--button-color);
     transition: color 0.3s ease;
 }
 
 .toggle-visibility-btn:hover {
-    color: var(--primary-color);
+    color: var(--button-hover-color);
 }

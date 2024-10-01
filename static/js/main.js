@@ -117,6 +117,42 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    const toggleVisibilityButtons = document.querySelectorAll('.toggle-visibility-btn');
+    toggleVisibilityButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const keyId = this.getAttribute('data-key-id');
+            const maskedKeyElement = this.closest('.api-key').querySelector('.masked-key');
+            const icon = this.querySelector('i');
+            if (icon.classList.contains('fa-eye')) {
+                fetch(`/get_key/${keyId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrf_token')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.key) {
+                        maskedKeyElement.textContent = data.key;
+                        icon.classList.remove('fa-eye');
+                        icon.classList.add('fa-eye-slash');
+                    } else if (data.error) {
+                        throw new Error(data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showFeedback('Failed to retrieve API key: ' + error.message, 'error');
+                });
+            } else {
+                maskedKeyElement.textContent = '••••••••••••••••';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+    });
+
     async function copyApiKey(keyId) {
         try {
             const response = await fetch(`/copy_key/${keyId}`, {
@@ -315,39 +351,4 @@ document.addEventListener('DOMContentLoaded', function() {
         const parts = value.split(`; ${name}=`);
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
-
-    const toggleVisibilityButtons = document.querySelectorAll('.toggle-visibility-btn');
-    toggleVisibilityButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const keyId = this.getAttribute('data-key-id');
-            const maskedKeyElement = this.closest('.api-key').querySelector('.masked-key');
-            if (maskedKeyElement.textContent === '••••••••••••••••') {
-                fetch(`/get_key/${keyId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCookie('csrf_token')
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.key) {
-                        maskedKeyElement.textContent = data.key;
-                        this.querySelector('i').classList.remove('fa-eye');
-                        this.querySelector('i').classList.add('fa-eye-slash');
-                    } else if (data.error) {
-                        throw new Error(data.error);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    showFeedback('Failed to retrieve API key: ' + error.message, 'error');
-                });
-            } else {
-                maskedKeyElement.textContent = '••••••••••••••••';
-                this.querySelector('i').classList.remove('fa-eye-slash');
-                this.querySelector('i').classList.add('fa-eye');
-            }
-        });
-    });
 });
