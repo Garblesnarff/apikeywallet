@@ -315,4 +315,37 @@ document.addEventListener('DOMContentLoaded', function() {
         const parts = value.split(`; ${name}=`);
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
+
+    const toggleVisibilityButtons = document.querySelectorAll('.toggle-visibility-btn');
+    toggleVisibilityButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const keyId = this.getAttribute('data-key-id');
+            const maskedKeyElement = this.closest('.api-key').querySelector('.masked-key');
+            if (maskedKeyElement.textContent === '••••••••••••••••') {
+                fetch(`/get_key/${keyId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrf_token')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.key) {
+                        maskedKeyElement.textContent = data.key;
+                        this.querySelector('i').classList.remove('fa-eye');
+                        this.querySelector('i').classList.add('fa-eye-slash');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showFeedback('Failed to retrieve API key', 'error');
+                });
+            } else {
+                maskedKeyElement.textContent = '••••••••••••••••';
+                this.querySelector('i').classList.remove('fa-eye-slash');
+                this.querySelector('i').classList.add('fa-eye');
+            }
+        });
+    });
 });
