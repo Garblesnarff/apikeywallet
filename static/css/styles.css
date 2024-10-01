@@ -1,8 +1,8 @@
 :root {
-    --primary-color: #3498db;
-    --secondary-color: #2c3e50;
-    --accent-color: #e74c3c;
-    --background-color: #f8f9fa;
+    --primary-color: #022A44;
+    --secondary-color: #020E1C;
+    --accent-color: #031F2F;
+    --background-color: #011320;
     --text-color: #333;
     --light-gray: #e0e0e0;
 }
@@ -27,7 +27,7 @@ body {
 }
 
 header {
-    background: var(--secondary-color);
+    background: #001022;
     color: #fff;
     padding: 1rem 0;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -99,7 +99,7 @@ h2 {
 }
 
 .btn:hover {
-    background: #2980b9;
+    background: var(--secondary-color);
 }
 
 .btn-secondary {
@@ -107,18 +107,18 @@ h2 {
 }
 
 .btn-secondary:hover {
-    background: #34495e;
+    background: var(--accent-color);
 }
 
 .wallet-container {
     display: flex;
-    height: calc(100vh - 60px); /* Adjust based on your header height */
+    height: calc(100vh - 60px);
     overflow: hidden;
 }
 
 .category-panel {
     width: 200px;
-    background-color: #f8f9fa;
+    background-color: #010C18;
     padding: 20px;
     overflow-y: auto;
     height: 100%;
@@ -141,11 +141,13 @@ h2 {
     margin-bottom: 5px;
     border-radius: 5px;
     transition: background-color 0.3s;
+    color: #022A44;
 }
 
 #category-list li:hover,
 #category-list li.active {
-    background-color: #e9ecef;
+    background-color: #031F2F;
+    color: #fff;
 }
 
 .api-key-content {
@@ -161,27 +163,27 @@ h2 {
 }
 
 .category-group {
-    background-color: #f8f9fa;
+    background-color: #031F2F;
     border-radius: 8px;
     padding: 20px;
 }
 
 .api-key-carousel {
     position: relative;
-    overflow-x: auto; /* Allow horizontal scrolling */
-    padding: 0 40px; /* Make space for navigation buttons */
+    overflow-x: auto;
+    padding: 0 40px;
 }
 
 .carousel-inner {
     display: flex;
     transition: transform 0.3s ease;
-    padding: 10px 0; /* Add some vertical padding */
+    padding: 10px 0;
 }
 
 .api-key {
     flex: 0 0 auto;
-    width: 300px; /* Set a fixed width */
-    margin-right: 20px; /* Add some space between cards */
+    width: 300px;
+    margin-right: 20px;
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -242,7 +244,7 @@ h2 {
     border: none;
     padding: 10px;
     cursor: pointer;
-    z-index: 10; /* Ensure buttons are above cards */
+    z-index: 10;
 }
 
 .carousel-control.prev { left: 0; }
