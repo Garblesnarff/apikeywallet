@@ -157,13 +157,18 @@ def add_key():
 @login_required
 def copy_key(key_id):
     try:
+        current_app.logger.info(f"Copy key request received for key_id: {key_id}")
         api_key = APIKey.query.filter_by(id=key_id, user_id=current_user.id).first()
         if not api_key:
+            current_app.logger.warning(f"API key not found or unauthorized for key_id: {key_id}")
             return jsonify({'error': 'API key not found or unauthorized'}), 403
+        current_app.logger.info(f"API key found for key_id: {key_id}")
         decrypted_key = decrypt_key(api_key.encrypted_key)
+        current_app.logger.info(f"API key successfully decrypted for key_id: {key_id}")
         return jsonify({'key': decrypted_key})
     except Exception as e:
         current_app.logger.error(f'Error in copy_key route: {str(e)}')
+        current_app.logger.error(traceback.format_exc())
         return jsonify({'error': 'An error occurred while processing the request'}), 500
 
 @main.route('/delete_key/<int:key_id>', methods=['POST'])
