@@ -153,6 +153,43 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Updated filterApiKeys function
+    function filterApiKeys(categoryId) {
+        console.log(`Filtering by category: ${categoryId}`);
+        const apiKeys = document.querySelectorAll('.api-key');
+        const categoryGroups = document.querySelectorAll('.category-group');
+
+        if (categoryId === 'all') {
+            console.log('Showing all keys and categories');
+            apiKeys.forEach(key => key.style.display = 'block');
+            categoryGroups.forEach(group => group.style.display = 'block');
+        } else {
+            apiKeys.forEach(key => {
+                const keyCategory = key.getAttribute('data-category-id');
+                console.log(`Key ${key.getAttribute('data-key-id')} category: ${keyCategory}, Filtering category: ${categoryId}`);
+                if (categoryId === 'uncategorized' && (!keyCategory || keyCategory === '0')) {
+                    key.style.display = 'block';
+                } else if (keyCategory === categoryId) {
+                    key.style.display = 'block';
+                } else {
+                    key.style.display = 'none';
+                }
+            });
+
+            categoryGroups.forEach(group => {
+                const groupCategory = group.getAttribute('data-category-id');
+                console.log(`Category group: ${groupCategory}, Filtering category: ${categoryId}`);
+                if (categoryId === 'uncategorized' && groupCategory === 'uncategorized') {
+                    group.style.display = 'block';
+                } else if (groupCategory === categoryId) {
+                    group.style.display = 'block';
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+        }
+    }
+
     async function copyApiKey(keyId) {
         try {
             const response = await fetch(`/copy_key/${keyId}`, {
@@ -206,43 +243,6 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (error) {
             console.error('Error:', error);
             showFeedback(`Error: ${error.message}`, 'error');
-        }
-    }
-
-    function filterApiKeys(categoryId) {
-        console.log(`Filtering by category: ${categoryId}`);
-        const apiKeys = document.querySelectorAll('.api-key');
-        const categoryGroups = document.querySelectorAll('.category-group');
-
-        if (categoryId === 'all') {
-            console.log('Showing all keys and categories');
-            apiKeys.forEach(key => key.style.display = 'block');
-            categoryGroups.forEach(group => group.style.display = 'block');
-        } else {
-            apiKeys.forEach(key => {
-                const keyCategory = key.getAttribute('data-category-id');
-                const keyId = key.getAttribute('data-key-id');
-                console.log(`Processing key ${keyId} with category ${keyCategory}`);
-                if (keyCategory === categoryId || (categoryId === 'uncategorized' && (!keyCategory || keyCategory === '0'))) {
-                    console.log(`Showing key ${keyId}`);
-                    key.style.display = 'block';
-                } else {
-                    console.log(`Hiding key ${keyId}`);
-                    key.style.display = 'none';
-                }
-            });
-
-            categoryGroups.forEach(group => {
-                const groupCategory = group.getAttribute('data-category-id');
-                console.log(`Processing category group ${groupCategory}`);
-                if (groupCategory === categoryId || (categoryId === 'uncategorized' && groupCategory === 'uncategorized')) {
-                    console.log(`Showing category group ${groupCategory}`);
-                    group.style.display = 'block';
-                } else {
-                    console.log(`Hiding category group ${groupCategory}`);
-                    group.style.display = 'none';
-                }
-            });
         }
     }
 
@@ -361,5 +361,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
         if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    // Select the correct category on page load
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category');
+    if (category) {
+        const categoryItem = document.querySelector(`#category-list li[data-category-id="${category}"]`);
+        if (categoryItem) {
+            categoryItem.click();
+        }
     }
 });
