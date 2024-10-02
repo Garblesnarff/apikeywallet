@@ -79,44 +79,65 @@ document.addEventListener('DOMContentLoaded', function() {
             if (categoryId === 'all' || categoryId === keyCategory || (categoryId === 'uncategorized' && (!keyCategory || keyCategory === '0'))) {
                 key.closest('.category-group').style.display = 'block';
                 key.style.display = 'block';
+                console.log(`Showing key ${key.getAttribute('data-key-id')}`);
             } else {
                 key.style.display = 'none';
+                console.log(`Hiding key ${key.getAttribute('data-key-id')}`);
             }
         });
 
         categoryGroups.forEach(group => {
+            const groupCategory = group.getAttribute('data-category-id');
+            console.log(`Checking visibility for category group: ${groupCategory}`);
             const visibleKeys = group.querySelectorAll('.api-key[style="display: block;"]');
             if (visibleKeys.length === 0) {
                 group.style.display = 'none';
+                console.log(`Hiding category group: ${groupCategory}`);
             } else {
                 group.style.display = 'block';
+                console.log(`Showing category group: ${groupCategory} with ${visibleKeys.length} visible keys`);
             }
         });
     }
 
     function updateKeyCategory(keyId, categoryId) {
+        console.log(`Updating category for key ${keyId} to ${categoryId}`);
+        const csrfToken = getCookie('csrf_token');
+        if (!csrfToken) {
+            console.error('CSRF token not found');
+            showFeedback('Error: CSRF token not found', 'error');
+            return;
+        }
+
         fetch(`/update_key_category/${keyId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrf_token')
+                'X-CSRFToken': csrfToken
             },
             body: JSON.stringify({ category_id: categoryId })
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.message) {
+                console.log(`Category update successful: ${data.message}`);
                 showFeedback(data.message, 'success');
                 const apiKey = document.querySelector(`.api-key[data-key-id="${keyId}"]`);
                 apiKey.setAttribute('data-category-id', categoryId);
                 filterApiKeys(document.querySelector('#category-list li.active').getAttribute('data-category-id'));
             } else if (data.error) {
+                console.error(`Category update failed: ${data.error}`);
                 showFeedback(data.error, 'error');
             }
         })
         .catch(error => {
-            console.error('Error:', error);
-            showFeedback('Failed to update category', 'error');
+            console.error('Error updating category:', error);
+            showFeedback('Failed to update category: ' + error.message, 'error');
         });
     }
 

@@ -112,7 +112,7 @@ def wallet():
             current_app.logger.info(f"Category '{category}' has {len(keys)} keys")
         
         # Add more detailed logging of grouped_keys structure
-        current_app.logger.debug(f"Grouped keys structure: {json.dumps({k: [{'id': key.id, 'name': key.key_name} for key in v] for k, v in grouped_keys.items()}, indent=2)}")
+        current_app.logger.debug(f"Grouped keys structure: {json.dumps({k: [{'id': key.id, 'name': key.key_name, 'category_id': key.category_id} for key in v] for k, v in grouped_keys.items()}, indent=2)}")
         
         return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
     except Exception as e:
