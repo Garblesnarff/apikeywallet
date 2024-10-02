@@ -6,6 +6,11 @@
     <h4>Debug Information</h4>
     {% for category, keys in grouped_keys.items() %}
     <p>{{ category }}: {{ keys|length }} keys</p>
+    <ul>
+        {% for key in keys %}
+        <li>Key ID: {{ key.id }}, Name: {{ key.key_name }}, Category ID: {{ key.category_id or 'Uncategorized' }}</li>
+        {% endfor %}
+    </ul>
     {% endfor %}
 </div>
 {% endif %}
@@ -34,7 +39,7 @@
                     <div class="api-key-carousel">
                         <div class="carousel-inner">
                             {% for key in keys %}
-                                <div class="api-key" data-category-id="{{ key.category_id or 'uncategorized' }}">
+                                <div class="api-key" data-key-id="{{ key.id }}" data-category-id="{{ key.category_id or 'uncategorized' }}">
                                     <h4>{{ key.key_name }}</h4>
                                     <p class="masked-key">••••••••••••••••</p>
                                     <div class="key-actions">

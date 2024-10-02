@@ -215,25 +215,31 @@ document.addEventListener('DOMContentLoaded', function() {
         const categoryGroups = document.querySelectorAll('.category-group');
 
         if (categoryId === 'all') {
+            console.log('Showing all keys and categories');
             apiKeys.forEach(key => key.style.display = 'block');
             categoryGroups.forEach(group => group.style.display = 'block');
         } else {
             apiKeys.forEach(key => {
                 const keyCategory = key.getAttribute('data-category-id');
-                console.log(`Key ${key.id} category: ${keyCategory}`);
-                if (keyCategory === categoryId || (categoryId === 'uncategorized' && !keyCategory)) {
+                const keyId = key.getAttribute('data-key-id');
+                console.log(`Processing key ${keyId} with category ${keyCategory}`);
+                if (keyCategory === categoryId || (categoryId === 'uncategorized' && (!keyCategory || keyCategory === '0'))) {
+                    console.log(`Showing key ${keyId}`);
                     key.style.display = 'block';
                 } else {
+                    console.log(`Hiding key ${keyId}`);
                     key.style.display = 'none';
                 }
             });
 
             categoryGroups.forEach(group => {
                 const groupCategory = group.getAttribute('data-category-id');
-                console.log(`Group ${group.id} category: ${groupCategory}`);
+                console.log(`Processing category group ${groupCategory}`);
                 if (groupCategory === categoryId || (categoryId === 'uncategorized' && groupCategory === 'uncategorized')) {
+                    console.log(`Showing category group ${groupCategory}`);
                     group.style.display = 'block';
                 } else {
+                    console.log(`Hiding category group ${groupCategory}`);
                     group.style.display = 'none';
                 }
             });

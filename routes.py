@@ -99,10 +99,13 @@ def wallet():
         grouped_keys['Uncategorized'] = []
         
         for key in api_keys:
+            current_app.logger.debug(f"Processing API key: id={key.id}, name={key.key_name}, category_id={key.category_id}")
             if key.category:
                 grouped_keys[key.category.name].append(key)
+                current_app.logger.debug(f"Added key {key.id} to category '{key.category.name}'")
             else:
                 grouped_keys['Uncategorized'].append(key)
+                current_app.logger.debug(f"Added key {key.id} to 'Uncategorized'")
         
         for category, keys in grouped_keys.items():
             current_app.logger.info(f"Category '{category}' has {len(keys)} keys")
