@@ -107,6 +107,8 @@ def wallet():
         for category, keys in grouped_keys.items():
             current_app.logger.info(f"Category '{category}' has {len(keys)} keys")
         
+        current_app.logger.debug(f"Grouped keys: {grouped_keys}")
+        
         return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
     except Exception as e:
         current_app.logger.error(f"Error in wallet route: {str(e)}")
@@ -213,6 +215,7 @@ def update_key_category(key_id):
         if api_key:
             api_key.category_id = category_id if category_id != 0 else None
             db.session.commit()
+            current_app.logger.info(f"Updated category for key {key_id} to {category_id}")
             return jsonify({'message': 'Category updated successfully.'}), 200
         return jsonify({'error': 'API Key not found or unauthorized.'}), 404
     except SQLAlchemyError as e:

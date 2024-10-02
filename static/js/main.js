@@ -210,6 +210,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function filterApiKeys(categoryId) {
+        console.log(`Filtering by category: ${categoryId}`);
         const apiKeys = document.querySelectorAll('.api-key');
         const categoryGroups = document.querySelectorAll('.category-group');
 
@@ -218,7 +219,9 @@ document.addEventListener('DOMContentLoaded', function() {
             categoryGroups.forEach(group => group.style.display = 'block');
         } else {
             apiKeys.forEach(key => {
-                if (key.getAttribute('data-category-id') === categoryId) {
+                const keyCategory = key.getAttribute('data-category-id');
+                console.log(`Key ${key.id} category: ${keyCategory}`);
+                if (keyCategory === categoryId || (categoryId === 'uncategorized' && !keyCategory)) {
                     key.style.display = 'block';
                 } else {
                     key.style.display = 'none';
@@ -226,7 +229,9 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             categoryGroups.forEach(group => {
-                if (group.getAttribute('data-category-id') === categoryId) {
+                const groupCategory = group.getAttribute('data-category-id');
+                console.log(`Group ${group.id} category: ${groupCategory}`);
+                if (groupCategory === categoryId || (categoryId === 'uncategorized' && groupCategory === 'uncategorized')) {
                     group.style.display = 'block';
                 } else {
                     group.style.display = 'none';
