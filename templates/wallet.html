@@ -18,7 +18,7 @@
     <div class="category-panel">
         <h3>Categories</h3>
         <ul id="category-list">
-            <li data-category-id="all" class="active"><i class="fas fa-layer-group"></i> All Keys</li>
+            <li data-category-id="all"><i class="fas fa-layer-group"></i> All Keys</li>
             {% for category in categories %}
                 <li data-category-id="{{ category.id }}"><i class="fas fa-folder"></i> {{ category.name }}</li>
             {% endfor %}

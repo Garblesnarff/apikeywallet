@@ -50,9 +50,14 @@ document.addEventListener('DOMContentLoaded', function() {
     categoryList.addEventListener('click', function(e) {
         if (e.target.tagName === 'LI') {
             const categoryId = e.target.getAttribute('data-category-id');
+            console.log(`Category clicked: ${categoryId}`);
             filterApiKeys(categoryId);
-            document.querySelectorAll('#category-list li').forEach(li => li.classList.remove('active'));
+            document.querySelectorAll('#category-list li').forEach(li => {
+                li.classList.remove('active');
+                console.log(`Removed active class from: ${li.textContent.trim()}`);
+            });
             e.target.classList.add('active');
+            console.log(`Added active class to: ${e.target.textContent.trim()}`);
         }
     });
 
@@ -153,7 +158,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Updated filterApiKeys function
     function filterApiKeys(categoryId) {
         console.log(`Filtering by category: ${categoryId}`);
         const apiKeys = document.querySelectorAll('.api-key');
@@ -161,30 +165,44 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (categoryId === 'all') {
             console.log('Showing all keys and categories');
-            apiKeys.forEach(key => key.style.display = 'block');
-            categoryGroups.forEach(group => group.style.display = 'block');
+            apiKeys.forEach(key => {
+                key.style.display = 'block';
+                console.log(`Showing key: ${key.querySelector('h4').textContent}`);
+            });
+            categoryGroups.forEach(group => {
+                group.style.display = 'block';
+                console.log(`Showing category group: ${group.querySelector('h3').textContent}`);
+            });
         } else {
             apiKeys.forEach(key => {
                 const keyCategory = key.getAttribute('data-category-id');
-                console.log(`Key ${key.getAttribute('data-key-id')} category: ${keyCategory}, Filtering category: ${categoryId}`);
-                if (categoryId === 'uncategorized' && (!keyCategory || keyCategory === '0')) {
+                const keyName = key.querySelector('h4').textContent;
+                console.log(`Key ${keyName} category: ${keyCategory}, Filtering category: ${categoryId}`);
+                if (categoryId === 'uncategorized' && (!keyCategory || keyCategory === '0' || keyCategory === 'uncategorized')) {
                     key.style.display = 'block';
+                    console.log(`Showing uncategorized key: ${keyName}`);
                 } else if (keyCategory === categoryId) {
                     key.style.display = 'block';
+                    console.log(`Showing key: ${keyName}`);
                 } else {
                     key.style.display = 'none';
+                    console.log(`Hiding key: ${keyName}`);
                 }
             });
 
             categoryGroups.forEach(group => {
                 const groupCategory = group.getAttribute('data-category-id');
-                console.log(`Category group: ${groupCategory}, Filtering category: ${categoryId}`);
+                const groupName = group.querySelector('h3').textContent;
+                console.log(`Category group: ${groupName}, Group category: ${groupCategory}, Filtering category: ${categoryId}`);
                 if (categoryId === 'uncategorized' && groupCategory === 'uncategorized') {
                     group.style.display = 'block';
+                    console.log(`Showing uncategorized group: ${groupName}`);
                 } else if (groupCategory === categoryId) {
                     group.style.display = 'block';
+                    console.log(`Showing category group: ${groupName}`);
                 } else {
                     group.style.display = 'none';
+                    console.log(`Hiding category group: ${groupName}`);
                 }
             });
         }
@@ -363,13 +381,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
-    // Select the correct category on page load
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get('category');
     if (category) {
         const categoryItem = document.querySelector(`#category-list li[data-category-id="${category}"]`);
         if (categoryItem) {
+            console.log(`Selecting category from URL: ${category}`);
             categoryItem.click();
         }
+    } else {
+        console.log('No category specified in URL, showing all keys');
+        document.querySelector('#category-list li[data-category-id="all"]').click();
     }
 });
