@@ -9,6 +9,7 @@ import logging
 import traceback
 from sqlalchemy.exc import SQLAlchemyError
 import os
+import json
 
 main = Blueprint('main', __name__)
 auth = Blueprint('auth', __name__)
@@ -110,7 +111,8 @@ def wallet():
         for category, keys in grouped_keys.items():
             current_app.logger.info(f"Category '{category}' has {len(keys)} keys")
         
-        current_app.logger.debug(f"Grouped keys: {grouped_keys}")
+        # Add more detailed logging of grouped_keys structure
+        current_app.logger.debug(f"Grouped keys structure: {json.dumps({k: [{'id': key.id, 'name': key.key_name} for key in v] for k, v in grouped_keys.items()}, indent=2)}")
         
         return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
     except Exception as e:

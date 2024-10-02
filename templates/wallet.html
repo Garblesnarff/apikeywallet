@@ -4,8 +4,10 @@
 {% if debug %}
 <div class="debug-info" style="background-color: #f0f0f0; padding: 10px; margin-bottom: 20px;">
     <h4>Debug Information</h4>
+    <h5>Grouped Keys Structure:</h5>
+    <pre>{{ grouped_keys | tojson(indent=2) }}</pre>
     {% for category, keys in grouped_keys.items() %}
-    <p>{{ category }}: {{ keys|length }} keys</p>
+    <h5>{{ category }}:</h5>
     <ul>
         {% for key in keys %}
         <li>Key ID: {{ key.id }}, Name: {{ key.key_name }}, Category ID: {{ key.category_id or 'Uncategorized' }}</li>
