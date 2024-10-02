@@ -102,10 +102,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateKeyCategory(keyId, categoryId) {
         console.log(`Updating category for key ${keyId} to ${categoryId}`);
-        const csrfToken = getCookie('csrf_token');
+        const csrfToken = getCsrfToken();
+        console.log('CSRF Token:', csrfToken); // Log the CSRF token
+
         if (!csrfToken) {
             console.error('CSRF token not found');
-            showFeedback('Error: CSRF token not found', 'error');
+            showFeedback('Error: CSRF token not found. Please refresh the page and try again.', 'error');
             return;
         }
 
@@ -118,12 +120,14 @@ document.addEventListener('DOMContentLoaded', function() {
             body: JSON.stringify({ category_id: categoryId })
         })
         .then(response => {
+            console.log('Response status:', response.status); // Log the response status
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             return response.json();
         })
         .then(data => {
+            console.log('Response data:', data); // Log the response data
             if (data.message) {
                 console.log(`Category update successful: ${data.message}`);
                 showFeedback(data.message, 'success');
@@ -141,19 +145,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
+    function getCsrfToken() {
+        return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     }
 
     function showFeedback(message, type) {
