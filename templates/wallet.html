@@ -13,11 +13,11 @@
     <div class="category-panel">
         <h3>Categories</h3>
         <ul id="category-list">
-            <li data-category-id="all" class="active"><i class="fas fa-layer-group"></i> All Keys</li>
+            <li data-category-id="all" class="active"><i class="fas fa-layer-group"></i> All Keys ({{ grouped_keys|map(attribute='keys')|map('length')|sum }})</li>
             {% for category in categories %}
-                <li data-category-id="{{ category.id }}"><i class="fas fa-folder"></i> {{ category.name }}</li>
+                <li data-category-id="{{ category.id }}"><i class="fas fa-folder"></i> {{ category.name }} ({{ grouped_keys[category.name]|length }})</li>
             {% endfor %}
-            <li data-category-id="uncategorized"><i class="fas fa-question-circle"></i> Uncategorized</li>
+            <li data-category-id="uncategorized"><i class="fas fa-question-circle"></i> Uncategorized ({{ grouped_keys['Uncategorized']|length }})</li>
         </ul>
         <a href="{{ url_for('main.add_category') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> Add Category</a>
         <a href="{{ url_for('main.manage_categories') }}" class="btn btn-sm btn-secondary"><i class="fas fa-cog"></i> Manage Categories</a>
@@ -30,7 +30,7 @@
         <div class="api-key-container">
             {% for category, keys in grouped_keys.items() %}
                 <div class="category-group" data-category-id="{{ category if category != 'Uncategorized' else 'uncategorized' }}">
-                    <h3>{{ category }}</h3>
+                    <h3>{{ category }} ({{ keys|length }})</h3>
                     <div class="api-key-carousel">
                         <div class="carousel-inner">
                             {% for key in keys %}
