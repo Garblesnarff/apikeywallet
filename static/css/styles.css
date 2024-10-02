@@ -18,7 +18,7 @@
 body {
     font-family: 'Roboto', Arial, sans-serif;
     line-height: 1.6;
-    background-color: var(--background-color);
+    background: linear-gradient(135deg, #011320 0%, #022A44 100%);
     color: var(--text-color);
 }
 
@@ -295,9 +295,8 @@ h2 {
 
 .auth-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     min-height: 100vh;
     padding: 20px;
 }
@@ -308,7 +307,8 @@ h2 {
     background-color: #031F2F;
     padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border: 1px solid #0299C9;
+    box-shadow: 0 0 20px rgba(2, 153, 201, 0.1);
 }
 
 @media (max-width: 768px) {
@@ -389,4 +389,29 @@ h2 {
 
 .toggle-visibility-btn:hover {
     color: var(--button-hover-color);
+}
+
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    border-radius: 5px;
+    background-color: #0299C9;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.btn-login:hover {
+    background-color: #03A9F4;
+    box-shadow: 0 0 10px rgba(3, 169, 244, 0.5);
+}
+
+.register-link {
+    font-size: 16px;
+    color: #0299C9;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.register-link:hover {
+    color: #03A9F4;
 }
