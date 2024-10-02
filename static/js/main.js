@@ -74,28 +74,35 @@ document.addEventListener('DOMContentLoaded', function() {
         const categoryGroups = document.querySelectorAll('.category-group');
 
         apiKeys.forEach(key => {
-            const keyCategory = key.getAttribute('data-category-id');
-            console.log(`Key ${key.getAttribute('data-key-id')} category: ${keyCategory}, Filtering category: ${categoryId}`);
-            if (categoryId === 'all' || categoryId === keyCategory || (categoryId === 'uncategorized' && (!keyCategory || keyCategory === '0'))) {
-                key.closest('.category-group').style.display = 'block';
-                key.style.display = 'block';
-                console.log(`Showing key ${key.getAttribute('data-key-id')}`);
-            } else {
-                key.style.display = 'none';
-                console.log(`Hiding key ${key.getAttribute('data-key-id')}`);
+            if (key) {
+                const keyCategory = key.getAttribute('data-category-id');
+                console.log(`Key ${key.getAttribute('data-key-id')} category: ${keyCategory}, Filtering category: ${categoryId}`);
+                if (categoryId === 'all' || categoryId === keyCategory || (categoryId === 'uncategorized' && (!keyCategory || keyCategory === '0'))) {
+                    const categoryGroup = key.closest('.category-group');
+                    if (categoryGroup) {
+                        categoryGroup.style.display = 'block';
+                    }
+                    key.style.display = 'block';
+                    console.log(`Showing key ${key.getAttribute('data-key-id')}`);
+                } else {
+                    key.style.display = 'none';
+                    console.log(`Hiding key ${key.getAttribute('data-key-id')}`);
+                }
             }
         });
 
         categoryGroups.forEach(group => {
-            const groupCategory = group.getAttribute('data-category-id');
-            console.log(`Checking visibility for category group: ${groupCategory}`);
-            const visibleKeys = group.querySelectorAll('.api-key[style="display: block;"]');
-            if (visibleKeys.length === 0) {
-                group.style.display = 'none';
-                console.log(`Hiding category group: ${groupCategory}`);
-            } else {
-                group.style.display = 'block';
-                console.log(`Showing category group: ${groupCategory} with ${visibleKeys.length} visible keys`);
+            if (group) {
+                const groupCategory = group.getAttribute('data-category-id');
+                console.log(`Checking visibility for category group: ${groupCategory}`);
+                const visibleKeys = group.querySelectorAll('.api-key[style="display: block;"]');
+                if (visibleKeys.length === 0) {
+                    group.style.display = 'none';
+                    console.log(`Hiding category group: ${groupCategory}`);
+                } else {
+                    group.style.display = 'block';
+                    console.log(`Showing category group: ${groupCategory} with ${visibleKeys.length} visible keys`);
+                }
             }
         });
     }
@@ -103,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateKeyCategory(keyId, categoryId) {
         console.log(`Updating category for key ${keyId} to ${categoryId}`);
         const csrfToken = getCsrfToken();
-        console.log('CSRF Token:', csrfToken); // Log the CSRF token
+        console.log('CSRF Token:', csrfToken);
 
         if (!csrfToken) {
             console.error('CSRF token not found');
@@ -120,20 +127,29 @@ document.addEventListener('DOMContentLoaded', function() {
             body: JSON.stringify({ category_id: categoryId })
         })
         .then(response => {
-            console.log('Response status:', response.status); // Log the response status
+            console.log('Response status:', response.status);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             return response.json();
         })
         .then(data => {
-            console.log('Response data:', data); // Log the response data
+            console.log('Response data:', data);
             if (data.message) {
                 console.log(`Category update successful: ${data.message}`);
                 showFeedback(data.message, 'success');
                 const apiKey = document.querySelector(`.api-key[data-key-id="${keyId}"]`);
-                apiKey.setAttribute('data-category-id', categoryId);
-                filterApiKeys(document.querySelector('#category-list li.active').getAttribute('data-category-id'));
+                if (apiKey) {
+                    apiKey.setAttribute('data-category-id', categoryId);
+                    const activeCategory = document.querySelector('#category-list li.active');
+                    if (activeCategory) {
+                        filterApiKeys(activeCategory.getAttribute('data-category-id'));
+                    } else {
+                        console.error('No active category found');
+                    }
+                } else {
+                    console.error(`API key element with id ${keyId} not found`);
+                }
             } else if (data.error) {
                 console.error(`Category update failed: ${data.error}`);
                 showFeedback(data.error, 'error');
@@ -146,7 +162,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function getCsrfToken() {
-        return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const metaTag = document.querySelector('meta[name="csrf-token"]');
+        return metaTag ? metaTag.getAttribute('content') : null;
     }
 
     function showFeedback(message, type) {
@@ -160,5 +177,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     console.log('Initial category selection');
-    document.querySelector('#category-list li[data-category-id="all"]').click();
+    const allCategoryLi = document.querySelector('#category-list li[data-category-id="all"]');
+    if (allCategoryLi) {
+        allCategoryLi.click();
+    } else {
+        console.error('All category list item not found');
+    }
 });
