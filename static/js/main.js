@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateKeyCategory(keyId, categoryId) {
         console.log(`Updating category for key ${keyId} to ${categoryId}`);
         const csrfToken = getCsrfToken();
-        console.log('CSRF Token:', csrfToken);
+        console.log('CSRF Token for update:', csrfToken);
 
         if (!csrfToken) {
             console.error('CSRF token not found');
@@ -163,7 +163,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function getCsrfToken() {
         const metaTag = document.querySelector('meta[name="csrf-token"]');
-        return metaTag ? metaTag.getAttribute('content') : null;
+        const token = metaTag ? metaTag.getAttribute('content') : null;
+        console.log('Retrieved CSRF token:', token);
+        return token;
     }
 
     function showFeedback(message, type) {

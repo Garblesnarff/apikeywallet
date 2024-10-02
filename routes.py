@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, g, current_app
+from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, g, current_app, session
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import User, APIKey, Category
@@ -88,6 +88,7 @@ def index():
 @login_required
 def wallet():
     try:
+        print("CSRF Token in session:", session.get('csrf_token'))  # Debug print
         current_app.logger.info(f"Fetching API keys for user {current_user.id}")
         api_keys = APIKey.query.filter_by(user_id=current_user.id).all()
         current_app.logger.info(f"Fetched {len(api_keys)} API keys")
@@ -111,7 +112,6 @@ def wallet():
         for category, keys in grouped_keys.items():
             current_app.logger.info(f"Category '{category}' has {len(keys)} keys")
         
-        # Add more detailed logging of grouped_keys structure
         current_app.logger.debug(f"Grouped keys structure: {json.dumps({k: [{'id': key.id, 'name': key.key_name, 'category_id': key.category_id} for key in v] for k, v in grouped_keys.items()}, indent=2)}")
         
         return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
