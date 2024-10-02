@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, g, current_app, session
+from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, g, current_app
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import User, APIKey, Category
@@ -9,7 +9,6 @@ import logging
 import traceback
 from sqlalchemy.exc import SQLAlchemyError
 import os
-import json
 
 main = Blueprint('main', __name__)
 auth = Blueprint('auth', __name__)
@@ -88,7 +87,6 @@ def index():
 @login_required
 def wallet():
     try:
-        print("CSRF Token in session:", session.get('csrf_token'))  # Debug print
         current_app.logger.info(f"Fetching API keys for user {current_user.id}")
         api_keys = APIKey.query.filter_by(user_id=current_user.id).all()
         current_app.logger.info(f"Fetched {len(api_keys)} API keys")
@@ -101,18 +99,13 @@ def wallet():
         grouped_keys['Uncategorized'] = []
         
         for key in api_keys:
-            current_app.logger.debug(f"Processing API key: id={key.id}, name={key.key_name}, category_id={key.category_id}")
             if key.category:
                 grouped_keys[key.category.name].append(key)
-                current_app.logger.debug(f"Added key {key.id} to category '{key.category.name}'")
             else:
                 grouped_keys['Uncategorized'].append(key)
-                current_app.logger.debug(f"Added key {key.id} to 'Uncategorized'")
         
         for category, keys in grouped_keys.items():
             current_app.logger.info(f"Category '{category}' has {len(keys)} keys")
-        
-        current_app.logger.debug(f"Grouped keys structure: {json.dumps({k: [{'id': key.id, 'name': key.key_name, 'category_id': key.category_id} for key in v] for k, v in grouped_keys.items()}, indent=2)}")
         
         return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
     except Exception as e:
@@ -220,7 +213,6 @@ def update_key_category(key_id):
         if api_key:
             api_key.category_id = category_id if category_id != 0 else None
             db.session.commit()
-            current_app.logger.info(f"Updated category for key {key_id} to {category_id}")
             return jsonify({'message': 'Category updated successfully.'}), 200
         return jsonify({'error': 'API Key not found or unauthorized.'}), 404
     except SQLAlchemyError as e:

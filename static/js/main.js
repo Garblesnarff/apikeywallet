@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOMContentLoaded event fired');
     const modal = document.getElementById('deleteModal');
     const deleteButtons = document.querySelectorAll('.delete-btn');
     const confirmDeleteBtn = document.getElementById('confirmDelete');
@@ -51,11 +50,8 @@ document.addEventListener('DOMContentLoaded', function() {
     categoryList.addEventListener('click', function(e) {
         if (e.target.tagName === 'LI') {
             const categoryId = e.target.getAttribute('data-category-id');
-            console.log(`Category clicked: ${categoryId}`);
             filterApiKeys(categoryId);
-            document.querySelectorAll('#category-list li').forEach(li => {
-                li.classList.remove('active');
-            });
+            document.querySelectorAll('#category-list li').forEach(li => li.classList.remove('active'));
             e.target.classList.add('active');
         }
     });
@@ -68,129 +64,291 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    function filterApiKeys(categoryId) {
-        console.log(`Filtering by category: ${categoryId}`);
-        const apiKeys = document.querySelectorAll('.api-key');
-        const categoryGroups = document.querySelectorAll('.category-group');
-
-        apiKeys.forEach(key => {
-            const keyCategory = key.getAttribute('data-category-id');
-            console.log(`Key ${key.getAttribute('data-key-id')} category: ${keyCategory}, Filtering category: ${categoryId}`);
-            if (categoryId === 'all' || categoryId === keyCategory || (categoryId === 'uncategorized' && (!keyCategory || keyCategory === '0'))) {
-                key.style.display = 'block';
-            } else {
-                key.style.display = 'none';
-            }
-        });
-
-        categoryGroups.forEach(group => {
-            const groupCategory = group.getAttribute('data-category-id');
-            console.log(`Category group: ${groupCategory}, Filtering category: ${categoryId}`);
-            if (categoryId === 'all') {
-                group.style.display = 'block';
-            } else if (categoryId === groupCategory || (categoryId === 'uncategorized' && groupCategory === 'uncategorized')) {
-                group.style.display = 'block';
-            } else {
-                group.style.display = 'none';
-            }
+    const addKeyForm = document.getElementById('add-key-form');
+    if (addKeyForm) {
+        addKeyForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            submitAddKeyForm(this);
         });
     }
 
-    function updateKeyCategory(keyId, categoryId) {
-        console.log(`Updating category for key ${keyId} to ${categoryId}`);
-        const csrfToken = getCsrfToken();
-        console.log('CSRF Token for update:', csrfToken);
+    editButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const keyId = this.getAttribute('data-key-id');
+            const keyName = this.closest('.api-key').querySelector('h4').textContent;
+            editKeyIdInput.value = keyId;
+            editKeyNameInput.value = keyName;
+            editModal.style.display = 'block';
+        });
+    });
 
-        if (!csrfToken) {
-            console.error('CSRF token not found');
-            showFeedback('Error: CSRF token not found. Please refresh the page and try again.', 'error');
-            return;
+    cancelEditBtn.addEventListener('click', function() {
+        editModal.style.display = 'none';
+    });
+
+    editForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const keyId = editKeyIdInput.value;
+        const newKeyName = editKeyNameInput.value;
+        editApiKey(keyId, newKeyName);
+    });
+
+    const carousels = document.querySelectorAll('.api-key-carousel');
+    carousels.forEach(carousel => {
+        const inner = carousel.querySelector('.carousel-inner');
+        const prevBtn = carousel.querySelector('.prev');
+        const nextBtn = carousel.querySelector('.next');
+        let position = 0;
+
+        nextBtn.addEventListener('click', () => {
+            position--;
+            updateCarouselPosition();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            position++;
+            updateCarouselPosition();
+        });
+
+        function updateCarouselPosition() {
+            const items = inner.querySelectorAll('.api-key');
+            position = Math.min(Math.max(position, -items.length + 1), 0);
+            inner.style.transform = `translateX(${position * 100}%)`;
         }
+    });
 
-        fetch(`/update_key_category/${keyId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken
-            },
-            body: JSON.stringify({ category_id: categoryId })
-        })
-        .then(response => {
-            console.log('Response status:', response.status);
+    const toggleVisibilityButtons = document.querySelectorAll('.toggle-visibility-btn');
+    toggleVisibilityButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const keyId = this.getAttribute('data-key-id');
+            const maskedKeyElement = this.closest('.api-key').querySelector('.masked-key');
+            const icon = this.querySelector('i');
+            if (icon.classList.contains('fa-eye')) {
+                fetch(`/get_key/${keyId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrf_token')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.key) {
+                        maskedKeyElement.textContent = data.key;
+                        icon.classList.remove('fa-eye');
+                        icon.classList.add('fa-eye-slash');
+                    } else if (data.error) {
+                        throw new Error(data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showFeedback('Failed to retrieve API key: ' + error.message, 'error');
+                });
+            } else {
+                maskedKeyElement.textContent = '••••••••••••••••';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+    });
+
+    async function copyApiKey(keyId) {
+        try {
+            const response = await fetch(`/copy_key/${keyId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrf_token')
+                }
+            });
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Response data:', data);
-            if (data.message) {
-                console.log(`Category update successful: ${data.message}`);
-                showFeedback(data.message, 'success');
-                const apiKey = document.querySelector(`.api-key[data-key-id="${keyId}"]`);
-                if (apiKey) {
-                    const oldCategoryId = apiKey.getAttribute('data-category-id');
-                    apiKey.setAttribute('data-category-id', categoryId);
-                    
-                    // Move the API key to the correct category group
-                    const newCategoryGroup = document.querySelector(`.category-group[data-category-id="${categoryId}"]`);
-                    const oldCategoryGroup = apiKey.closest('.category-group');
-                    
-                    if (newCategoryGroup && oldCategoryGroup) {
-                        newCategoryGroup.querySelector('.carousel-inner').appendChild(apiKey);
-                        
-                        // Hide old category group if it's empty
-                        if (oldCategoryGroup.querySelectorAll('.api-key').length === 0) {
-                            oldCategoryGroup.style.display = 'none';
-                        }
-                        
-                        // Show new category group
-                        newCategoryGroup.style.display = 'block';
-                    }
-                    
-                    // Update the active category view
-                    const activeCategory = document.querySelector('#category-list li.active');
-                    if (activeCategory) {
-                        filterApiKeys(activeCategory.getAttribute('data-category-id'));
-                    } else {
-                        filterApiKeys('all');
-                    }
-                } else {
-                    console.error(`API key element with id ${keyId} not found`);
-                }
+
+            const data = await response.json();
+
+            if (data.key) {
+                await navigator.clipboard.writeText(data.key);
+                showFeedback('API Key copied to clipboard!', 'success');
             } else if (data.error) {
-                console.error(`Category update failed: ${data.error}`);
-                showFeedback(data.error, 'error');
+                throw new Error(data.error);
+            } else {
+                throw new Error('Unexpected response from server');
             }
-        })
-        .catch(error => {
-            console.error('Error updating category:', error);
-            showFeedback('Failed to update category: ' + error.message, 'error');
-        });
+        } catch (error) {
+            console.error('Error:', error);
+            showFeedback(`Error: ${error.message}`, 'error');
+        }
     }
 
-    function getCsrfToken() {
-        const metaTag = document.querySelector('meta[name="csrf-token"]');
-        const token = metaTag ? metaTag.getAttribute('content') : null;
-        console.log('Retrieved CSRF token:', token);
-        return token;
+    async function deleteApiKey(keyId) {
+        try {
+            const response = await fetch(`/delete_key/${keyId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrf_token')
+                }
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || `HTTP error! status: ${response.status}`);
+            }
+
+            showFeedback(data.message, 'success');
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+        } catch (error) {
+            console.error('Error:', error);
+            showFeedback(`Error: ${error.message}`, 'error');
+        }
+    }
+
+    function filterApiKeys(categoryId) {
+        const apiKeys = document.querySelectorAll('.api-key');
+        const categoryGroups = document.querySelectorAll('.category-group');
+
+        if (categoryId === 'all') {
+            apiKeys.forEach(key => key.style.display = 'block');
+            categoryGroups.forEach(group => group.style.display = 'block');
+        } else {
+            apiKeys.forEach(key => {
+                if (key.getAttribute('data-category-id') === categoryId) {
+                    key.style.display = 'block';
+                } else {
+                    key.style.display = 'none';
+                }
+            });
+
+            categoryGroups.forEach(group => {
+                if (group.getAttribute('data-category-id') === categoryId) {
+                    group.style.display = 'block';
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+        }
+    }
+
+    async function updateKeyCategory(keyId, categoryId) {
+        try {
+            const response = await fetch(`/update_key_category/${keyId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrf_token')
+                },
+                body: JSON.stringify({ category_id: parseInt(categoryId) })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update category');
+            }
+
+            const data = await response.json();
+            showFeedback(data.message, 'success');
+            
+            const apiKeyElement = document.querySelector(`.api-key[data-key-id="${keyId}"]`);
+            if (apiKeyElement) {
+                apiKeyElement.setAttribute('data-category-id', categoryId === '0' ? 'uncategorized' : categoryId);
+            }
+
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+        } catch (error) {
+            console.error('Error:', error);
+            showFeedback('Failed to update category', 'error');
+        }
+    }
+
+    async function submitAddKeyForm(form) {
+        try {
+            const formData = new FormData(form);
+            const response = await fetch('/add_key', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': getCookie('csrf_token')
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            if (result.success) {
+                showFeedback(result.message, 'success');
+                setTimeout(() => {
+                    window.location.href = '/wallet';
+                }, 1000);
+            } else {
+                if (result.errors) {
+                    Object.keys(result.errors).forEach(field => {
+                        const errorElement = document.querySelector(`#${field}-error`);
+                        if (errorElement) {
+                            errorElement.textContent = result.errors[field].join(', ');
+                        }
+                    });
+                } else {
+                    showFeedback(result.error, 'error');
+                }
+            }
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            showFeedback(`Error: ${error.message}`, 'error');
+        }
+    }
+
+    async function editApiKey(keyId, newKeyName) {
+        try {
+            const response = await fetch(`/edit_key/${keyId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrf_token')
+                },
+                body: JSON.stringify({ key_name: newKeyName })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                showFeedback(data.message, 'success');
+                editModal.style.display = 'none';
+                const keyElement = document.querySelector(`.api-key[data-key-id="${keyId}"] h4`);
+                if (keyElement) {
+                    keyElement.textContent = newKeyName;
+                }
+            } else {
+                throw new Error(data.error || 'Failed to update API key name');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showFeedback(`Error: ${error.message}`, 'error');
+        }
     }
 
     function showFeedback(message, type) {
         const feedbackElement = document.createElement('div');
         feedbackElement.textContent = message;
         feedbackElement.className = `alert alert-${type}`;
-        document.body.insertBefore(feedbackElement, document.body.firstChild);
+        document.querySelector('main').insertBefore(feedbackElement, document.querySelector('main').firstChild);
+
         setTimeout(() => {
             feedbackElement.remove();
-        }, 3000);
+        }, 5000);
     }
 
-    console.log('Initial category selection');
-    const allCategoryLi = document.querySelector('#category-list li[data-category-id="all"]');
-    if (allCategoryLi) {
-        allCategoryLi.click();
-    } else {
-        console.error('All category list item not found');
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
     }
 });

@@ -4,15 +4,8 @@
 {% if debug %}
 <div class="debug-info" style="background-color: #f0f0f0; padding: 10px; margin-bottom: 20px;">
     <h4>Debug Information</h4>
-    <h5>Grouped Keys Structure:</h5>
-    <pre>{{ grouped_keys | tojson(indent=2) }}</pre>
     {% for category, keys in grouped_keys.items() %}
-    <h5>{{ category }}:</h5>
-    <ul>
-        {% for key in keys %}
-        <li>Key ID: {{ key.id }}, Name: {{ key.key_name }}, Category ID: {{ key.category_id or 'Uncategorized' }}</li>
-        {% endfor %}
-    </ul>
+    <p>{{ category }}: {{ keys|length }} keys</p>
     {% endfor %}
 </div>
 {% endif %}
@@ -20,7 +13,7 @@
     <div class="category-panel">
         <h3>Categories</h3>
         <ul id="category-list">
-            <li data-category-id="all"><i class="fas fa-layer-group"></i> All Keys</li>
+            <li data-category-id="all" class="active"><i class="fas fa-layer-group"></i> All Keys</li>
             {% for category in categories %}
                 <li data-category-id="{{ category.id }}"><i class="fas fa-folder"></i> {{ category.name }}</li>
             {% endfor %}
@@ -41,7 +34,7 @@
                     <div class="api-key-carousel">
                         <div class="carousel-inner">
                             {% for key in keys %}
-                                <div class="api-key" data-key-id="{{ key.id }}" data-category-id="{{ key.category_id or 'uncategorized' }}" style="display: block;">
+                                <div class="api-key" data-category-id="{{ key.category_id or 'uncategorized' }}">
                                     <h4>{{ key.key_name }}</h4>
                                     <p class="masked-key">••••••••••••••••</p>
                                     <div class="key-actions">
@@ -60,6 +53,8 @@
                                 </div>
                             {% endfor %}
                         </div>
+                        <button class="carousel-control prev">&lt;</button>
+                        <button class="carousel-control next">&gt;</button>
                     </div>
                 </div>
             {% endfor %}
