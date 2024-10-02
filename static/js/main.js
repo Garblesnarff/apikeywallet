@@ -74,35 +74,24 @@ document.addEventListener('DOMContentLoaded', function() {
         const categoryGroups = document.querySelectorAll('.category-group');
 
         apiKeys.forEach(key => {
-            if (key) {
-                const keyCategory = key.getAttribute('data-category-id');
-                console.log(`Key ${key.getAttribute('data-key-id')} category: ${keyCategory}, Filtering category: ${categoryId}`);
-                if (categoryId === 'all' || categoryId === keyCategory || (categoryId === 'uncategorized' && (!keyCategory || keyCategory === '0'))) {
-                    const categoryGroup = key.closest('.category-group');
-                    if (categoryGroup) {
-                        categoryGroup.style.display = 'block';
-                    }
-                    key.style.display = 'block';
-                    console.log(`Showing key ${key.getAttribute('data-key-id')}`);
-                } else {
-                    key.style.display = 'none';
-                    console.log(`Hiding key ${key.getAttribute('data-key-id')}`);
-                }
+            const keyCategory = key.getAttribute('data-category-id');
+            console.log(`Key ${key.getAttribute('data-key-id')} category: ${keyCategory}, Filtering category: ${categoryId}`);
+            if (categoryId === 'all' || categoryId === keyCategory || (categoryId === 'uncategorized' && (!keyCategory || keyCategory === '0'))) {
+                key.style.display = 'block';
+            } else {
+                key.style.display = 'none';
             }
         });
 
         categoryGroups.forEach(group => {
-            if (group) {
-                const groupCategory = group.getAttribute('data-category-id');
-                console.log(`Checking visibility for category group: ${groupCategory}`);
-                const visibleKeys = group.querySelectorAll('.api-key[style="display: block;"]');
-                if (visibleKeys.length === 0) {
-                    group.style.display = 'none';
-                    console.log(`Hiding category group: ${groupCategory}`);
-                } else {
-                    group.style.display = 'block';
-                    console.log(`Showing category group: ${groupCategory} with ${visibleKeys.length} visible keys`);
-                }
+            const groupCategory = group.getAttribute('data-category-id');
+            console.log(`Category group: ${groupCategory}, Filtering category: ${categoryId}`);
+            if (categoryId === 'all') {
+                group.style.display = 'block';
+            } else if (categoryId === groupCategory || (categoryId === 'uncategorized' && groupCategory === 'uncategorized')) {
+                group.style.display = 'block';
+            } else {
+                group.style.display = 'none';
             }
         });
     }
@@ -140,12 +129,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 showFeedback(data.message, 'success');
                 const apiKey = document.querySelector(`.api-key[data-key-id="${keyId}"]`);
                 if (apiKey) {
+                    const oldCategoryId = apiKey.getAttribute('data-category-id');
                     apiKey.setAttribute('data-category-id', categoryId);
+                    
+                    // Move the API key to the correct category group
+                    const newCategoryGroup = document.querySelector(`.category-group[data-category-id="${categoryId}"]`);
+                    const oldCategoryGroup = apiKey.closest('.category-group');
+                    
+                    if (newCategoryGroup && oldCategoryGroup) {
+                        newCategoryGroup.querySelector('.carousel-inner').appendChild(apiKey);
+                        
+                        // Hide old category group if it's empty
+                        if (oldCategoryGroup.querySelectorAll('.api-key').length === 0) {
+                            oldCategoryGroup.style.display = 'none';
+                        }
+                        
+                        // Show new category group
+                        newCategoryGroup.style.display = 'block';
+                    }
+                    
+                    // Update the active category view
                     const activeCategory = document.querySelector('#category-list li.active');
                     if (activeCategory) {
                         filterApiKeys(activeCategory.getAttribute('data-category-id'));
                     } else {
-                        console.error('No active category found');
+                        filterApiKeys('all');
                     }
                 } else {
                     console.error(`API key element with id ${keyId} not found`);
