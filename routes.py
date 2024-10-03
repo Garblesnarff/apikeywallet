@@ -2,13 +2,14 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash,
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import User, APIKey, Category, AuditLog
-from forms import RegistrationForm, LoginForm, AddAPIKeyForm, AddCategoryForm
+from forms import RegistrationForm, LoginForm, AddAPIKeyForm, AddCategoryForm, EditAPIKeyForm
 from app import db
 from utils import encrypt_key, decrypt_key
 import logging
 import traceback
 from sqlalchemy.exc import SQLAlchemyError
 import os
+from datetime import datetime
 
 main = Blueprint('main', __name__)
 auth = Blueprint('auth', __name__)
@@ -123,19 +124,19 @@ def add_key():
     
     if form.validate_on_submit():
         try:
-            current_app.logger.debug(f"Form data: key_name={form.key_name.data}, category={form.category.data}")
+            current_app.logger.debug(f"Form data: key_name={form.key_name.data}, category={form.category.data}, expiration_date={form.expiration_date.data}")
             
             encrypted_key = encrypt_key(form.api_key.data)
             new_key = APIKey(
                 user_id=current_user.id,
                 key_name=form.key_name.data,
                 encrypted_key=encrypted_key,
-                category_id=form.category.data if form.category.data != 0 else None
+                category_id=form.category.data if form.category.data != 0 else None,
+                expiration_date=form.expiration_date.data
             )
             db.session.add(new_key)
             db.session.commit()
 
-            # Log the add action
             audit_log = AuditLog(user_id=current_user.id, action='add', api_key_id=new_key.id)
             db.session.add(audit_log)
             db.session.commit()
@@ -145,16 +146,12 @@ def add_key():
         except SQLAlchemyError as e:
             db.session.rollback()
             current_app.logger.error(f"Database error in add_key route: {str(e)}")
-            current_app.logger.error(f"Error type: {type(e).__name__}")
-            current_app.logger.error(f"Error details: {e.args}")
-            current_app.logger.error(f"Traceback: {traceback.format_exc()}")
+            current_app.logger.error(traceback.format_exc())
             flash('An error occurred while adding the API key. Please try again.', 'danger')
         except Exception as e:
             db.session.rollback()
             current_app.logger.error(f"Unexpected error in add_key route: {str(e)}")
-            current_app.logger.error(f"Error type: {type(e).__name__}")
-            current_app.logger.error(f"Error details: {e.args}")
-            current_app.logger.error(f"Traceback: {traceback.format_exc()}")
+            current_app.logger.error(traceback.format_exc())
             flash('An unexpected error occurred. Please try again.', 'danger')
 
     return render_template('add_key.html', form=form)
@@ -172,7 +169,6 @@ def copy_key(key_id):
         decrypted_key = decrypt_key(api_key.encrypted_key)
         current_app.logger.info(f"API key successfully decrypted for key_id: {key_id}")
 
-        # Log the copy action
         audit_log = AuditLog(user_id=current_user.id, action='copy', api_key_id=key_id)
         db.session.add(audit_log)
         db.session.commit()
@@ -191,7 +187,6 @@ def delete_key(key_id):
         if api_key:
             db.session.delete(api_key)
 
-            # Log the delete action
             audit_log = AuditLog(user_id=current_user.id, action='delete', api_key_id=key_id)
             db.session.add(audit_log)
             db.session.commit()
@@ -275,25 +270,68 @@ def delete_category(category_id):
         flash('An error occurred while deleting the category. Please try again later.', 'danger')
         return redirect(url_for('main.manage_categories'))
 
-@main.route('/edit_key/<int:key_id>', methods=['POST'])
+@main.route('/edit_key/<int:key_id>', methods=['GET', 'POST'])
 @login_required
 def edit_key(key_id):
+    api_key = APIKey.query.filter_by(id=key_id, user_id=current_user.id).first_or_404()
+    form = EditAPIKeyForm(obj=api_key)
+    categories = Category.query.filter_by(user_id=current_user.id).all()
+    form.category.choices = [(0, 'Uncategorized')] + [(c.id, c.name) for c in categories]
+
+    if form.validate_on_submit():
+        try:
+            api_key.key_name = form.key_name.data
+            api_key.category_id = form.category.data if form.category.data != 0 else None
+            api_key.expiration_date = form.expiration_date.data
+            api_key.is_revoked = form.is_revoked.data
+
+            db.session.commit()
+
+            audit_log = AuditLog(user_id=current_user.id, action='edit', api_key_id=api_key.id)
+            db.session.add(audit_log)
+            db.session.commit()
+
+            flash('API Key updated successfully.', 'success')
+            return redirect(url_for('main.wallet'))
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            current_app.logger.error(f"Database error in edit_key route: {str(e)}")
+            current_app.logger.error(traceback.format_exc())
+            flash('An error occurred while updating the API key. Please try again.', 'danger')
+        except Exception as e:
+            db.session.rollback()
+            current_app.logger.error(f"Unexpected error in edit_key route: {str(e)}")
+            current_app.logger.error(traceback.format_exc())
+            flash('An unexpected error occurred. Please try again.', 'danger')
+
+    return render_template('edit_key.html', form=form, api_key=api_key)
+
+@main.route('/revoke_key/<int:key_id>', methods=['POST'])
+@login_required
+def revoke_key(key_id):
     try:
-        api_key = APIKey.query.filter_by(id=key_id, user_id=current_user.id).first()
-        if api_key:
-            new_name = request.json.get('key_name')
-            if new_name:
-                api_key.key_name = new_name
-                db.session.commit()
-                return jsonify({'message': 'API Key name updated successfully.'}), 200
-            else:
-                return jsonify({'error': 'New key name is required.'}), 400
-        else:
-            return jsonify({'error': 'API Key not found or unauthorized.'}), 404
+        api_key = APIKey.query.filter_by(id=key_id, user_id=current_user.id).first_or_404()
+        api_key.is_revoked = True
+        db.session.commit()
+
+        audit_log = AuditLog(user_id=current_user.id, action='revoke', api_key_id=api_key.id)
+        db.session.add(audit_log)
+        db.session.commit()
+
+        flash('API Key revoked successfully.', 'success')
+        return redirect(url_for('main.wallet'))
     except SQLAlchemyError as e:
         db.session.rollback()
-        current_app.logger.error(f'Database error in edit_key route: {str(e)}')
-        return jsonify({'error': 'An error occurred while updating the API key name.'}), 500
+        current_app.logger.error(f"Database error in revoke_key route: {str(e)}")
+        current_app.logger.error(traceback.format_exc())
+        flash('An error occurred while revoking the API key. Please try again.', 'danger')
+    except Exception as e:
+        db.session.rollback()
+        current_app.logger.error(f"Unexpected error in revoke_key route: {str(e)}")
+        current_app.logger.error(traceback.format_exc())
+        flash('An unexpected error occurred. Please try again.', 'danger')
+
+    return redirect(url_for('main.wallet'))
 
 @main.route('/get_key/<int:key_id>', methods=['POST'])
 @login_required

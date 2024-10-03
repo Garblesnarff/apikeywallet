@@ -415,3 +415,19 @@ h2 {
 .register-link:hover {
     color: #03A9F4;
 }
+
+.api-key.inactive {
+    opacity: 0.6;
+    background-color: #f0f0f0;
+}
+
+.api-key .expired,
+.api-key .revoked {
+    color: #ff0000;
+    font-weight: bold;
+}
+
+.expiration-date {
+    font-size: 0.8rem;
+    color: #666;
+}
