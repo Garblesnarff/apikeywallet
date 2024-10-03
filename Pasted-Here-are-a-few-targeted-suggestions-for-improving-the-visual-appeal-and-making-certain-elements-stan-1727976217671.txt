@@ -1,0 +1,58 @@
+Here are a few targeted suggestions for improving the visual appeal and making certain elements stand out:
+1. Sidebar (Categories Section)
+
+    Issue: The sidebar looks a bit flat, and the items (like the categories) blend into the background.
+    Suggestion:
+        Background Styling: Add a slight gradient to the sidebar background. You can start with a darker shade of blue at the top, transitioning into a slightly lighter shade at the bottom (e.g., #011B2A to #022B42). This will add depth to the design.
+        Category Text: Lighten the text of the category names (e.g., from purple to a brighter blue or teal). Consider using bold text or an underlined hover effect to make the categories more interactive and noticeable. You could use #03A9F4 for the text color to make it pop more.
+        Category Icons: Add small, subtle icons (e.g., folder icons next to each category name) in a bright color to make each entry more distinct.
+        Active State: When a category is selected, highlight the current category with a brighter background (like #023E56) and give the text a glowing effect to signify it's the active view.
+
+2. "Add Category" Button
+
+    Issue: The button looks too flat and could use a bit more prominence since it’s a key interaction element.
+    Suggestion:
+        Enlarge the button slightly and add a shadow to make it stand out from the rest of the sidebar.
+        Apply a hover effect: You could add a light glow or a color shift when hovering (e.g., shift to a brighter #03A9F4 shade).
+        Consider making the button corners slightly rounded to match modern UI trends.
+
+3. Main Panel
+
+    Issue: The "Add New API Key" button looks a bit out of place, and the card layouts could pop more.
+    Suggestion:
+        "Add New API Key" Button: Increase the button size and add a slight 3D effect or shadow. A hover effect (like a glow or light color change) would give it a more interactive feel. You could also try a slightly lighter color for the button, such as #0390DF, to brighten it.
+        Card Background: Lighten the cards slightly to create contrast with the dark background (e.g., try #033F58 for the card background). This will make the API keys easier to distinguish at a glance.
+        Card Borders: Adding subtle borders or a shadow effect to each card can give it a more defined look. Use a color like #03A9F4 to match your theme.
+        Hover Effects on Cards: Add a hover state that either slightly raises the card or adds a glow effect around the edges.
+
+4. Text Hierarchy and Visual Pop
+
+    Issue: The text on the page feels uniform, and there’s little differentiation between important elements (such as API key names).
+    Suggestion:
+        API Key Names: Bold the API key names to make them stand out more and increase their size slightly.
+        Subtitles (like "Added on:"): Use a lighter color for less important details (e.g., #7BB4D9) so that they don't distract from the key elements.
+        Font Consistency: Make sure that headings, button texts, and category names are consistent in font weight and size to improve readability.
+
+5. Overall Layout
+
+    Issue: The layout of the cards feels a bit cramped, especially when there are multiple rows.
+    Suggestion:
+        Increase the spacing between cards slightly to give the content more room to breathe. This will make the design feel less cramped and more balanced.
+        Consider grouping related cards more visually (e.g., by slightly highlighting the borders of cards under the same category).
+
+6. Scrollbar
+
+    Issue: The scrollbar appears too bright and disrupts the dark theme.
+    Suggestion: Customize the scrollbar to blend more seamlessly with the rest of the UI by using a dark blue or teal for the scrollbar track and thumb. You can make the scrollbar more subtle but still functional.
+
+7. Icons (eye, edit, delete)
+
+    Issue: These action icons can be hard to notice at first glance.
+    Suggestion:
+        Slightly increase their size and ensure they're well-spaced from the API key text.
+        Add a hover state where they change color (e.g., light up in a bright #03A9F4 or #03D3F4).
+        If possible, add tooltips when users hover over these icons (e.g., "Edit API Key," "Delete API Key") for better UX.
+
+Final Thoughts:
+
+By implementing these suggestions, your design will have a more refined and modern appearance while maintaining the minimalist aesthetic. The changes to the sidebar will make navigation easier and more visually appealing, while adjustments to the cards and buttons will enhance the user experience.
