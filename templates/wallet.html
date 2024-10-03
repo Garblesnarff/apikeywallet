@@ -4,16 +4,15 @@
 {% if debug %}
 <div class="debug-info" style="background-color: #f0f0f0; padding: 10px; margin-bottom: 20px;">
     <h4>Debug Information</h4>
-    {% for category, keys in grouped_keys.items() %}
-    <p>{{ category }}: {{ keys|length }} keys</p>
-    {% endfor %}
+    <h5>Grouped Keys:</h5>
+    <pre>{{ grouped_keys | pprint }}</pre>
 </div>
 {% endif %}
 <div class="wallet-container">
     <div class="category-panel">
         <h3>Categories</h3>
         <ul id="category-list">
-            <li data-category-id="all" class="active"><i class="fas fa-layer-group"></i> All Keys ({{ grouped_keys|map(attribute='keys')|map('length')|sum }})</li>
+            <li data-category-id="all" class="active"><i class="fas fa-layer-group"></i> All Keys ({{ grouped_keys.values()|map('length')|sum }})</li>
             {% for category in categories %}
                 <li data-category-id="{{ category.id }}"><i class="fas fa-folder"></i> {{ category.name }} ({{ grouped_keys[category.name]|length }})</li>
             {% endfor %}

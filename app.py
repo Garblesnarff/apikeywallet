@@ -72,9 +72,9 @@ with app.app_context():
 
 # Import and register blueprints
 from routes import main as main_blueprint
-app.register_blueprint(main_blueprint)
-
 from routes import auth as auth_blueprint
+
+app.register_blueprint(main_blueprint)
 app.register_blueprint(auth_blueprint)
 
 if __name__ == "__main__":
