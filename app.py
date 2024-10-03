@@ -1,5 +1,5 @@
 import os
-from flask import Flask, g, request
+from flask import Flask, g, request, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user
 from sqlalchemy import create_engine
@@ -7,7 +7,9 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 from urllib.parse import urlparse
 from flask_migrate import Migrate
+from flask_mail import Mail, Message
 import logging
+import secrets
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
@@ -16,6 +18,9 @@ logger = logging.getLogger(__name__)
 # Initialize SQLAlchemy
 db = SQLAlchemy()
 
+# Initialize Flask-Mail
+mail = Mail()
+
 # Create the app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', os.urandom(24))
@@ -23,12 +28,23 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True  # Enable SQLAlchemy echo mode for debugging
 
+# Email configuration
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = os.environ.get('EMAIL_USER')
+app.config['MAIL_PASSWORD'] = os.environ.get('EMAIL_PASSWORD')
+app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('EMAIL_USER')
+
 # Log the database URL (make sure to remove any sensitive information)
 parsed_url = urlparse(app.config['SQLALCHEMY_DATABASE_URI'])
 logger.info(f"Database URL: {parsed_url.scheme}://{parsed_url.hostname}:{parsed_url.port}{parsed_url.path}")
 
 # Initialize SQLAlchemy with the app
 db.init_app(app)
+
+# Initialize Flask-Mail with the app
+mail.init_app(app)
 
 # Initialize Flask-Migrate
 migrate = Migrate(app, db)
@@ -53,12 +69,25 @@ def get_db_session():
 def before_request():
     g.db = get_db_session()
     app.logger.debug(f"Request to {request.path}. User authenticated: {current_user.is_authenticated}")
+    app.logger.debug(f"Session: {session}")
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     db = g.pop('db', None)
     if db is not None:
         db.close()
+
+def send_confirmation_email(user):
+    token = secrets.token_urlsafe(32)
+    user.email_confirm_token = token
+    db.session.commit()
+
+    confirm_url = url_for('auth.confirm_email', token=token, _external=True)
+    subject = "Please confirm your email"
+    body = f"Please click the link to confirm your email: {confirm_url}"
+
+    msg = Message(subject=subject, recipients=[user.email], body=body)
+    mail.send(msg)
 
 # Import models
 from models import User, APIKey, Category

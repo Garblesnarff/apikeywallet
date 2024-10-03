@@ -1,0 +1,270 @@
+stallwart.build.js:1 stallwart: failed ping 2
+stallwart.build.js:1 stallwart: failed ping 3
+stallwart.build.js:1 stallwart: failed ping 4
+stallwart.build.js:1 stallwart: failed ping 5
+stallwart.build.js:1 stallwart: session stalled
+stallwart.build.js:1 
+        
+        
+       Uncaught (in promise) TypeError: Failed to fetch
+    at d (stallwart.build.js:1:505)
+    at c (stallwart.build.js:1:941)
+    at stallwart.build.js:1:1211
+ Removing unpermitted intrinsics
+200WARNING: Too many active WebGL contexts. Oldest context will be lost.
+o1151714.ingest.sentry.io/api/6318792/envelope/?sentry_key=8aa91189a4274b5a8c9b7b01d46ea360&sentry_version=7&sentry_client=sentry.javascript.browser%2F7.112.0:1 
+        
+        
+       Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+o1151714.ingest.sentry.io/api/6318792/envelope/?sentry_key=8aa91189a4274b5a8c9b7b01d46ea360&sentry_version=7&sentry_client=sentry.javascript.browser%2F7.112.0:1 
+        
+        
+       Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+96_app-7b8828cf65ecb4ee.js:16 webglcontextlost event received
+image.png:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 ()
+_app-7b8828cf65ecb4ee.js:16 webglcontextrestored event received
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+480WebGL: INVALID_OPERATION: delete: object does not belong to this context
+17_app-7b8828cf65ecb4ee.js:16 webglcontextrestored event received
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+10_app-7b8828cf65ecb4ee.js:16 webglcontextlost event received
+7_app-7b8828cf65ecb4ee.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+lockdown-install.js:1 null
+(anonymous) @ lockdown-install.js:1
+Show 1 more frame
+Show less
+4_app-7b8828cf65ecb4ee.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+lockdown-install.js:1 null
+(anonymous) @ lockdown-install.js:1
+Show 1 more frame
+Show less
+4_app-7b8828cf65ecb4ee.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+lockdown-install.js:1 null
+(anonymous) @ lockdown-install.js:1
+Show 1 more frame
+Show less
+4_app-7b8828cf65ecb4ee.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+lockdown-install.js:1 null
+(anonymous) @ lockdown-install.js:1
+Show 1 more frame
+Show less
+4_app-7b8828cf65ecb4ee.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+lockdown-install.js:1 null
+(anonymous) @ lockdown-install.js:1
+Show 1 more frame
+Show less
+4_app-7b8828cf65ecb4ee.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+lockdown-install.js:1 null
+(anonymous) @ lockdown-install.js:1
+Show 1 more frame
+Show less
+4_app-7b8828cf65ecb4ee.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+lockdown-install.js:1 null
+(anonymous) @ lockdown-install.js:1
+Show 1 more frame
+Show less
+4_app-7b8828cf65ecb4ee.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+lockdown-install.js:1 null
+(anonymous) @ lockdown-install.js:1
+Show 1 more frame
+Show less
+4_app-7b8828cf65ecb4ee.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+lockdown-install.js:1 null
+(anonymous) @ lockdown-install.js:1
+Show 1 more frame
+Show less
+4_app-7b8828cf65ecb4ee.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+lockdown-install.js:1 null
+(anonymous) @ lockdown-install.js:1
+Show 1 more frame
+Show less
+4_app-7b8828cf65ecb4ee.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+lockdown-install.js:1 null
+(anonymous) @ lockdown-install.js:1
+Show 1 more frame
+Show less
+4_app-7b8828cf65ecb4ee.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+lockdown-install.js:1 null
+(anonymous) @ lockdown-install.js:1
+Show 1 more frame
+Show less
+4_app-7b8828cf65ecb4ee.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+lockdown-install.js:1 null
+(anonymous) @ lockdown-install.js:1
+Show 1 more frame
+Show less
+4_app-7b8828cf65ecb4ee.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+lockdown-install.js:1 null
+(anonymous) @ lockdown-install.js:1
+Show 1 more frame
+Show less
+4_app-7b8828cf65ecb4ee.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+lockdown-install.js:1 null
+(anonymous) @ lockdown-install.js:1
+Show 1 more frame
+Show less
+4_app-7b8828cf65ecb4ee.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+lockdown-install.js:1 null
+(anonymous) @ lockdown-install.js:1
+Show 1 more frame
+Show less
+4_app-7b8828cf65ecb4ee.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+lockdown-install.js:1 null
+(anonymous) @ lockdown-install.js:1
+Show 1 more frame
+Show less
+4_app-7b8828cf65ecb4ee.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+lockdown-install.js:1 null
+(anonymous) @ lockdown-install.js:1
+Show 1 more frame
+Show less
+3_app-7b8828cf65ecb4ee.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+lockdown-install.js:1 null
+(anonymous) @ lockdown-install.js:1
+Show 1 more frame
+Show less
+_app-7b8828cf65ecb4ee.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+lockdown-install.js:1 Removing unpermitted intrinsics
+lockdown-install.js:1 null
+(anonymous) @ lockdown-install.js:1
+Show 1 more frame
+Show less
+4_app-7b8828cf65ecb4ee.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+lockdown-install.js:1 null
+(anonymous) @ lockdown-install.js:1
+Show 1 more frame
+Show less
+3_app-7b8828cf65ecb4ee.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+lockdown-install.js:1 null
+(anonymous) @ lockdown-install.js:1
+Show 1 more frame
+Show less
+2_app-7b8828cf65ecb4ee.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+lockdown-install.js:1 null
+(anonymous) @ lockdown-install.js:1
+Show 1 more frame
+Show less
+lockdown-install.js:1 Removing unpermitted intrinsics
+lockdown-install.js:1 Removing unpermitted intrinsics
+apikeywallet:1 <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes">
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1 
+        
+        
+       Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1 
+        
+        
+       Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1 
+        
+        
+       Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1 
+        
+        
+       Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+4_app-7b8828cf65ecb4ee.js:16 webglcontextlost event received
+2_app-7b8828cf65ecb4ee.js:16 webglcontextrestored event received
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+2_app-7b8828cf65ecb4ee.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+lockdown-install.js:1 null
+(anonymous) @ lockdown-install.js:1
+Show 1 more frame
+Show less
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1 
+        
+        
+       Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1 
+        
+        
+       Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1 
+        
+        
+       Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1 
+        
+        
+       Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/diagnostic/62b35a865152ab14c5942820:1 
+        
+        
+       Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/diagnostic/62b35a865152ab14c5942820:1 
+        
+        
+       Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1 
+        
+        
+       Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1 
+        
+        
+       Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+2_app-7b8828cf65ecb4ee.js:16 webglcontextlost event received
+d3052aa4-26ab-4dfe-9d0d-06e598a69d95-00-kmzfpowzu40o.janeway.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1bh%3A:32 Unrecognized feature: 'ambient-light-sensor'.
+d3052aa4-26ab-4dfe-9d0d-06e598a69d95-00-kmzfpowzu40o.janeway.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1bh%3A:32 Unrecognized feature: 'battery'.
+d3052aa4-26ab-4dfe-9d0d-06e598a69d95-00-kmzfpowzu40o.janeway.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1bh%3A:32 Unrecognized feature: 'execution-while-not-rendered'.
+d3052aa4-26ab-4dfe-9d0d-06e598a69d95-00-kmzfpowzu40o.janeway.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1bh%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+d3052aa4-26ab-4dfe-9d0d-06e598a69d95-00-kmzfpowzu40o.janeway.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1bh%3A:32 Unrecognized feature: 'layout-animations'.
+d3052aa4-26ab-4dfe-9d0d-06e598a69d95-00-kmzfpowzu40o.janeway.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1bh%3A:32 Unrecognized feature: 'legacy-image-formats'.
+d3052aa4-26ab-4dfe-9d0d-06e598a69d95-00-kmzfpowzu40o.janeway.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1bh%3A:32 Unrecognized feature: 'navigation-override'.
+d3052aa4-26ab-4dfe-9d0d-06e598a69d95-00-kmzfpowzu40o.janeway.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1bh%3A:32 Unrecognized feature: 'oversized-images'.
+d3052aa4-26ab-4dfe-9d0d-06e598a69d95-00-kmzfpowzu40o.janeway.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1bh%3A:32 Unrecognized feature: 'publickey-credentials'.
+d3052aa4-26ab-4dfe-9d0d-06e598a69d95-00-kmzfpowzu40o.janeway.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1bh%3A:32 Unrecognized feature: 'speaker-selection'.
+d3052aa4-26ab-4dfe-9d0d-06e598a69d95-00-kmzfpowzu40o.janeway.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1bh%3A:32 Unrecognized feature: 'unoptimized-images'.
+d3052aa4-26ab-4dfe-9d0d-06e598a69d95-00-kmzfpowzu40o.janeway.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1bh%3A:32 Unrecognized feature: 'unsized-media'.
+d3052aa4-26ab-4dfe-9d0d-06e598a69d95-00-kmzfpowzu40o.janeway.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1bh%3A:32 Allow attribute will take precedence over 'allowfullscreen'.
+d3052aa4-26ab-4dfe-9d0d-06e598a69d95-00-kmzfpowzu40o.janeway.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar1bh%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+2_app-7b8828cf65ecb4ee.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-7b8828cf65ecb4ee.js:16
+lockdown-install.js:1 null
+(anonymous) @ lockdown-install.js:1
+Show 1 more frame
+Show less
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1 
+        
+        
+       Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1 
+        
+        
+       Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+lockdown-install.js:1 Removing unpermitted intrinsics
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1 
+        
+        
+       Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1 
+        
+        
+       Failed to load resource: net::ERR_BLOCKED_BY_CLIENT

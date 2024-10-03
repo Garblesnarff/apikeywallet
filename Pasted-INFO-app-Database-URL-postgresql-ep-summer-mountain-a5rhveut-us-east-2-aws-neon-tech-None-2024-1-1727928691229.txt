@@ -1,0 +1,1870 @@
+INFO:app:Database URL: postgresql://ep-summer-mountain-a5rhveut.us-east-2.aws.neon.tech:None
+2024-10-03 04:06:37,074 INFO sqlalchemy.engine.Engine select pg_catalog.version()
+INFO:sqlalchemy.engine.Engine:select pg_catalog.version()
+2024-10-03 04:06:37,074 INFO sqlalchemy.engine.Engine [raw sql] {}
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+2024-10-03 04:06:37,144 INFO sqlalchemy.engine.Engine select current_schema()
+INFO:sqlalchemy.engine.Engine:select current_schema()
+2024-10-03 04:06:37,144 INFO sqlalchemy.engine.Engine [raw sql] {}
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+2024-10-03 04:06:37,214 INFO sqlalchemy.engine.Engine show standard_conforming_strings
+INFO:sqlalchemy.engine.Engine:show standard_conforming_strings
+2024-10-03 04:06:37,215 INFO sqlalchemy.engine.Engine [raw sql] {}
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+2024-10-03 04:06:37,285 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:06:37,289 INFO sqlalchemy.engine.Engine SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+INFO:sqlalchemy.engine.Engine:SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2024-10-03 04:06:37,289 INFO sqlalchemy.engine.Engine [generated in 0.00022s] {'table_name': 'user', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+INFO:sqlalchemy.engine.Engine:[generated in 0.00022s] {'table_name': 'user', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2024-10-03 04:06:37,360 INFO sqlalchemy.engine.Engine SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+INFO:sqlalchemy.engine.Engine:SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2024-10-03 04:06:37,360 INFO sqlalchemy.engine.Engine [cached since 0.07106s ago] {'table_name': 'api_key', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+INFO:sqlalchemy.engine.Engine:[cached since 0.07106s ago] {'table_name': 'api_key', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2024-10-03 04:06:37,396 INFO sqlalchemy.engine.Engine SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+INFO:sqlalchemy.engine.Engine:SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = %(table_name)s AND pg_catalog.pg_class.relkind = ANY (ARRAY[%(param_1)s, %(param_2)s, %(param_3)s, %(param_4)s, %(param_5)s]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != %(nspname_1)s
+2024-10-03 04:06:37,396 INFO sqlalchemy.engine.Engine [cached since 0.1069s ago] {'table_name': 'category', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+INFO:sqlalchemy.engine.Engine:[cached since 0.1069s ago] {'table_name': 'category', 'param_1': 'r', 'param_2': 'p', 'param_3': 'f', 'param_4': 'v', 'param_5': 'm', 'nspname_1': 'pg_catalog'}
+2024-10-03 04:06:37,431 INFO sqlalchemy.engine.Engine COMMIT
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:app:Database tables created successfully
+ * Serving Flask app 'app'
+ * Debug mode: off
+INFO:werkzeug:WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.31.196.124:5000
+INFO:werkzeug:Press CTRL+C to quit
+DEBUG:app:Request to /. User authenticated: False
+DEBUG:app:Index route accessed. User authenticated: False
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:06:38] "GET / HTTP/1.1" 200 -
+DEBUG:app:Request to /static/css/styles.css. User authenticated: False
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:06:38] "GET /static/css/styles.css HTTP/1.1" 200 -
+DEBUG:app:Request to /static/js/main.js. User authenticated: False
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:06:38] "GET /static/js/main.js HTTP/1.1" 200 -
+DEBUG:app:Request to /static/img/keyguardian-logo.webp. User authenticated: False
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:06:38] "GET /static/img/keyguardian-logo.webp HTTP/1.1" 200 -
+DEBUG:app:Request to /. User authenticated: False
+DEBUG:app:Index route accessed. User authenticated: False
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:06:48] "GET / HTTP/1.1" 200 -
+DEBUG:app:Request to /static/css/styles.css. User authenticated: False
+DEBUG:app:Request to /static/img/keyguardian-logo.webp. User authenticated: False
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:06:48] "GET /static/img/keyguardian-logo.webp HTTP/1.1" 304 -
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:06:48] "GET /static/css/styles.css HTTP/1.1" 304 -
+DEBUG:app:Request to /static/js/main.js. User authenticated: False
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:06:48] "GET /static/js/main.js HTTP/1.1" 304 -
+DEBUG:app:Request to /. User authenticated: False
+DEBUG:app:Index route accessed. User authenticated: False
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:06:52] "GET / HTTP/1.1" 200 -
+DEBUG:app:Request to /static/css/styles.css. User authenticated: False
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:06:53] "GET /static/css/styles.css HTTP/1.1" 304 -
+DEBUG:app:Request to /static/img/keyguardian-logo.webp. User authenticated: False
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:06:53] "GET /static/img/keyguardian-logo.webp HTTP/1.1" 304 -
+DEBUG:app:Request to /static/js/main.js. User authenticated: False
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:06:53] "GET /static/js/main.js HTTP/1.1" 304 -
+DEBUG:app:Request to /login. User authenticated: False
+DEBUG:app:Login route accessed. User authenticated: False
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:07:58] "GET /login HTTP/1.1" 200 -
+DEBUG:app:Request to /static/css/styles.css. User authenticated: False
+DEBUG:app:Request to /static/img/keyguardian-logo.webp. User authenticated: False
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:07:59] "GET /static/img/keyguardian-logo.webp HTTP/1.1" 304 -
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:07:59] "GET /static/css/styles.css HTTP/1.1" 304 -
+DEBUG:app:Request to /static/js/main.js. User authenticated: False
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:07:59] "GET /static/js/main.js HTTP/1.1" 304 -
+DEBUG:app:Request to /login. User authenticated: False
+DEBUG:app:Login route accessed. User authenticated: False
+2024-10-03 04:08:18,035 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:18,036 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".email = %(email_1)s 
+ LIMIT %(param_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".email = %(email_1)s 
+ LIMIT %(param_1)s
+2024-10-03 04:08:18,036 INFO sqlalchemy.engine.Engine [generated in 0.00018s] {'email_1': 'test@example.com', 'param_1': 1}
+INFO:sqlalchemy.engine.Engine:[generated in 0.00018s] {'email_1': 'test@example.com', 'param_1': 1}
+DEBUG:app:User 1 password check passed. Logging in...
+DEBUG:app:User 1 logged in. Authenticated: True
+DEBUG:app:Next page: None
+DEBUG:app:Redirecting to: /wallet
+2024-10-03 04:08:18,187 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:18] "POST /login HTTP/1.1" 302 -
+2024-10-03 04:08:18,303 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:18,304 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:18,304 INFO sqlalchemy.engine.Engine [generated in 0.00017s] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[generated in 0.00017s] {'pk_1': 1}
+DEBUG:app:Request to /wallet. User authenticated: True
+DEBUG:app:Wallet route accessed. User authenticated: True
+INFO:app:Fetching API keys for user 1
+2024-10-03 04:08:18,376 INFO sqlalchemy.engine.Engine SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+2024-10-03 04:08:18,376 INFO sqlalchemy.engine.Engine [generated in 0.00018s] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[generated in 0.00018s] {'user_id_1': 1}
+INFO:app:Fetched 10 API keys
+INFO:app:Fetching categories for user 1
+2024-10-03 04:08:18,413 INFO sqlalchemy.engine.Engine SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+2024-10-03 04:08:18,413 INFO sqlalchemy.engine.Engine [generated in 0.00030s] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[generated in 0.00030s] {'user_id_1': 1}
+INFO:app:Fetched 3 categories
+INFO:app:Category 'Groq' has 2 keys
+INFO:app:Category 'geeeee' has 2 keys
+INFO:app:Category 'test' has 4 keys
+INFO:app:Category 'Uncategorized' has 2 keys
+DEBUG:app:grouped_keys content: {'Groq': [<APIKey 21>, <APIKey 39>], 'geeeee': [<APIKey 37>, <APIKey 28>], 'test': [<APIKey 38>, <APIKey 40>, <APIKey 41>, <APIKey 27>], 'Uncategorized': [<APIKey 42>, <APIKey 36>]}
+ERROR:app:Error in wallet route: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+ERROR:app:Traceback (most recent call last):
+  File "/home/runner/workspace/routes.py", line 44, in wallet
+    return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/wallet.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 41, in top-level template code
+    {% block content %}
+  File "/home/runner/workspace/templates/wallet.html", line 22, in block 'content'
+    <a href="{{ url_for('main.manage_categories') }}" class="btn btn-sm btn-secondary"><i class="fas fa-cog"></i> Manage Categories</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+
+DEBUG:app:Redirecting to index due to error
+2024-10-03 04:08:18,462 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:18] "GET /wallet HTTP/1.1" 302 -
+2024-10-03 04:08:18,614 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:18,615 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:18,615 INFO sqlalchemy.engine.Engine [cached since 0.3109s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 0.3109s ago] {'pk_1': 1}
+DEBUG:app:Request to /. User authenticated: True
+DEBUG:app:Index route accessed. User authenticated: True
+DEBUG:app:Authenticated user 1 redirected to wallet
+2024-10-03 04:08:18,685 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:18] "GET / HTTP/1.1" 302 -
+2024-10-03 04:08:18,816 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:18,817 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:18,817 INFO sqlalchemy.engine.Engine [cached since 0.5129s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 0.5129s ago] {'pk_1': 1}
+DEBUG:app:Request to /wallet. User authenticated: True
+DEBUG:app:Wallet route accessed. User authenticated: True
+INFO:app:Fetching API keys for user 1
+2024-10-03 04:08:18,890 INFO sqlalchemy.engine.Engine SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+2024-10-03 04:08:18,890 INFO sqlalchemy.engine.Engine [cached since 0.5136s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 0.5136s ago] {'user_id_1': 1}
+INFO:app:Fetched 10 API keys
+INFO:app:Fetching categories for user 1
+2024-10-03 04:08:18,926 INFO sqlalchemy.engine.Engine SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+2024-10-03 04:08:18,926 INFO sqlalchemy.engine.Engine [cached since 0.5127s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 0.5127s ago] {'user_id_1': 1}
+INFO:app:Fetched 3 categories
+INFO:app:Category 'Groq' has 2 keys
+INFO:app:Category 'geeeee' has 2 keys
+INFO:app:Category 'test' has 4 keys
+INFO:app:Category 'Uncategorized' has 2 keys
+DEBUG:app:grouped_keys content: {'Groq': [<APIKey 21>, <APIKey 39>], 'geeeee': [<APIKey 37>, <APIKey 28>], 'test': [<APIKey 38>, <APIKey 40>, <APIKey 41>, <APIKey 27>], 'Uncategorized': [<APIKey 42>, <APIKey 36>]}
+ERROR:app:Error in wallet route: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+ERROR:app:Traceback (most recent call last):
+  File "/home/runner/workspace/routes.py", line 44, in wallet
+    return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/wallet.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 41, in top-level template code
+    {% block content %}
+  File "/home/runner/workspace/templates/wallet.html", line 22, in block 'content'
+    <a href="{{ url_for('main.manage_categories') }}" class="btn btn-sm btn-secondary"><i class="fas fa-cog"></i> Manage Categories</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+
+DEBUG:app:Redirecting to index due to error
+2024-10-03 04:08:18,964 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:18] "GET /wallet HTTP/1.1" 302 -
+2024-10-03 04:08:19,084 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:19,084 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:19,084 INFO sqlalchemy.engine.Engine [cached since 0.7805s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 0.7805s ago] {'pk_1': 1}
+DEBUG:app:Request to /. User authenticated: True
+DEBUG:app:Index route accessed. User authenticated: True
+DEBUG:app:Authenticated user 1 redirected to wallet
+2024-10-03 04:08:19,155 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:19] "GET / HTTP/1.1" 302 -
+2024-10-03 04:08:19,282 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:19,282 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:19,282 INFO sqlalchemy.engine.Engine [cached since 0.9782s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 0.9782s ago] {'pk_1': 1}
+DEBUG:app:Request to /wallet. User authenticated: True
+DEBUG:app:Wallet route accessed. User authenticated: True
+INFO:app:Fetching API keys for user 1
+2024-10-03 04:08:19,353 INFO sqlalchemy.engine.Engine SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+2024-10-03 04:08:19,353 INFO sqlalchemy.engine.Engine [cached since 0.9767s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 0.9767s ago] {'user_id_1': 1}
+INFO:app:Fetched 10 API keys
+INFO:app:Fetching categories for user 1
+2024-10-03 04:08:19,389 INFO sqlalchemy.engine.Engine SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+2024-10-03 04:08:19,389 INFO sqlalchemy.engine.Engine [cached since 0.976s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 0.976s ago] {'user_id_1': 1}
+INFO:app:Fetched 3 categories
+INFO:app:Category 'Groq' has 2 keys
+INFO:app:Category 'geeeee' has 2 keys
+INFO:app:Category 'test' has 4 keys
+INFO:app:Category 'Uncategorized' has 2 keys
+DEBUG:app:grouped_keys content: {'Groq': [<APIKey 21>, <APIKey 39>], 'geeeee': [<APIKey 37>, <APIKey 28>], 'test': [<APIKey 38>, <APIKey 40>, <APIKey 41>, <APIKey 27>], 'Uncategorized': [<APIKey 42>, <APIKey 36>]}
+ERROR:app:Error in wallet route: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+ERROR:app:Traceback (most recent call last):
+  File "/home/runner/workspace/routes.py", line 44, in wallet
+    return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/wallet.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 41, in top-level template code
+    {% block content %}
+  File "/home/runner/workspace/templates/wallet.html", line 22, in block 'content'
+    <a href="{{ url_for('main.manage_categories') }}" class="btn btn-sm btn-secondary"><i class="fas fa-cog"></i> Manage Categories</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+
+DEBUG:app:Redirecting to index due to error
+2024-10-03 04:08:19,427 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:19] "GET /wallet HTTP/1.1" 302 -
+2024-10-03 04:08:19,557 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:19,558 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:19,558 INFO sqlalchemy.engine.Engine [cached since 1.254s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 1.254s ago] {'pk_1': 1}
+DEBUG:app:Request to /. User authenticated: True
+DEBUG:app:Index route accessed. User authenticated: True
+DEBUG:app:Authenticated user 1 redirected to wallet
+2024-10-03 04:08:19,628 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:19] "GET / HTTP/1.1" 302 -
+2024-10-03 04:08:19,755 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:19,755 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:19,755 INFO sqlalchemy.engine.Engine [cached since 1.452s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 1.452s ago] {'pk_1': 1}
+DEBUG:app:Request to /wallet. User authenticated: True
+DEBUG:app:Wallet route accessed. User authenticated: True
+INFO:app:Fetching API keys for user 1
+2024-10-03 04:08:19,826 INFO sqlalchemy.engine.Engine SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+2024-10-03 04:08:19,826 INFO sqlalchemy.engine.Engine [cached since 1.45s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 1.45s ago] {'user_id_1': 1}
+INFO:app:Fetched 10 API keys
+INFO:app:Fetching categories for user 1
+2024-10-03 04:08:19,862 INFO sqlalchemy.engine.Engine SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+2024-10-03 04:08:19,862 INFO sqlalchemy.engine.Engine [cached since 1.449s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 1.449s ago] {'user_id_1': 1}
+INFO:app:Fetched 3 categories
+INFO:app:Category 'Groq' has 2 keys
+INFO:app:Category 'geeeee' has 2 keys
+INFO:app:Category 'test' has 4 keys
+INFO:app:Category 'Uncategorized' has 2 keys
+DEBUG:app:grouped_keys content: {'Groq': [<APIKey 21>, <APIKey 39>], 'geeeee': [<APIKey 37>, <APIKey 28>], 'test': [<APIKey 38>, <APIKey 40>, <APIKey 41>, <APIKey 27>], 'Uncategorized': [<APIKey 42>, <APIKey 36>]}
+ERROR:app:Error in wallet route: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+ERROR:app:Traceback (most recent call last):
+  File "/home/runner/workspace/routes.py", line 44, in wallet
+    return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/wallet.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 41, in top-level template code
+    {% block content %}
+  File "/home/runner/workspace/templates/wallet.html", line 22, in block 'content'
+    <a href="{{ url_for('main.manage_categories') }}" class="btn btn-sm btn-secondary"><i class="fas fa-cog"></i> Manage Categories</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+
+DEBUG:app:Redirecting to index due to error
+2024-10-03 04:08:19,901 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:19] "GET /wallet HTTP/1.1" 302 -
+2024-10-03 04:08:20,023 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:20,023 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:20,023 INFO sqlalchemy.engine.Engine [cached since 1.72s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 1.72s ago] {'pk_1': 1}
+DEBUG:app:Request to /. User authenticated: True
+DEBUG:app:Index route accessed. User authenticated: True
+DEBUG:app:Authenticated user 1 redirected to wallet
+2024-10-03 04:08:20,094 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:20] "GET / HTTP/1.1" 302 -
+2024-10-03 04:08:20,223 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:20,223 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:20,223 INFO sqlalchemy.engine.Engine [cached since 1.919s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 1.919s ago] {'pk_1': 1}
+DEBUG:app:Request to /wallet. User authenticated: True
+DEBUG:app:Wallet route accessed. User authenticated: True
+INFO:app:Fetching API keys for user 1
+2024-10-03 04:08:20,294 INFO sqlalchemy.engine.Engine SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+2024-10-03 04:08:20,294 INFO sqlalchemy.engine.Engine [cached since 1.918s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 1.918s ago] {'user_id_1': 1}
+INFO:app:Fetched 10 API keys
+INFO:app:Fetching categories for user 1
+2024-10-03 04:08:20,330 INFO sqlalchemy.engine.Engine SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+2024-10-03 04:08:20,330 INFO sqlalchemy.engine.Engine [cached since 1.917s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 1.917s ago] {'user_id_1': 1}
+INFO:app:Fetched 3 categories
+INFO:app:Category 'Groq' has 2 keys
+INFO:app:Category 'geeeee' has 2 keys
+INFO:app:Category 'test' has 4 keys
+INFO:app:Category 'Uncategorized' has 2 keys
+DEBUG:app:grouped_keys content: {'Groq': [<APIKey 21>, <APIKey 39>], 'geeeee': [<APIKey 37>, <APIKey 28>], 'test': [<APIKey 38>, <APIKey 40>, <APIKey 41>, <APIKey 27>], 'Uncategorized': [<APIKey 42>, <APIKey 36>]}
+ERROR:app:Error in wallet route: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+ERROR:app:Traceback (most recent call last):
+  File "/home/runner/workspace/routes.py", line 44, in wallet
+    return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/wallet.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 41, in top-level template code
+    {% block content %}
+  File "/home/runner/workspace/templates/wallet.html", line 22, in block 'content'
+    <a href="{{ url_for('main.manage_categories') }}" class="btn btn-sm btn-secondary"><i class="fas fa-cog"></i> Manage Categories</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+
+DEBUG:app:Redirecting to index due to error
+2024-10-03 04:08:20,368 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:20] "GET /wallet HTTP/1.1" 302 -
+2024-10-03 04:08:20,501 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:20,501 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:20,501 INFO sqlalchemy.engine.Engine [cached since 2.198s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 2.198s ago] {'pk_1': 1}
+DEBUG:app:Request to /. User authenticated: True
+DEBUG:app:Index route accessed. User authenticated: True
+DEBUG:app:Authenticated user 1 redirected to wallet
+2024-10-03 04:08:20,573 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:20] "GET / HTTP/1.1" 302 -
+2024-10-03 04:08:20,696 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:20,696 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:20,696 INFO sqlalchemy.engine.Engine [cached since 2.393s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 2.393s ago] {'pk_1': 1}
+DEBUG:app:Request to /wallet. User authenticated: True
+DEBUG:app:Wallet route accessed. User authenticated: True
+INFO:app:Fetching API keys for user 1
+2024-10-03 04:08:20,767 INFO sqlalchemy.engine.Engine SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+2024-10-03 04:08:20,767 INFO sqlalchemy.engine.Engine [cached since 2.391s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 2.391s ago] {'user_id_1': 1}
+INFO:app:Fetched 10 API keys
+INFO:app:Fetching categories for user 1
+2024-10-03 04:08:20,804 INFO sqlalchemy.engine.Engine SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+2024-10-03 04:08:20,804 INFO sqlalchemy.engine.Engine [cached since 2.391s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 2.391s ago] {'user_id_1': 1}
+INFO:app:Fetched 3 categories
+INFO:app:Category 'Groq' has 2 keys
+INFO:app:Category 'geeeee' has 2 keys
+INFO:app:Category 'test' has 4 keys
+INFO:app:Category 'Uncategorized' has 2 keys
+DEBUG:app:grouped_keys content: {'Groq': [<APIKey 21>, <APIKey 39>], 'geeeee': [<APIKey 37>, <APIKey 28>], 'test': [<APIKey 38>, <APIKey 40>, <APIKey 41>, <APIKey 27>], 'Uncategorized': [<APIKey 42>, <APIKey 36>]}
+ERROR:app:Error in wallet route: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+ERROR:app:Traceback (most recent call last):
+  File "/home/runner/workspace/routes.py", line 44, in wallet
+    return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/wallet.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 41, in top-level template code
+    {% block content %}
+  File "/home/runner/workspace/templates/wallet.html", line 22, in block 'content'
+    <a href="{{ url_for('main.manage_categories') }}" class="btn btn-sm btn-secondary"><i class="fas fa-cog"></i> Manage Categories</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+
+DEBUG:app:Redirecting to index due to error
+2024-10-03 04:08:20,843 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:20] "GET /wallet HTTP/1.1" 302 -
+2024-10-03 04:08:21,042 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:21,043 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:21,043 INFO sqlalchemy.engine.Engine [cached since 2.739s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 2.739s ago] {'pk_1': 1}
+DEBUG:app:Request to /. User authenticated: True
+DEBUG:app:Index route accessed. User authenticated: True
+DEBUG:app:Authenticated user 1 redirected to wallet
+2024-10-03 04:08:21,113 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:21] "GET / HTTP/1.1" 302 -
+2024-10-03 04:08:21,233 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:21,233 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:21,233 INFO sqlalchemy.engine.Engine [cached since 2.929s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 2.929s ago] {'pk_1': 1}
+DEBUG:app:Request to /wallet. User authenticated: True
+DEBUG:app:Wallet route accessed. User authenticated: True
+INFO:app:Fetching API keys for user 1
+2024-10-03 04:08:21,304 INFO sqlalchemy.engine.Engine SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+2024-10-03 04:08:21,304 INFO sqlalchemy.engine.Engine [cached since 2.928s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 2.928s ago] {'user_id_1': 1}
+INFO:app:Fetched 10 API keys
+INFO:app:Fetching categories for user 1
+2024-10-03 04:08:21,340 INFO sqlalchemy.engine.Engine SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+2024-10-03 04:08:21,341 INFO sqlalchemy.engine.Engine [cached since 2.927s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 2.927s ago] {'user_id_1': 1}
+INFO:app:Fetched 3 categories
+INFO:app:Category 'Groq' has 2 keys
+INFO:app:Category 'geeeee' has 2 keys
+INFO:app:Category 'test' has 4 keys
+INFO:app:Category 'Uncategorized' has 2 keys
+DEBUG:app:grouped_keys content: {'Groq': [<APIKey 21>, <APIKey 39>], 'geeeee': [<APIKey 37>, <APIKey 28>], 'test': [<APIKey 38>, <APIKey 40>, <APIKey 41>, <APIKey 27>], 'Uncategorized': [<APIKey 42>, <APIKey 36>]}
+ERROR:app:Error in wallet route: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+ERROR:app:Traceback (most recent call last):
+  File "/home/runner/workspace/routes.py", line 44, in wallet
+    return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/wallet.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 41, in top-level template code
+    {% block content %}
+  File "/home/runner/workspace/templates/wallet.html", line 22, in block 'content'
+    <a href="{{ url_for('main.manage_categories') }}" class="btn btn-sm btn-secondary"><i class="fas fa-cog"></i> Manage Categories</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+
+DEBUG:app:Redirecting to index due to error
+2024-10-03 04:08:21,379 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:21] "GET /wallet HTTP/1.1" 302 -
+2024-10-03 04:08:21,499 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:21,500 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:21,500 INFO sqlalchemy.engine.Engine [cached since 3.196s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 3.196s ago] {'pk_1': 1}
+DEBUG:app:Request to /. User authenticated: True
+DEBUG:app:Index route accessed. User authenticated: True
+DEBUG:app:Authenticated user 1 redirected to wallet
+2024-10-03 04:08:21,571 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:21] "GET / HTTP/1.1" 302 -
+2024-10-03 04:08:21,699 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:21,699 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:21,699 INFO sqlalchemy.engine.Engine [cached since 3.396s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 3.396s ago] {'pk_1': 1}
+DEBUG:app:Request to /wallet. User authenticated: True
+DEBUG:app:Wallet route accessed. User authenticated: True
+INFO:app:Fetching API keys for user 1
+2024-10-03 04:08:21,770 INFO sqlalchemy.engine.Engine SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+2024-10-03 04:08:21,770 INFO sqlalchemy.engine.Engine [cached since 3.394s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 3.394s ago] {'user_id_1': 1}
+INFO:app:Fetched 10 API keys
+INFO:app:Fetching categories for user 1
+2024-10-03 04:08:21,806 INFO sqlalchemy.engine.Engine SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+2024-10-03 04:08:21,806 INFO sqlalchemy.engine.Engine [cached since 3.393s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 3.393s ago] {'user_id_1': 1}
+INFO:app:Fetched 3 categories
+INFO:app:Category 'Groq' has 2 keys
+INFO:app:Category 'geeeee' has 2 keys
+INFO:app:Category 'test' has 4 keys
+INFO:app:Category 'Uncategorized' has 2 keys
+DEBUG:app:grouped_keys content: {'Groq': [<APIKey 21>, <APIKey 39>], 'geeeee': [<APIKey 37>, <APIKey 28>], 'test': [<APIKey 38>, <APIKey 40>, <APIKey 41>, <APIKey 27>], 'Uncategorized': [<APIKey 42>, <APIKey 36>]}
+ERROR:app:Error in wallet route: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+ERROR:app:Traceback (most recent call last):
+  File "/home/runner/workspace/routes.py", line 44, in wallet
+    return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/wallet.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 41, in top-level template code
+    {% block content %}
+  File "/home/runner/workspace/templates/wallet.html", line 22, in block 'content'
+    <a href="{{ url_for('main.manage_categories') }}" class="btn btn-sm btn-secondary"><i class="fas fa-cog"></i> Manage Categories</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+
+DEBUG:app:Redirecting to index due to error
+2024-10-03 04:08:21,844 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:21] "GET /wallet HTTP/1.1" 302 -
+2024-10-03 04:08:21,963 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:21,963 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:21,963 INFO sqlalchemy.engine.Engine [cached since 3.66s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 3.66s ago] {'pk_1': 1}
+DEBUG:app:Request to /. User authenticated: True
+DEBUG:app:Index route accessed. User authenticated: True
+DEBUG:app:Authenticated user 1 redirected to wallet
+2024-10-03 04:08:22,035 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:22] "GET / HTTP/1.1" 302 -
+2024-10-03 04:08:22,155 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:22,155 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:22,155 INFO sqlalchemy.engine.Engine [cached since 3.851s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 3.851s ago] {'pk_1': 1}
+DEBUG:app:Request to /wallet. User authenticated: True
+DEBUG:app:Wallet route accessed. User authenticated: True
+INFO:app:Fetching API keys for user 1
+2024-10-03 04:08:22,226 INFO sqlalchemy.engine.Engine SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+2024-10-03 04:08:22,226 INFO sqlalchemy.engine.Engine [cached since 3.85s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 3.85s ago] {'user_id_1': 1}
+INFO:app:Fetched 10 API keys
+INFO:app:Fetching categories for user 1
+2024-10-03 04:08:22,262 INFO sqlalchemy.engine.Engine SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+2024-10-03 04:08:22,262 INFO sqlalchemy.engine.Engine [cached since 3.849s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 3.849s ago] {'user_id_1': 1}
+INFO:app:Fetched 3 categories
+INFO:app:Category 'Groq' has 2 keys
+INFO:app:Category 'geeeee' has 2 keys
+INFO:app:Category 'test' has 4 keys
+INFO:app:Category 'Uncategorized' has 2 keys
+DEBUG:app:grouped_keys content: {'Groq': [<APIKey 21>, <APIKey 39>], 'geeeee': [<APIKey 37>, <APIKey 28>], 'test': [<APIKey 38>, <APIKey 40>, <APIKey 41>, <APIKey 27>], 'Uncategorized': [<APIKey 42>, <APIKey 36>]}
+ERROR:app:Error in wallet route: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+ERROR:app:Traceback (most recent call last):
+  File "/home/runner/workspace/routes.py", line 44, in wallet
+    return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/wallet.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 41, in top-level template code
+    {% block content %}
+  File "/home/runner/workspace/templates/wallet.html", line 22, in block 'content'
+    <a href="{{ url_for('main.manage_categories') }}" class="btn btn-sm btn-secondary"><i class="fas fa-cog"></i> Manage Categories</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+
+DEBUG:app:Redirecting to index due to error
+2024-10-03 04:08:22,300 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:22] "GET /wallet HTTP/1.1" 302 -
+2024-10-03 04:08:22,423 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:22,423 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:22,423 INFO sqlalchemy.engine.Engine [cached since 4.119s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 4.119s ago] {'pk_1': 1}
+DEBUG:app:Request to /. User authenticated: True
+DEBUG:app:Index route accessed. User authenticated: True
+DEBUG:app:Authenticated user 1 redirected to wallet
+2024-10-03 04:08:22,510 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:22] "GET / HTTP/1.1" 302 -
+2024-10-03 04:08:22,635 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:22,635 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:22,635 INFO sqlalchemy.engine.Engine [cached since 4.331s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 4.331s ago] {'pk_1': 1}
+DEBUG:app:Request to /wallet. User authenticated: True
+DEBUG:app:Wallet route accessed. User authenticated: True
+INFO:app:Fetching API keys for user 1
+2024-10-03 04:08:22,706 INFO sqlalchemy.engine.Engine SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+2024-10-03 04:08:22,706 INFO sqlalchemy.engine.Engine [cached since 4.33s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 4.33s ago] {'user_id_1': 1}
+INFO:app:Fetched 10 API keys
+INFO:app:Fetching categories for user 1
+2024-10-03 04:08:22,742 INFO sqlalchemy.engine.Engine SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+2024-10-03 04:08:22,742 INFO sqlalchemy.engine.Engine [cached since 4.329s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 4.329s ago] {'user_id_1': 1}
+INFO:app:Fetched 3 categories
+INFO:app:Category 'Groq' has 2 keys
+INFO:app:Category 'geeeee' has 2 keys
+INFO:app:Category 'test' has 4 keys
+INFO:app:Category 'Uncategorized' has 2 keys
+DEBUG:app:grouped_keys content: {'Groq': [<APIKey 21>, <APIKey 39>], 'geeeee': [<APIKey 37>, <APIKey 28>], 'test': [<APIKey 38>, <APIKey 40>, <APIKey 41>, <APIKey 27>], 'Uncategorized': [<APIKey 42>, <APIKey 36>]}
+ERROR:app:Error in wallet route: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+ERROR:app:Traceback (most recent call last):
+  File "/home/runner/workspace/routes.py", line 44, in wallet
+    return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/wallet.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 41, in top-level template code
+    {% block content %}
+  File "/home/runner/workspace/templates/wallet.html", line 22, in block 'content'
+    <a href="{{ url_for('main.manage_categories') }}" class="btn btn-sm btn-secondary"><i class="fas fa-cog"></i> Manage Categories</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+
+DEBUG:app:Redirecting to index due to error
+2024-10-03 04:08:22,780 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:22] "GET /wallet HTTP/1.1" 302 -
+2024-10-03 04:08:26,133 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:26,133 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:26,133 INFO sqlalchemy.engine.Engine [cached since 7.829s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 7.829s ago] {'pk_1': 1}
+DEBUG:app:Request to /login. User authenticated: True
+DEBUG:app:Login route accessed. User authenticated: True
+DEBUG:app:Already authenticated user 1 redirected to wallet
+2024-10-03 04:08:26,204 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:26] "GET /login HTTP/1.1" 302 -
+2024-10-03 04:08:26,322 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:26,322 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:26,323 INFO sqlalchemy.engine.Engine [cached since 8.019s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 8.019s ago] {'pk_1': 1}
+DEBUG:app:Request to /wallet. User authenticated: True
+DEBUG:app:Wallet route accessed. User authenticated: True
+INFO:app:Fetching API keys for user 1
+2024-10-03 04:08:26,393 INFO sqlalchemy.engine.Engine SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+2024-10-03 04:08:26,393 INFO sqlalchemy.engine.Engine [cached since 8.017s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 8.017s ago] {'user_id_1': 1}
+INFO:app:Fetched 10 API keys
+INFO:app:Fetching categories for user 1
+2024-10-03 04:08:26,430 INFO sqlalchemy.engine.Engine SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+2024-10-03 04:08:26,430 INFO sqlalchemy.engine.Engine [cached since 8.017s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 8.017s ago] {'user_id_1': 1}
+INFO:app:Fetched 3 categories
+INFO:app:Category 'Groq' has 2 keys
+INFO:app:Category 'geeeee' has 2 keys
+INFO:app:Category 'test' has 4 keys
+INFO:app:Category 'Uncategorized' has 2 keys
+DEBUG:app:grouped_keys content: {'Groq': [<APIKey 21>, <APIKey 39>], 'geeeee': [<APIKey 37>, <APIKey 28>], 'test': [<APIKey 38>, <APIKey 40>, <APIKey 41>, <APIKey 27>], 'Uncategorized': [<APIKey 42>, <APIKey 36>]}
+ERROR:app:Error in wallet route: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+ERROR:app:Traceback (most recent call last):
+  File "/home/runner/workspace/routes.py", line 44, in wallet
+    return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/wallet.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 41, in top-level template code
+    {% block content %}
+  File "/home/runner/workspace/templates/wallet.html", line 22, in block 'content'
+    <a href="{{ url_for('main.manage_categories') }}" class="btn btn-sm btn-secondary"><i class="fas fa-cog"></i> Manage Categories</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+
+DEBUG:app:Redirecting to index due to error
+2024-10-03 04:08:26,468 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:26] "GET /wallet HTTP/1.1" 302 -
+2024-10-03 04:08:26,643 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:26,643 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:26,643 INFO sqlalchemy.engine.Engine [cached since 8.34s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 8.34s ago] {'pk_1': 1}
+DEBUG:app:Request to /. User authenticated: True
+DEBUG:app:Index route accessed. User authenticated: True
+DEBUG:app:Authenticated user 1 redirected to wallet
+2024-10-03 04:08:26,715 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:26] "GET / HTTP/1.1" 302 -
+2024-10-03 04:08:26,842 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:26,842 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:26,842 INFO sqlalchemy.engine.Engine [cached since 8.538s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 8.538s ago] {'pk_1': 1}
+DEBUG:app:Request to /wallet. User authenticated: True
+DEBUG:app:Wallet route accessed. User authenticated: True
+INFO:app:Fetching API keys for user 1
+2024-10-03 04:08:26,914 INFO sqlalchemy.engine.Engine SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+2024-10-03 04:08:26,914 INFO sqlalchemy.engine.Engine [cached since 8.538s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 8.538s ago] {'user_id_1': 1}
+INFO:app:Fetched 10 API keys
+INFO:app:Fetching categories for user 1
+2024-10-03 04:08:26,951 INFO sqlalchemy.engine.Engine SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+2024-10-03 04:08:26,951 INFO sqlalchemy.engine.Engine [cached since 8.538s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 8.538s ago] {'user_id_1': 1}
+INFO:app:Fetched 3 categories
+INFO:app:Category 'Groq' has 2 keys
+INFO:app:Category 'geeeee' has 2 keys
+INFO:app:Category 'test' has 4 keys
+INFO:app:Category 'Uncategorized' has 2 keys
+DEBUG:app:grouped_keys content: {'Groq': [<APIKey 21>, <APIKey 39>], 'geeeee': [<APIKey 37>, <APIKey 28>], 'test': [<APIKey 38>, <APIKey 40>, <APIKey 41>, <APIKey 27>], 'Uncategorized': [<APIKey 42>, <APIKey 36>]}
+ERROR:app:Error in wallet route: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+ERROR:app:Traceback (most recent call last):
+  File "/home/runner/workspace/routes.py", line 44, in wallet
+    return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/wallet.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 41, in top-level template code
+    {% block content %}
+  File "/home/runner/workspace/templates/wallet.html", line 22, in block 'content'
+    <a href="{{ url_for('main.manage_categories') }}" class="btn btn-sm btn-secondary"><i class="fas fa-cog"></i> Manage Categories</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+
+DEBUG:app:Redirecting to index due to error
+2024-10-03 04:08:26,989 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:27] "GET /wallet HTTP/1.1" 302 -
+2024-10-03 04:08:27,105 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:27,105 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:27,106 INFO sqlalchemy.engine.Engine [cached since 8.802s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 8.802s ago] {'pk_1': 1}
+DEBUG:app:Request to /. User authenticated: True
+DEBUG:app:Index route accessed. User authenticated: True
+DEBUG:app:Authenticated user 1 redirected to wallet
+2024-10-03 04:08:27,178 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:27] "GET / HTTP/1.1" 302 -
+2024-10-03 04:08:27,298 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:27,298 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:27,298 INFO sqlalchemy.engine.Engine [cached since 8.994s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 8.994s ago] {'pk_1': 1}
+DEBUG:app:Request to /wallet. User authenticated: True
+DEBUG:app:Wallet route accessed. User authenticated: True
+INFO:app:Fetching API keys for user 1
+2024-10-03 04:08:27,372 INFO sqlalchemy.engine.Engine SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+2024-10-03 04:08:27,372 INFO sqlalchemy.engine.Engine [cached since 8.996s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 8.996s ago] {'user_id_1': 1}
+INFO:app:Fetched 10 API keys
+INFO:app:Fetching categories for user 1
+2024-10-03 04:08:27,409 INFO sqlalchemy.engine.Engine SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+2024-10-03 04:08:27,409 INFO sqlalchemy.engine.Engine [cached since 8.996s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 8.996s ago] {'user_id_1': 1}
+INFO:app:Fetched 3 categories
+INFO:app:Category 'Groq' has 2 keys
+INFO:app:Category 'geeeee' has 2 keys
+INFO:app:Category 'test' has 4 keys
+INFO:app:Category 'Uncategorized' has 2 keys
+DEBUG:app:grouped_keys content: {'Groq': [<APIKey 21>, <APIKey 39>], 'geeeee': [<APIKey 37>, <APIKey 28>], 'test': [<APIKey 38>, <APIKey 40>, <APIKey 41>, <APIKey 27>], 'Uncategorized': [<APIKey 42>, <APIKey 36>]}
+ERROR:app:Error in wallet route: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+ERROR:app:Traceback (most recent call last):
+  File "/home/runner/workspace/routes.py", line 44, in wallet
+    return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/wallet.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 41, in top-level template code
+    {% block content %}
+  File "/home/runner/workspace/templates/wallet.html", line 22, in block 'content'
+    <a href="{{ url_for('main.manage_categories') }}" class="btn btn-sm btn-secondary"><i class="fas fa-cog"></i> Manage Categories</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+
+DEBUG:app:Redirecting to index due to error
+2024-10-03 04:08:27,448 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:27] "GET /wallet HTTP/1.1" 302 -
+2024-10-03 04:08:27,563 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:27,563 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:27,563 INFO sqlalchemy.engine.Engine [cached since 9.259s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 9.259s ago] {'pk_1': 1}
+DEBUG:app:Request to /. User authenticated: True
+DEBUG:app:Index route accessed. User authenticated: True
+DEBUG:app:Authenticated user 1 redirected to wallet
+2024-10-03 04:08:27,635 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:27] "GET / HTTP/1.1" 302 -
+2024-10-03 04:08:27,752 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:27,752 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:27,753 INFO sqlalchemy.engine.Engine [cached since 9.449s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 9.449s ago] {'pk_1': 1}
+DEBUG:app:Request to /wallet. User authenticated: True
+DEBUG:app:Wallet route accessed. User authenticated: True
+INFO:app:Fetching API keys for user 1
+2024-10-03 04:08:27,823 INFO sqlalchemy.engine.Engine SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+2024-10-03 04:08:27,823 INFO sqlalchemy.engine.Engine [cached since 9.447s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 9.447s ago] {'user_id_1': 1}
+INFO:app:Fetched 10 API keys
+INFO:app:Fetching categories for user 1
+2024-10-03 04:08:27,859 INFO sqlalchemy.engine.Engine SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+2024-10-03 04:08:27,859 INFO sqlalchemy.engine.Engine [cached since 9.446s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 9.446s ago] {'user_id_1': 1}
+INFO:app:Fetched 3 categories
+INFO:app:Category 'Groq' has 2 keys
+INFO:app:Category 'geeeee' has 2 keys
+INFO:app:Category 'test' has 4 keys
+INFO:app:Category 'Uncategorized' has 2 keys
+DEBUG:app:grouped_keys content: {'Groq': [<APIKey 21>, <APIKey 39>], 'geeeee': [<APIKey 37>, <APIKey 28>], 'test': [<APIKey 38>, <APIKey 40>, <APIKey 41>, <APIKey 27>], 'Uncategorized': [<APIKey 42>, <APIKey 36>]}
+ERROR:app:Error in wallet route: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+ERROR:app:Traceback (most recent call last):
+  File "/home/runner/workspace/routes.py", line 44, in wallet
+    return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/wallet.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 41, in top-level template code
+    {% block content %}
+  File "/home/runner/workspace/templates/wallet.html", line 22, in block 'content'
+    <a href="{{ url_for('main.manage_categories') }}" class="btn btn-sm btn-secondary"><i class="fas fa-cog"></i> Manage Categories</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+
+DEBUG:app:Redirecting to index due to error
+2024-10-03 04:08:27,897 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:27] "GET /wallet HTTP/1.1" 302 -
+2024-10-03 04:08:28,024 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:28,024 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:28,024 INFO sqlalchemy.engine.Engine [cached since 9.721s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 9.721s ago] {'pk_1': 1}
+DEBUG:app:Request to /. User authenticated: True
+DEBUG:app:Index route accessed. User authenticated: True
+DEBUG:app:Authenticated user 1 redirected to wallet
+2024-10-03 04:08:28,096 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:28] "GET / HTTP/1.1" 302 -
+2024-10-03 04:08:28,211 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:28,211 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:28,211 INFO sqlalchemy.engine.Engine [cached since 9.907s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 9.907s ago] {'pk_1': 1}
+DEBUG:app:Request to /wallet. User authenticated: True
+DEBUG:app:Wallet route accessed. User authenticated: True
+INFO:app:Fetching API keys for user 1
+2024-10-03 04:08:28,282 INFO sqlalchemy.engine.Engine SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+2024-10-03 04:08:28,282 INFO sqlalchemy.engine.Engine [cached since 9.906s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 9.906s ago] {'user_id_1': 1}
+INFO:app:Fetched 10 API keys
+INFO:app:Fetching categories for user 1
+2024-10-03 04:08:28,318 INFO sqlalchemy.engine.Engine SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+2024-10-03 04:08:28,318 INFO sqlalchemy.engine.Engine [cached since 9.905s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 9.905s ago] {'user_id_1': 1}
+INFO:app:Fetched 3 categories
+INFO:app:Category 'Groq' has 2 keys
+INFO:app:Category 'geeeee' has 2 keys
+INFO:app:Category 'test' has 4 keys
+INFO:app:Category 'Uncategorized' has 2 keys
+DEBUG:app:grouped_keys content: {'Groq': [<APIKey 21>, <APIKey 39>], 'geeeee': [<APIKey 37>, <APIKey 28>], 'test': [<APIKey 38>, <APIKey 40>, <APIKey 41>, <APIKey 27>], 'Uncategorized': [<APIKey 42>, <APIKey 36>]}
+ERROR:app:Error in wallet route: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+ERROR:app:Traceback (most recent call last):
+  File "/home/runner/workspace/routes.py", line 44, in wallet
+    return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/wallet.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 41, in top-level template code
+    {% block content %}
+  File "/home/runner/workspace/templates/wallet.html", line 22, in block 'content'
+    <a href="{{ url_for('main.manage_categories') }}" class="btn btn-sm btn-secondary"><i class="fas fa-cog"></i> Manage Categories</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+
+DEBUG:app:Redirecting to index due to error
+2024-10-03 04:08:28,356 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:28] "GET /wallet HTTP/1.1" 302 -
+2024-10-03 04:08:28,472 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:28,472 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:28,472 INFO sqlalchemy.engine.Engine [cached since 10.17s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 10.17s ago] {'pk_1': 1}
+DEBUG:app:Request to /. User authenticated: True
+DEBUG:app:Index route accessed. User authenticated: True
+DEBUG:app:Authenticated user 1 redirected to wallet
+2024-10-03 04:08:28,543 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:28] "GET / HTTP/1.1" 302 -
+2024-10-03 04:08:28,663 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:28,664 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:28,664 INFO sqlalchemy.engine.Engine [cached since 10.36s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 10.36s ago] {'pk_1': 1}
+DEBUG:app:Request to /wallet. User authenticated: True
+DEBUG:app:Wallet route accessed. User authenticated: True
+INFO:app:Fetching API keys for user 1
+2024-10-03 04:08:28,734 INFO sqlalchemy.engine.Engine SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+2024-10-03 04:08:28,734 INFO sqlalchemy.engine.Engine [cached since 10.36s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 10.36s ago] {'user_id_1': 1}
+INFO:app:Fetched 10 API keys
+INFO:app:Fetching categories for user 1
+2024-10-03 04:08:28,770 INFO sqlalchemy.engine.Engine SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+2024-10-03 04:08:28,771 INFO sqlalchemy.engine.Engine [cached since 10.36s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 10.36s ago] {'user_id_1': 1}
+INFO:app:Fetched 3 categories
+INFO:app:Category 'Groq' has 2 keys
+INFO:app:Category 'geeeee' has 2 keys
+INFO:app:Category 'test' has 4 keys
+INFO:app:Category 'Uncategorized' has 2 keys
+DEBUG:app:grouped_keys content: {'Groq': [<APIKey 21>, <APIKey 39>], 'geeeee': [<APIKey 37>, <APIKey 28>], 'test': [<APIKey 38>, <APIKey 40>, <APIKey 41>, <APIKey 27>], 'Uncategorized': [<APIKey 42>, <APIKey 36>]}
+ERROR:app:Error in wallet route: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+ERROR:app:Traceback (most recent call last):
+  File "/home/runner/workspace/routes.py", line 44, in wallet
+    return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/wallet.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 41, in top-level template code
+    {% block content %}
+  File "/home/runner/workspace/templates/wallet.html", line 22, in block 'content'
+    <a href="{{ url_for('main.manage_categories') }}" class="btn btn-sm btn-secondary"><i class="fas fa-cog"></i> Manage Categories</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+
+DEBUG:app:Redirecting to index due to error
+2024-10-03 04:08:28,808 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:28] "GET /wallet HTTP/1.1" 302 -
+2024-10-03 04:08:28,958 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:28,958 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:28,958 INFO sqlalchemy.engine.Engine [cached since 10.65s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 10.65s ago] {'pk_1': 1}
+DEBUG:app:Request to /. User authenticated: True
+DEBUG:app:Index route accessed. User authenticated: True
+DEBUG:app:Authenticated user 1 redirected to wallet
+2024-10-03 04:08:29,029 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:29] "GET / HTTP/1.1" 302 -
+2024-10-03 04:08:29,159 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:29,159 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:29,159 INFO sqlalchemy.engine.Engine [cached since 10.86s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 10.86s ago] {'pk_1': 1}
+DEBUG:app:Request to /wallet. User authenticated: True
+DEBUG:app:Wallet route accessed. User authenticated: True
+INFO:app:Fetching API keys for user 1
+2024-10-03 04:08:29,230 INFO sqlalchemy.engine.Engine SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+2024-10-03 04:08:29,230 INFO sqlalchemy.engine.Engine [cached since 10.85s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 10.85s ago] {'user_id_1': 1}
+INFO:app:Fetched 10 API keys
+INFO:app:Fetching categories for user 1
+2024-10-03 04:08:29,266 INFO sqlalchemy.engine.Engine SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+2024-10-03 04:08:29,266 INFO sqlalchemy.engine.Engine [cached since 10.85s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 10.85s ago] {'user_id_1': 1}
+INFO:app:Fetched 3 categories
+INFO:app:Category 'Groq' has 2 keys
+INFO:app:Category 'geeeee' has 2 keys
+INFO:app:Category 'test' has 4 keys
+INFO:app:Category 'Uncategorized' has 2 keys
+DEBUG:app:grouped_keys content: {'Groq': [<APIKey 21>, <APIKey 39>], 'geeeee': [<APIKey 37>, <APIKey 28>], 'test': [<APIKey 38>, <APIKey 40>, <APIKey 41>, <APIKey 27>], 'Uncategorized': [<APIKey 42>, <APIKey 36>]}
+ERROR:app:Error in wallet route: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+ERROR:app:Traceback (most recent call last):
+  File "/home/runner/workspace/routes.py", line 44, in wallet
+    return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/wallet.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 41, in top-level template code
+    {% block content %}
+  File "/home/runner/workspace/templates/wallet.html", line 22, in block 'content'
+    <a href="{{ url_for('main.manage_categories') }}" class="btn btn-sm btn-secondary"><i class="fas fa-cog"></i> Manage Categories</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+
+DEBUG:app:Redirecting to index due to error
+2024-10-03 04:08:29,305 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:29] "GET /wallet HTTP/1.1" 302 -
+2024-10-03 04:08:29,430 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:29,431 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:29,431 INFO sqlalchemy.engine.Engine [cached since 11.13s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 11.13s ago] {'pk_1': 1}
+DEBUG:app:Request to /. User authenticated: True
+DEBUG:app:Index route accessed. User authenticated: True
+DEBUG:app:Authenticated user 1 redirected to wallet
+2024-10-03 04:08:29,502 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:29] "GET / HTTP/1.1" 302 -
+2024-10-03 04:08:29,622 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:29,622 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:29,622 INFO sqlalchemy.engine.Engine [cached since 11.32s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 11.32s ago] {'pk_1': 1}
+DEBUG:app:Request to /wallet. User authenticated: True
+DEBUG:app:Wallet route accessed. User authenticated: True
+INFO:app:Fetching API keys for user 1
+2024-10-03 04:08:29,693 INFO sqlalchemy.engine.Engine SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+2024-10-03 04:08:29,693 INFO sqlalchemy.engine.Engine [cached since 11.32s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 11.32s ago] {'user_id_1': 1}
+INFO:app:Fetched 10 API keys
+INFO:app:Fetching categories for user 1
+2024-10-03 04:08:29,729 INFO sqlalchemy.engine.Engine SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+2024-10-03 04:08:29,729 INFO sqlalchemy.engine.Engine [cached since 11.32s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 11.32s ago] {'user_id_1': 1}
+INFO:app:Fetched 3 categories
+INFO:app:Category 'Groq' has 2 keys
+INFO:app:Category 'geeeee' has 2 keys
+INFO:app:Category 'test' has 4 keys
+INFO:app:Category 'Uncategorized' has 2 keys
+DEBUG:app:grouped_keys content: {'Groq': [<APIKey 21>, <APIKey 39>], 'geeeee': [<APIKey 37>, <APIKey 28>], 'test': [<APIKey 38>, <APIKey 40>, <APIKey 41>, <APIKey 27>], 'Uncategorized': [<APIKey 42>, <APIKey 36>]}
+ERROR:app:Error in wallet route: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+ERROR:app:Traceback (most recent call last):
+  File "/home/runner/workspace/routes.py", line 44, in wallet
+    return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/wallet.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 41, in top-level template code
+    {% block content %}
+  File "/home/runner/workspace/templates/wallet.html", line 22, in block 'content'
+    <a href="{{ url_for('main.manage_categories') }}" class="btn btn-sm btn-secondary"><i class="fas fa-cog"></i> Manage Categories</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+
+DEBUG:app:Redirecting to index due to error
+2024-10-03 04:08:29,767 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:29] "GET /wallet HTTP/1.1" 302 -
+2024-10-03 04:08:29,885 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:29,886 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:29,886 INFO sqlalchemy.engine.Engine [cached since 11.58s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 11.58s ago] {'pk_1': 1}
+DEBUG:app:Request to /. User authenticated: True
+DEBUG:app:Index route accessed. User authenticated: True
+DEBUG:app:Authenticated user 1 redirected to wallet
+2024-10-03 04:08:29,956 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:29] "GET / HTTP/1.1" 302 -
+2024-10-03 04:08:30,069 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:30,069 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:30,069 INFO sqlalchemy.engine.Engine [cached since 11.77s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 11.77s ago] {'pk_1': 1}
+DEBUG:app:Request to /wallet. User authenticated: True
+DEBUG:app:Wallet route accessed. User authenticated: True
+INFO:app:Fetching API keys for user 1
+2024-10-03 04:08:30,139 INFO sqlalchemy.engine.Engine SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+2024-10-03 04:08:30,139 INFO sqlalchemy.engine.Engine [cached since 11.76s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 11.76s ago] {'user_id_1': 1}
+INFO:app:Fetched 10 API keys
+INFO:app:Fetching categories for user 1
+2024-10-03 04:08:30,175 INFO sqlalchemy.engine.Engine SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+2024-10-03 04:08:30,176 INFO sqlalchemy.engine.Engine [cached since 11.76s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 11.76s ago] {'user_id_1': 1}
+INFO:app:Fetched 3 categories
+INFO:app:Category 'Groq' has 2 keys
+INFO:app:Category 'geeeee' has 2 keys
+INFO:app:Category 'test' has 4 keys
+INFO:app:Category 'Uncategorized' has 2 keys
+DEBUG:app:grouped_keys content: {'Groq': [<APIKey 21>, <APIKey 39>], 'geeeee': [<APIKey 37>, <APIKey 28>], 'test': [<APIKey 38>, <APIKey 40>, <APIKey 41>, <APIKey 27>], 'Uncategorized': [<APIKey 42>, <APIKey 36>]}
+ERROR:app:Error in wallet route: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+ERROR:app:Traceback (most recent call last):
+  File "/home/runner/workspace/routes.py", line 44, in wallet
+    return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/wallet.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 41, in top-level template code
+    {% block content %}
+  File "/home/runner/workspace/templates/wallet.html", line 22, in block 'content'
+    <a href="{{ url_for('main.manage_categories') }}" class="btn btn-sm btn-secondary"><i class="fas fa-cog"></i> Manage Categories</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+
+DEBUG:app:Redirecting to index due to error
+2024-10-03 04:08:30,213 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:30] "GET /wallet HTTP/1.1" 302 -
+2024-10-03 04:08:30,328 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:30,328 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:30,328 INFO sqlalchemy.engine.Engine [cached since 12.02s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 12.02s ago] {'pk_1': 1}
+DEBUG:app:Request to /. User authenticated: True
+DEBUG:app:Index route accessed. User authenticated: True
+DEBUG:app:Authenticated user 1 redirected to wallet
+2024-10-03 04:08:30,400 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:30] "GET / HTTP/1.1" 302 -
+2024-10-03 04:08:30,661 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+2024-10-03 04:08:30,662 INFO sqlalchemy.engine.Engine SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+INFO:sqlalchemy.engine.Engine:SELECT "user".id AS user_id, "user".email AS user_email, "user".password_hash AS user_password_hash, "user".date_joined AS user_date_joined 
+FROM "user" 
+WHERE "user".id = %(pk_1)s
+2024-10-03 04:08:30,662 INFO sqlalchemy.engine.Engine [cached since 12.36s ago] {'pk_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 12.36s ago] {'pk_1': 1}
+DEBUG:app:Request to /wallet. User authenticated: True
+DEBUG:app:Wallet route accessed. User authenticated: True
+INFO:app:Fetching API keys for user 1
+2024-10-03 04:08:30,732 INFO sqlalchemy.engine.Engine SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT api_key.id AS api_key_id, api_key.user_id AS api_key_user_id, api_key.key_name AS api_key_key_name, api_key.encrypted_key AS api_key_encrypted_key, api_key.date_added AS api_key_date_added, api_key.category_id AS api_key_category_id 
+FROM api_key 
+WHERE api_key.user_id = %(user_id_1)s
+2024-10-03 04:08:30,732 INFO sqlalchemy.engine.Engine [cached since 12.36s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 12.36s ago] {'user_id_1': 1}
+INFO:app:Fetched 10 API keys
+INFO:app:Fetching categories for user 1
+2024-10-03 04:08:30,768 INFO sqlalchemy.engine.Engine SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+INFO:sqlalchemy.engine.Engine:SELECT category.id AS category_id, category.name AS category_name, category.user_id AS category_user_id 
+FROM category 
+WHERE category.user_id = %(user_id_1)s
+2024-10-03 04:08:30,768 INFO sqlalchemy.engine.Engine [cached since 12.35s ago] {'user_id_1': 1}
+INFO:sqlalchemy.engine.Engine:[cached since 12.35s ago] {'user_id_1': 1}
+INFO:app:Fetched 3 categories
+INFO:app:Category 'Groq' has 2 keys
+INFO:app:Category 'geeeee' has 2 keys
+INFO:app:Category 'test' has 4 keys
+INFO:app:Category 'Uncategorized' has 2 keys
+DEBUG:app:grouped_keys content: {'Groq': [<APIKey 21>, <APIKey 39>], 'geeeee': [<APIKey 37>, <APIKey 28>], 'test': [<APIKey 38>, <APIKey 40>, <APIKey 41>, <APIKey 27>], 'Uncategorized': [<APIKey 42>, <APIKey 36>]}
+ERROR:app:Error in wallet route: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+ERROR:app:Traceback (most recent call last):
+  File "/home/runner/workspace/routes.py", line 44, in wallet
+    return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 150, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/templating.py", line 131, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 939, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/runner/workspace/templates/wallet.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/runner/workspace/templates/base.html", line 41, in top-level template code
+    {% block content %}
+  File "/home/runner/workspace/templates/wallet.html", line 22, in block 'content'
+    <a href="{{ url_for('main.manage_categories') }}" class="btn btn-sm btn-secondary"><i class="fas fa-cog"></i> Manage Categories</a>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1084, in url_for
+    return self.handle_url_build_error(error, endpoint, values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1073, in url_for
+    rv = url_adapter.build(  # type: ignore[union-attr]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/werkzeug/routing/map.py", line 924, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.exceptions.BuildError: Could not build url for endpoint 'main.manage_categories'. Did you mean 'main.add_category' instead?
+
+DEBUG:app:Redirecting to index due to error
+2024-10-03 04:08:30,805 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:werkzeug:172.31.196.124 - - [03/Oct/2024 04:08:30] "GET /wallet HTTP/1.1" 302 -

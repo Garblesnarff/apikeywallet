@@ -1,9 +1,9 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, g, current_app
+from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, g, current_app, session
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import User, APIKey, Category
 from forms import RegistrationForm, LoginForm, AddAPIKeyForm, AddCategoryForm
-from app import db
+from app import db, send_confirmation_email
 from utils import encrypt_key, decrypt_key
 import logging
 import traceback
@@ -46,7 +46,6 @@ def wallet():
         current_app.logger.error(f"Error in wallet route: {str(e)}")
         current_app.logger.error(traceback.format_exc())
         flash('An error occurred while retrieving your wallet. Please try again later.', 'danger')
-        current_app.logger.debug(f"Redirecting to index due to error")
         return redirect(url_for('main.index'))
 
 @main.route('/')
@@ -76,10 +75,24 @@ def register():
         db.session.add(new_user)
         db.session.commit()
         
-        flash('Registration successful. Please log in.', 'success')
+        send_confirmation_email(new_user)
+        
+        flash('Registration successful. Please check your email to confirm your account.', 'success')
         return redirect(url_for('auth.login'))
     
     return render_template('register.html', form=form)
+
+@auth.route('/confirm/<token>')
+def confirm_email(token):
+    user = User.query.filter_by(email_confirm_token=token).first()
+    if user:
+        user.email_confirmed = True
+        user.email_confirm_token = None
+        db.session.commit()
+        flash('Your email has been confirmed. You can now log in.', 'success')
+    else:
+        flash('The confirmation link is invalid or has expired.', 'danger')
+    return redirect(url_for('auth.login'))
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -96,6 +109,10 @@ def login():
         try:
             user = User.query.filter_by(email=email).first()
             if user and user.check_password(password):
+                if not user.email_confirmed:
+                    flash('Please confirm your email before logging in.', 'warning')
+                    return redirect(url_for('auth.login'))
+                
                 current_app.logger.debug(f"User {user.id} password check passed. Logging in...")
                 login_user(user)
                 current_app.logger.debug(f"User {user.id} logged in. Authenticated: {current_user.is_authenticated}")
