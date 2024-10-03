@@ -1,23 +1,91 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, g, current_app, session
+from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, g, current_app
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import User, APIKey, Category
 from forms import RegistrationForm, LoginForm, AddAPIKeyForm, AddCategoryForm
-from app import db, send_confirmation_email
+from app import db
 from utils import encrypt_key, decrypt_key
 import logging
 import traceback
 from sqlalchemy.exc import SQLAlchemyError
 import os
-from urllib.parse import urlparse
 
 main = Blueprint('main', __name__)
 auth = Blueprint('auth', __name__)
 
+@auth.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.wallet'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+        
+        user = User.query.filter_by(email=email).first()
+        if user:
+            flash('Email already exists.', 'danger')
+            return redirect(url_for('auth.register'))
+        
+        new_user = User(email=email)
+        new_user.set_password(password)
+        db.session.add(new_user)
+        db.session.commit()
+        
+        flash('Registration successful. Please log in.', 'success')
+        return redirect(url_for('auth.login'))
+    
+    return render_template('register.html', form=form)
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.wallet'))
+    
+    form = LoginForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+        
+        try:
+            user = User.query.filter_by(email=email).first()
+            if user and user.check_password(password):
+                login_user(user)
+                return redirect(url_for('main.wallet'))
+            else:
+                flash('Invalid email or password.', 'danger')
+        except SQLAlchemyError as e:
+            current_app.logger.error(f"Database error during login: {str(e)}")
+            flash('An error occurred while processing your request. Please try again later.', 'danger')
+        except Exception as e:
+            current_app.logger.error(f"Unexpected error during login: {str(e)}")
+            flash('An unexpected error occurred. Please try again later.', 'danger')
+    
+    return render_template('login.html', form=form)
+
+@auth.route('/logout')
+@login_required
+def logout():
+    try:
+        logout_user()
+        flash('You have been logged out successfully.', 'success')
+    except SQLAlchemyError as e:
+        current_app.logger.error(f"Database error during logout: {str(e)}")
+        flash('An error occurred during logout. Please try again.', 'danger')
+    except Exception as e:
+        current_app.logger.error(f"Unexpected error during logout: {str(e)}")
+        flash('An unexpected error occurred. Please try again.', 'danger')
+    return redirect(url_for('auth.login'))
+
+@main.route('/')
+def index():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.wallet'))
+    return render_template('index.html')
+
 @main.route('/wallet')
 @login_required
 def wallet():
-    current_app.logger.debug(f"Wallet route accessed. User authenticated: {current_user.is_authenticated}")
     try:
         current_app.logger.info(f"Fetching API keys for user {current_user.id}")
         api_keys = APIKey.query.filter_by(user_id=current_user.id).all()
@@ -39,8 +107,6 @@ def wallet():
         for category, keys in grouped_keys.items():
             current_app.logger.info(f"Category '{category}' has {len(keys)} keys")
         
-        current_app.logger.debug(f"grouped_keys content: {grouped_keys}")
-        
         return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
     except Exception as e:
         current_app.logger.error(f"Error in wallet route: {str(e)}")
@@ -48,118 +114,180 @@ def wallet():
         flash('An error occurred while retrieving your wallet. Please try again later.', 'danger')
         return redirect(url_for('main.index'))
 
-@main.route('/')
-def index():
-    current_app.logger.debug(f"Index route accessed. User authenticated: {current_user.is_authenticated}")
-    if current_user.is_authenticated:
-        current_app.logger.debug(f"Authenticated user {current_user.id} redirected to wallet")
-        return redirect(url_for('main.wallet'))
-    return render_template('index.html')
-
-@auth.route('/register', methods=['GET', 'POST'])
-def register():
-    if current_user.is_authenticated:
-        return redirect(url_for('main.wallet'))
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        email = form.email.data
-        password = form.password.data
-        
-        user = User.query.filter_by(email=email).first()
-        if user:
-            flash('Email already exists.', 'danger')
-            return redirect(url_for('auth.register'))
-        
-        new_user = User(email=email)
-        new_user.set_password(password)
-        db.session.add(new_user)
-        db.session.commit()
-        
-        send_confirmation_email(new_user)
-        
-        flash('Registration successful. Please check your email to confirm your account.', 'success')
-        return redirect(url_for('auth.login'))
-    
-    return render_template('register.html', form=form)
-
-@auth.route('/confirm/<token>')
-def confirm_email(token):
-    user = User.query.filter_by(email_confirm_token=token).first()
-    if user:
-        user.email_confirmed = True
-        user.email_confirm_token = None
-        db.session.commit()
-        flash('Your email has been confirmed. You can now log in.', 'success')
-    else:
-        flash('The confirmation link is invalid or has expired.', 'danger')
-    return redirect(url_for('auth.login'))
-
-@auth.route('/login', methods=['GET', 'POST'])
-def login():
-    current_app.logger.debug(f"Login route accessed. User authenticated: {current_user.is_authenticated}")
-    if current_user.is_authenticated:
-        current_app.logger.debug(f"Already authenticated user {current_user.id} redirected to wallet")
-        return redirect(url_for('main.wallet'))
-    
-    form = LoginForm()
-    if form.validate_on_submit():
-        email = form.email.data
-        password = form.password.data
-        
-        try:
-            user = User.query.filter_by(email=email).first()
-            if user and user.check_password(password):
-                if not user.email_confirmed:
-                    flash('Please confirm your email before logging in.', 'warning')
-                    return redirect(url_for('auth.login'))
-                
-                current_app.logger.debug(f"User {user.id} password check passed. Logging in...")
-                login_user(user)
-                current_app.logger.debug(f"User {user.id} logged in. Authenticated: {current_user.is_authenticated}")
-                next_page = request.args.get('next')
-                current_app.logger.debug(f"Next page: {next_page}")
-                if not next_page or urlparse(next_page).netloc != '':
-                    next_page = url_for('main.wallet')
-                current_app.logger.debug(f"Redirecting to: {next_page}")
-                return redirect(next_page)
-            else:
-                current_app.logger.warning(f"Failed login attempt for email: {email}")
-                flash('Invalid email or password.', 'danger')
-        except SQLAlchemyError as e:
-            current_app.logger.error(f"Database error during login: {str(e)}")
-            flash('An error occurred while processing your request. Please try again later.', 'danger')
-        except Exception as e:
-            current_app.logger.error(f"Unexpected error during login: {str(e)}")
-            flash('An unexpected error occurred. Please try again later.', 'danger')
-    
-    return render_template('login.html', form=form)
-
-@auth.route('/logout')
+@main.route('/add_key', methods=['GET', 'POST'])
 @login_required
-def logout():
-    current_app.logger.info(f"Logout route accessed by user {current_user.id}")
+def add_key():
+    form = AddAPIKeyForm()
+    categories = Category.query.filter_by(user_id=current_user.id).all()
+    form.category.choices = [(0, 'Uncategorized')] + [(c.id, c.name) for c in categories]
+    
+    if form.validate_on_submit():
+        try:
+            current_app.logger.debug(f"Form data: key_name={form.key_name.data}, category={form.category.data}")
+            
+            encrypted_key = encrypt_key(form.api_key.data)
+            new_key = APIKey(
+                user_id=current_user.id,
+                key_name=form.key_name.data,
+                encrypted_key=encrypted_key,
+                category_id=form.category.data if form.category.data != 0 else None
+            )
+            db.session.add(new_key)
+            db.session.commit()
+            flash('API Key added successfully.', 'success')
+            return redirect(url_for('main.wallet'))
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            current_app.logger.error(f"Database error in add_key route: {str(e)}")
+            current_app.logger.error(f"Error type: {type(e).__name__}")
+            current_app.logger.error(f"Error details: {e.args}")
+            current_app.logger.error(f"Traceback: {traceback.format_exc()}")
+            flash('An error occurred while adding the API key. Please try again.', 'danger')
+        except Exception as e:
+            db.session.rollback()
+            current_app.logger.error(f"Unexpected error in add_key route: {str(e)}")
+            current_app.logger.error(f"Error type: {type(e).__name__}")
+            current_app.logger.error(f"Error details: {e.args}")
+            current_app.logger.error(f"Traceback: {traceback.format_exc()}")
+            flash('An unexpected error occurred. Please try again.', 'danger')
+
+    return render_template('add_key.html', form=form)
+
+@main.route('/copy_key/<int:key_id>', methods=['POST'])
+@login_required
+def copy_key(key_id):
     try:
-        logout_user()
-        current_app.logger.info("User successfully logged out")
-        flash('You have been logged out successfully.', 'success')
-    except SQLAlchemyError as e:
-        current_app.logger.error(f"Database error during logout: {str(e)}")
-        flash('An error occurred during logout. Please try again.', 'danger')
+        current_app.logger.info(f"Copy key request received for key_id: {key_id}")
+        api_key = APIKey.query.filter_by(id=key_id, user_id=current_user.id).first()
+        if not api_key:
+            current_app.logger.warning(f"API key not found or unauthorized for key_id: {key_id}")
+            return jsonify({'error': 'API key not found or unauthorized'}), 403
+        current_app.logger.info(f"API key found for key_id: {key_id}")
+        decrypted_key = decrypt_key(api_key.encrypted_key)
+        current_app.logger.info(f"API key successfully decrypted for key_id: {key_id}")
+        return jsonify({'key': decrypted_key})
     except Exception as e:
-        current_app.logger.error(f"Unexpected error during logout: {str(e)}")
-        flash('An unexpected error occurred. Please try again.', 'danger')
-    return redirect(url_for('auth.login'))
+        current_app.logger.error(f'Error in copy_key route: {str(e)}')
+        current_app.logger.error(traceback.format_exc())
+        return jsonify({'error': 'An error occurred while processing the request'}), 500
+
+@main.route('/delete_key/<int:key_id>', methods=['POST'])
+@login_required
+def delete_key(key_id):
+    try:
+        api_key = APIKey.query.filter_by(id=key_id, user_id=current_user.id).first()
+        if api_key:
+            db.session.delete(api_key)
+            db.session.commit()
+            return jsonify({'message': 'API Key deleted successfully.'}), 200
+        else:
+            return jsonify({'error': 'API Key not found or unauthorized.'}), 404
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        current_app.logger.error(f'Database error in delete_key route: {str(e)}')
+        return jsonify({'error': 'An error occurred while deleting the API key.'}), 500
 
 @main.route('/add_category', methods=['GET', 'POST'])
 @login_required
 def add_category():
     form = AddCategoryForm()
     if form.validate_on_submit():
-        new_category = Category(name=form.name.data, user_id=current_user.id)
-        db.session.add(new_category)
-        db.session.commit()
-        flash('New category added successfully!', 'success')
-        return redirect(url_for('main.wallet'))
+        try:
+            new_category = Category(name=form.name.data, user_id=current_user.id)
+            db.session.add(new_category)
+            db.session.commit()
+            flash('Category added successfully.', 'success')
+            return redirect(url_for('main.wallet'))
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            current_app.logger.error(f'Database error in add_category route: {str(e)}')
+            flash('An error occurred while adding the category. Please try again later.', 'danger')
     return render_template('add_category.html', form=form)
 
-# Add other routes as needed...
+@main.route('/update_key_category/<int:key_id>', methods=['POST'])
+@login_required
+def update_key_category(key_id):
+    try:
+        category_id = request.json.get('category_id')
+        api_key = APIKey.query.filter_by(id=key_id, user_id=current_user.id).first()
+        if api_key:
+            api_key.category_id = category_id if category_id != 0 else None
+            db.session.commit()
+            return jsonify({'message': 'Category updated successfully.'}), 200
+        return jsonify({'error': 'API Key not found or unauthorized.'}), 404
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        current_app.logger.error(f'Database error in update_key_category route: {str(e)}')
+        return jsonify({'error': 'An error occurred while updating the category.'}), 500
+
+@main.route('/manage_categories')
+@login_required
+def manage_categories():
+    categories = Category.query.filter_by(user_id=current_user.id).all()
+    return render_template('manage_categories.html', categories=categories)
+
+@main.route('/edit_category/<int:category_id>', methods=['GET', 'POST'])
+@login_required
+def edit_category(category_id):
+    category = Category.query.filter_by(id=category_id, user_id=current_user.id).first_or_404()
+    form = AddCategoryForm(obj=category)
+    if form.validate_on_submit():
+        try:
+            category.name = form.name.data
+            db.session.commit()
+            flash('Category updated successfully.', 'success')
+            return redirect(url_for('main.manage_categories'))
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            current_app.logger.error(f'Database error in edit_category route: {str(e)}')
+            flash('An error occurred while updating the category. Please try again later.', 'danger')
+    return render_template('edit_category.html', form=form, category=category)
+
+@main.route('/delete_category/<int:category_id>', methods=['POST'])
+@login_required
+def delete_category(category_id):
+    try:
+        category = Category.query.filter_by(id=category_id, user_id=current_user.id).first_or_404()
+        db.session.delete(category)
+        db.session.commit()
+        flash('Category deleted successfully.', 'success')
+        return redirect(url_for('main.manage_categories'))
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        current_app.logger.error(f'Database error in delete_category route: {str(e)}')
+        flash('An error occurred while deleting the category. Please try again later.', 'danger')
+        return redirect(url_for('main.manage_categories'))
+
+@main.route('/edit_key/<int:key_id>', methods=['POST'])
+@login_required
+def edit_key(key_id):
+    try:
+        api_key = APIKey.query.filter_by(id=key_id, user_id=current_user.id).first()
+        if api_key:
+            new_name = request.json.get('key_name')
+            if new_name:
+                api_key.key_name = new_name
+                db.session.commit()
+                return jsonify({'message': 'API Key name updated successfully.'}), 200
+            else:
+                return jsonify({'error': 'New key name is required.'}), 400
+        else:
+            return jsonify({'error': 'API Key not found or unauthorized.'}), 404
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        current_app.logger.error(f'Database error in edit_key route: {str(e)}')
+        return jsonify({'error': 'An error occurred while updating the API key name.'}), 500
+
+@main.route('/get_key/<int:key_id>', methods=['POST'])
+@login_required
+def get_key(key_id):
+    try:
+        api_key = APIKey.query.filter_by(id=key_id, user_id=current_user.id).first()
+        if api_key:
+            decrypted_key = decrypt_key(api_key.encrypted_key)
+            return jsonify({'key': decrypted_key}), 200
+        else:
+            return jsonify({'error': 'API Key not found or unauthorized.'}), 404
+    except Exception as e:
+        current_app.logger.error(f'Error in get_key route: {str(e)}')
+        return jsonify({'error': 'An error occurred while retrieving the API key.'}), 500

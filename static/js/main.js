@@ -210,37 +210,26 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function filterApiKeys(categoryId) {
-        console.log('Filtering API keys for category:', categoryId);
         const apiKeys = document.querySelectorAll('.api-key');
         const categoryGroups = document.querySelectorAll('.category-group');
 
         if (categoryId === 'all') {
-            console.log('Showing all API keys');
             apiKeys.forEach(key => key.style.display = 'block');
             categoryGroups.forEach(group => group.style.display = 'block');
         } else {
-            console.log('Filtering API keys for specific category');
             apiKeys.forEach(key => {
-                const keyCategory = key.getAttribute('data-category-id');
-                console.log('API key category:', keyCategory, 'Selected category:', categoryId);
-                if (keyCategory === categoryId) {
+                if (key.getAttribute('data-category-id') === categoryId) {
                     key.style.display = 'block';
-                    console.log('Showing API key:', key);
                 } else {
                     key.style.display = 'none';
-                    console.log('Hiding API key:', key);
                 }
             });
 
             categoryGroups.forEach(group => {
-                const groupCategory = group.getAttribute('data-category-id');
-                console.log('Category group:', groupCategory, 'Selected category:', categoryId);
-                if (groupCategory === categoryId) {
+                if (group.getAttribute('data-category-id') === categoryId) {
                     group.style.display = 'block';
-                    console.log('Showing category group:', group);
                 } else {
                     group.style.display = 'none';
-                    console.log('Hiding category group:', group);
                 }
             });
         }
@@ -250,7 +239,6 @@ document.addEventListener('DOMContentLoaded', function() {
         sidebarItems.forEach(item => {
             if (item.getAttribute('data-category-id') === categoryId) {
                 item.classList.add('active');
-                console.log('Setting active category:', item);
             } else {
                 item.classList.remove('active');
             }

@@ -7,7 +7,10 @@
     <div class="form-group">
         {{ form.name.label }}
         {{ form.name(class="form-control") }}
+        {% for error in form.name.errors %}
+            <span class="text-danger">{{ error }}</span>
+        {% endfor %}
     </div>
-    {{ form.submit(class="btn btn-primary") }}
+    {{ form.submit(class="btn") }}
 </form>
 {% endblock %}
