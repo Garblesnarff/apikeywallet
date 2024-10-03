@@ -47,8 +47,6 @@ def wallet():
         flash('An error occurred while retrieving your wallet. Please try again later.', 'danger')
         return redirect(url_for('main.index'))
 
-# Add other routes here...
-
 @main.route('/')
 def index():
     if current_user.is_authenticated:
@@ -118,5 +116,17 @@ def logout():
         current_app.logger.error(f"Unexpected error during logout: {str(e)}")
         flash('An unexpected error occurred. Please try again.', 'danger')
     return redirect(url_for('auth.login'))
+
+@main.route('/add_category', methods=['GET', 'POST'])
+@login_required
+def add_category():
+    form = AddCategoryForm()
+    if form.validate_on_submit():
+        new_category = Category(name=form.name.data, user_id=current_user.id)
+        db.session.add(new_category)
+        db.session.commit()
+        flash('New category added successfully!', 'success')
+        return redirect(url_for('main.wallet'))
+    return render_template('add_category.html', form=form)
 
 # Add other routes as needed...
