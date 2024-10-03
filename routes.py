@@ -84,11 +84,15 @@ def index():
     return render_template('index.html')
 
 @main.route('/wallet')
+@main.route('/wallet/<int:category_id>')
 @login_required
-def wallet():
+def wallet(category_id=None):
     try:
         current_app.logger.info(f"Fetching API keys for user {current_user.id}")
-        api_keys = APIKey.query.filter_by(user_id=current_user.id).all()
+        if category_id:
+            api_keys = APIKey.query.filter_by(user_id=current_user.id, category_id=category_id).all()
+        else:
+            api_keys = APIKey.query.filter_by(user_id=current_user.id).all()
         current_app.logger.info(f"Fetched {len(api_keys)} API keys")
         
         current_app.logger.info(f"Fetching categories for user {current_user.id}")
@@ -107,7 +111,7 @@ def wallet():
         for category, keys in grouped_keys.items():
             current_app.logger.info(f"Category '{category}' has {len(keys)} keys")
         
-        return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
+        return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, current_category_id=category_id, debug=current_app.debug)
     except Exception as e:
         current_app.logger.error(f"Error in wallet route: {str(e)}")
         current_app.logger.error(traceback.format_exc())
