@@ -16,18 +16,14 @@
             <li data-category-id="all" class="{% if not current_category_id %}active{% endif %}">
                 <a href="{{ url_for('main.wallet') }}"><i class="fas fa-layer-group"></i> All Keys</a>
             </li>
-            {% for category in categories %}
-                {% if category.name in grouped_keys %}
-                    <li data-category-id="{{ category.id }}" class="{% if current_category_id == category.id %}active{% endif %}">
-                        <a href="{{ url_for('main.wallet', category_id=category.id) }}"><i class="fas fa-folder"></i> {{ category.name }}</a>
-                    </li>
-                {% endif %}
-            {% endfor %}
-            {% if 'Uncategorized' in grouped_keys %}
-                <li data-category-id="uncategorized" class="{% if current_category_id == 0 %}active{% endif %}">
-                    <a href="{{ url_for('main.wallet', category_id=0) }}"><i class="fas fa-question-circle"></i> Uncategorized</a>
+            {% for category in all_categories %}
+                <li data-category-id="{{ category.id }}" class="{% if current_category_id == category.id %}active{% endif %}">
+                    <a href="{{ url_for('main.wallet', category_id=category.id) }}"><i class="fas fa-folder"></i> {{ category.name }}</a>
                 </li>
-            {% endif %}
+            {% endfor %}
+            <li data-category-id="uncategorized" class="{% if current_category_id == 0 %}active{% endif %}">
+                <a href="{{ url_for('main.wallet', category_id=0) }}"><i class="fas fa-question-circle"></i> Uncategorized</a>
+            </li>
         </ul>
         <a href="{{ url_for('main.add_category') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> Add Category</a>
         <a href="{{ url_for('main.manage_categories') }}" class="btn btn-sm btn-secondary"><i class="fas fa-cog"></i> Manage Categories</a>
@@ -54,7 +50,7 @@
                                         <button class="delete-btn" data-key-id="{{ key.id }}" title="Delete Key"><i class="fas fa-trash-alt"></i></button>
                                         <select class="category-select" data-key-id="{{ key.id }}">
                                             <option value="0">Uncategorized</option>
-                                            {% for cat in categories %}
+                                            {% for cat in all_categories %}
                                                 <option value="{{ cat.id }}" {% if key.category_id == cat.id %}selected{% endif %}>{{ cat.name }}</option>
                                             {% endfor %}
                                         </select>
