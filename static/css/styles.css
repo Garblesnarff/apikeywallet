@@ -123,9 +123,9 @@ h2 {
 }
 
 .category-panel {
-    width: 200px;
+    width: 220px;
     background: linear-gradient(to bottom, #011B2A, #022B42);
-    padding: 20px;
+    padding: 25px;
     overflow-y: auto;
     height: 100%;
 }
@@ -140,28 +140,37 @@ h2 {
 #category-list {
     list-style-type: none;
     padding: 0;
+    margin-bottom: 20px;
 }
 
 #category-list li {
     cursor: pointer;
-    padding: 10px;
-    margin-bottom: 5px;
+    padding: 12px;
+    margin-bottom: 8px;
     border-radius: 5px;
-    transition: background-color 0.3s, color 0.3s, text-shadow 0.3s;
+    transition: all 0.3s ease;
     color: #03A9F4;
     font-weight: bold;
 }
 
 #category-list li:hover,
 #category-list li.active {
-    background-color: #023E56;
-    color: #F0F0F0;
-    text-shadow: 0 0 5px rgba(3, 169, 244, 0.7);
+    background-color: #025F89;
+    color: #03F0FF;
+    text-shadow: 0 0 5px rgba(3, 240, 255, 0.7);
+    border: 1px solid #03A9F4;
+    box-shadow: 0 0 5px rgba(3, 169, 244, 0.5);
 }
 
 #category-list li i {
     margin-right: 10px;
     color: #03A9F4;
+    transition: color 0.3s ease;
+}
+
+#category-list li:hover i,
+#category-list li.active i {
+    color: #05C8FF;
 }
 
 .api-key-content {
@@ -403,18 +412,26 @@ h2 {
 
 .category-panel .btn-sm {
     width: 100%;
-    margin-top: 10px;
+    margin-top: 15px;
     font-size: 1rem;
-    padding: 10px;
+    padding: 12px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
 }
 
+.category-panel .btn-sm:first-of-type {
+    background-color: #0390DF;
+}
+
+.category-panel .btn-sm:last-of-type {
+    background-color: #045073;
+}
+
 .category-panel .btn-sm:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    background-color: #03A9F4;
+    background-color: #048CBA;
 }
 
 .add-key-btn {

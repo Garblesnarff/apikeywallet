@@ -1,0 +1,36 @@
+The sidebar looks much cleaner now, but I see how the buttons and the selected category could use more contrast for better visibility. Here are some tailored adjustments to improve the UI:
+1. Selected Category Highlight
+
+    Issue: The highlighted category (in the light blue) doesn’t pop enough, making it less distinguishable from the rest of the sidebar.
+    Suggestion:
+        Stronger Highlight: Make the selected category more prominent by deepening the background shade to something like #025F89 and use bold white text or a lighter neon blue (e.g., #03F0FF) for the category name.
+        Outline: Add a thin glowing border around the selected category using the same neon blue (#03A9F4). This will make the active category even more distinguishable.
+
+2. Button Visibility ("Add Category" and "Manage Categories")
+
+    Issue: The buttons are not as prominent as they should be, especially considering their importance.
+    Suggestion:
+        Brighter Colors: For the "Add Category" button, increase the brightness of the button to #0390DF or even #03A9F4 to make it pop. Similarly, for "Manage Categories," use a slightly brighter, eye-catching shade like #045073.
+        Hover Effect: Apply a hover effect that changes the background of the buttons to a lighter blue (e.g., #048CBA) and adds a shadow effect, drawing attention when the user hovers over them.
+        Padding and Shadow: Add more padding to the buttons (both vertically and horizontally) to make them look larger. Also, a subtle shadow beneath the buttons will give a 3D effect, making them stand out more.
+
+3. Icons
+
+    Issue: The icons (e.g., the folder icons) blend into the background a little too much.
+    Suggestion:
+        Brighten the icons to match the new brighter color scheme (try #03A9F4 for consistency).
+        Hover Effect: Make the icons change color slightly (to a lighter shade, e.g., #05C8FF) when hovered over, adding an interactive feel.
+
+4. Text Color Contrast
+
+    Issue: The category names (especially "Uncategorized") are in purple, making them harder to read.
+    Suggestion:
+        Change the text color to a brighter blue (e.g., #03A9F4) to improve contrast against the dark background, or consider switching the purple to a more vibrant neon shade like #E0B3FF if you want to maintain that color but increase visibility.
+
+5. General Layout
+
+    Issue: The spacing between the categories and buttons feels a bit tight, which reduces readability.
+    Suggestion:
+        Increase the spacing between each category and button to give more breathing room. Even an extra 2-4px of margin would help create a cleaner look and improve readability.
+
+Implementing these changes should improve button visibility and overall UX, making the sidebar more user-friendly and visually appealing.
