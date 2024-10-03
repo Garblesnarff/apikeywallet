@@ -351,4 +351,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const parts = value.split(`; ${name}=`);
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
+
+    // Fix sidebar button functionality
+    const categoryListItems = document.querySelectorAll('#category-list li');
+    categoryListItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            if (e.target !== this.querySelector('a')) {
+                e.preventDefault();
+                this.querySelector('a').click();
+            }
+        });
+    });
 });
