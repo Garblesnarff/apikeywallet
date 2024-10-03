@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, g, current_app
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import User, APIKey, Category
+from models import User, APIKey, Category, AuditLog
 from forms import RegistrationForm, LoginForm, AddAPIKeyForm, AddCategoryForm
 from app import db
 from utils import encrypt_key, decrypt_key
@@ -134,6 +134,12 @@ def add_key():
             )
             db.session.add(new_key)
             db.session.commit()
+
+            # Log the add action
+            audit_log = AuditLog(user_id=current_user.id, action='add', api_key_id=new_key.id)
+            db.session.add(audit_log)
+            db.session.commit()
+
             flash('API Key added successfully.', 'success')
             return redirect(url_for('main.wallet'))
         except SQLAlchemyError as e:
@@ -165,6 +171,12 @@ def copy_key(key_id):
         current_app.logger.info(f"API key found for key_id: {key_id}")
         decrypted_key = decrypt_key(api_key.encrypted_key)
         current_app.logger.info(f"API key successfully decrypted for key_id: {key_id}")
+
+        # Log the copy action
+        audit_log = AuditLog(user_id=current_user.id, action='copy', api_key_id=key_id)
+        db.session.add(audit_log)
+        db.session.commit()
+
         return jsonify({'key': decrypted_key})
     except Exception as e:
         current_app.logger.error(f'Error in copy_key route: {str(e)}')
@@ -178,7 +190,12 @@ def delete_key(key_id):
         api_key = APIKey.query.filter_by(id=key_id, user_id=current_user.id).first()
         if api_key:
             db.session.delete(api_key)
+
+            # Log the delete action
+            audit_log = AuditLog(user_id=current_user.id, action='delete', api_key_id=key_id)
+            db.session.add(audit_log)
             db.session.commit()
+
             return jsonify({'message': 'API Key deleted successfully.'}), 200
         else:
             return jsonify({'error': 'API Key not found or unauthorized.'}), 404
@@ -291,3 +308,9 @@ def get_key(key_id):
     except Exception as e:
         current_app.logger.error(f'Error in get_key route: {str(e)}')
         return jsonify({'error': 'An error occurred while retrieving the API key.'}), 500
+
+@main.route('/audit_log')
+@login_required
+def audit_log():
+    logs = AuditLog.query.filter_by(user_id=current_user.id).order_by(AuditLog.timestamp.desc()).all()
+    return render_template('audit_log.html', logs=logs)
