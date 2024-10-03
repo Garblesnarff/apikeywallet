@@ -1,7 +1,7 @@
 import os
-from flask import Flask, g
+from flask import Flask, g, request
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
@@ -52,6 +52,7 @@ def get_db_session():
 @app.before_request
 def before_request():
     g.db = get_db_session()
+    app.logger.debug(f"Request to {request.path}. User authenticated: {current_user.is_authenticated}")
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
