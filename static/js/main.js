@@ -233,16 +233,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
-
-        // Update the active state of the sidebar items
-        const sidebarItems = document.querySelectorAll('#category-list li');
-        sidebarItems.forEach(item => {
-            if (item.getAttribute('data-category-id') === categoryId) {
-                item.classList.add('active');
-            } else {
-                item.classList.remove('active');
-            }
-        });
     }
 
     async function updateKeyCategory(keyId, categoryId) {

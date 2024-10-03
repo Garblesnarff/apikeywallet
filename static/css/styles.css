@@ -18,7 +18,7 @@
 body {
     font-family: 'Roboto', Arial, sans-serif;
     line-height: 1.6;
-    background: linear-gradient(135deg, #011320 0%, #022A44 100%);
+    background-color: var(--background-color);
     color: var(--text-color);
 }
 
@@ -295,8 +295,9 @@ h2 {
 
 .auth-container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     min-height: 100vh;
     padding: 20px;
 }
@@ -307,8 +308,7 @@ h2 {
     background-color: #031F2F;
     padding: 30px;
     border-radius: 8px;
-    border: 1px solid #0299C9;
-    box-shadow: 0 0 20px rgba(2, 153, 201, 0.1);
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 @media (max-width: 768px) {
@@ -389,45 +389,4 @@ h2 {
 
 .toggle-visibility-btn:hover {
     color: var(--button-hover-color);
-}
-
-.btn-login {
-    width: 100%;
-    padding: 12px;
-    font-size: 18px;
-    border-radius: 5px;
-    background-color: #0299C9;
-    transition: background-color 0.3s, box-shadow 0.3s;
-}
-
-.btn-login:hover {
-    background-color: #03A9F4;
-    box-shadow: 0 0 10px rgba(3, 169, 244, 0.5);
-}
-
-.register-link {
-    font-size: 16px;
-    color: #0299C9;
-    font-weight: bold;
-    transition: color 0.3s;
-}
-
-.register-link:hover {
-    color: #03A9F4;
-}
-
-.api-key.inactive {
-    opacity: 0.6;
-    background-color: #f0f0f0;
-}
-
-.api-key .expired,
-.api-key .revoked {
-    color: #ff0000;
-    font-weight: bold;
-}
-
-.expiration-date {
-    font-size: 0.8rem;
-    color: #666;
 }

@@ -25,20 +25,10 @@ class APIKey(db.Model):
     encrypted_key = db.Column(db.Text, nullable=False)
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=True)
-    expiration_date = db.Column(db.DateTime, nullable=True)
-    is_revoked = db.Column(db.Boolean, default=False, nullable=False)
 
     def __init__(self, *args, **kwargs):
         super(APIKey, self).__init__(*args, **kwargs)
         logging.info(f"Creating new APIKey: user_id={self.user_id}, key_name={self.key_name}, category_id={self.category_id}")
-
-    @property
-    def is_expired(self):
-        return self.expiration_date is not None and datetime.utcnow() > self.expiration_date
-
-    @property
-    def is_active(self):
-        return not self.is_revoked and not self.is_expired
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -49,18 +39,3 @@ class Category(db.Model):
     def __init__(self, *args, **kwargs):
         super(Category, self).__init__(*args, **kwargs)
         logging.info(f"Creating new Category: name={self.name}, user_id={self.user_id}")
-
-class AuditLog(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    action = db.Column(db.String(50), nullable=False)
-    api_key_id = db.Column(db.Integer, db.ForeignKey('api_key.id'), nullable=True)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-
-    user = db.relationship('User', backref=db.backref('audit_logs', lazy='dynamic'))
-    api_key = db.relationship('APIKey', backref=db.backref('audit_logs', lazy='dynamic'))
-
-    def __init__(self, user_id, action, api_key_id=None):
-        self.user_id = user_id
-        self.action = action
-        self.api_key_id = api_key_id
