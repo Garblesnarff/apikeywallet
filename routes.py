@@ -17,6 +17,7 @@ auth = Blueprint('auth', __name__)
 @login_required
 def wallet():
     try:
+        current_app.logger.info(f"Wallet route accessed by user {current_user.id}")
         current_app.logger.info(f"Fetching API keys for user {current_user.id}")
         api_keys = APIKey.query.filter_by(user_id=current_user.id).all()
         current_app.logger.info(f"Fetched {len(api_keys)} API keys")
@@ -37,7 +38,6 @@ def wallet():
         for category, keys in grouped_keys.items():
             current_app.logger.info(f"Category '{category}' has {len(keys)} keys")
         
-        # Add debug logging for grouped_keys
         current_app.logger.debug(f"grouped_keys content: {grouped_keys}")
         
         return render_template('wallet.html', grouped_keys=grouped_keys, categories=categories, debug=current_app.debug)
@@ -49,7 +49,9 @@ def wallet():
 
 @main.route('/')
 def index():
+    current_app.logger.info(f"Index route accessed. User authenticated: {current_user.is_authenticated}")
     if current_user.is_authenticated:
+        current_app.logger.info(f"Authenticated user {current_user.id} redirected to wallet")
         return redirect(url_for('main.wallet'))
     return render_template('index.html')
 
@@ -79,7 +81,9 @@ def register():
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
+    current_app.logger.info(f"Login route accessed. User authenticated: {current_user.is_authenticated}")
     if current_user.is_authenticated:
+        current_app.logger.info(f"Already authenticated user {current_user.id} redirected to wallet")
         return redirect(url_for('main.wallet'))
     
     form = LoginForm()
@@ -91,8 +95,13 @@ def login():
             user = User.query.filter_by(email=email).first()
             if user and user.check_password(password):
                 login_user(user)
-                return redirect(url_for('main.wallet'))
+                current_app.logger.info(f"User {user.id} successfully logged in")
+                next_page = request.args.get('next')
+                if not next_page or url_parse(next_page).netloc != '':
+                    next_page = url_for('main.wallet')
+                return redirect(next_page)
             else:
+                current_app.logger.warning(f"Failed login attempt for email: {email}")
                 flash('Invalid email or password.', 'danger')
         except SQLAlchemyError as e:
             current_app.logger.error(f"Database error during login: {str(e)}")
@@ -106,8 +115,10 @@ def login():
 @auth.route('/logout')
 @login_required
 def logout():
+    current_app.logger.info(f"Logout route accessed by user {current_user.id}")
     try:
         logout_user()
+        current_app.logger.info("User successfully logged out")
         flash('You have been logged out successfully.', 'success')
     except SQLAlchemyError as e:
         current_app.logger.error(f"Database error during logout: {str(e)}")
