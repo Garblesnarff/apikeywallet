@@ -27,7 +27,7 @@ def register():
             flash('Email already exists.', 'danger')
             return redirect(url_for('auth.register'))
         
-        new_user = User(email=email)
+        new_user = User(email=email, email_confirmed=False)
         new_user.set_password(password)
         db.session.add(new_user)
         db.session.commit()
