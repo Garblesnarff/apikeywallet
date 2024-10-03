@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from models import User, APIKey, Category
 from forms import RegistrationForm, LoginForm, AddAPIKeyForm, AddCategoryForm
 from app import db
-from utils import encrypt_key, decrypt_key, send_email
+from utils import encrypt_key, decrypt_key
 import logging
 import traceback
 from sqlalchemy.exc import SQLAlchemyError
@@ -27,30 +27,15 @@ def register():
             flash('Email already exists.', 'danger')
             return redirect(url_for('auth.register'))
         
-        new_user = User(email=email, email_confirmed=False)
+        new_user = User(email=email)
         new_user.set_password(password)
         db.session.add(new_user)
         db.session.commit()
         
-        token = new_user.generate_confirmation_token()
-        send_email(new_user.email, 'Confirm Your Account',
-                   'email/confirm', user=new_user, token=token)
-        flash('A confirmation email has been sent to you by email.', 'info')
+        flash('Registration successful. Please log in.', 'success')
         return redirect(url_for('auth.login'))
     
     return render_template('register.html', form=form)
-
-@auth.route('/confirm/<token>')
-@login_required
-def confirm(token):
-    if current_user.email_confirmed:
-        return redirect(url_for('main.wallet'))
-    if current_user.confirm(token):
-        db.session.commit()
-        flash('You have confirmed your account. Thanks!', 'success')
-    else:
-        flash('The confirmation link is invalid or has expired.', 'danger')
-    return redirect(url_for('main.wallet'))
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -65,11 +50,8 @@ def login():
         try:
             user = User.query.filter_by(email=email).first()
             if user and user.check_password(password):
-                if user.email_confirmed:
-                    login_user(user)
-                    return redirect(url_for('main.wallet'))
-                else:
-                    flash('Please confirm your email before logging in.', 'warning')
+                login_user(user)
+                return redirect(url_for('main.wallet'))
             else:
                 flash('Invalid email or password.', 'danger')
         except SQLAlchemyError as e:
