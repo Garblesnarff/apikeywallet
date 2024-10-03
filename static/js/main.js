@@ -48,13 +48,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     categoryList.addEventListener('click', function(e) {
-        if (e.target.tagName === 'A' || e.target.closest('a')) {
-            e.preventDefault();
-            const categoryId = e.target.closest('li').getAttribute('data-category-id');
+        if (e.target.tagName === 'LI') {
+            const categoryId = e.target.getAttribute('data-category-id');
             filterApiKeys(categoryId);
             document.querySelectorAll('#category-list li').forEach(li => li.classList.remove('active'));
-            e.target.closest('li').classList.add('active');
-            history.pushState(null, '', e.target.closest('a').href);
+            e.target.classList.add('active');
         }
     });
 

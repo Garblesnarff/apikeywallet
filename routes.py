@@ -93,23 +93,22 @@ def wallet(category_id=None):
         
         if category_id:
             api_keys = APIKey.query.filter_by(user_id=current_user.id, category_id=category_id).all()
+            grouped_keys = {category.name: [] for category in categories if category.id == category_id}
+            grouped_keys['Uncategorized'] = []
         else:
             api_keys = APIKey.query.filter_by(user_id=current_user.id).all()
-        
-        grouped_keys = {}
-        for category in categories:
-            grouped_keys[category.name] = []
-        grouped_keys['Uncategorized'] = []
+            grouped_keys = {category.name: [] for category in categories}
+            grouped_keys['Uncategorized'] = []
         
         for key in api_keys:
             if key.category:
-                grouped_keys[key.category.name].append(key)
+                if key.category.name in grouped_keys:
+                    grouped_keys[key.category.name].append(key)
             else:
                 grouped_keys['Uncategorized'].append(key)
         
-        # Remove empty categories only if a specific category is selected
-        if category_id:
-            grouped_keys = {k: v for k, v in grouped_keys.items() if v or k == next((c.name for c in categories if c.id == category_id), None)}
+        # Remove empty categories
+        grouped_keys = {k: v for k, v in grouped_keys.items() if v}
         
         for category, keys in grouped_keys.items():
             current_app.logger.info(f"Category '{category}' has {len(keys)} keys")
