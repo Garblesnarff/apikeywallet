@@ -105,7 +105,6 @@ def wallet(category_id=None):
             else:
                 grouped_keys['Uncategorized'].append(key)
         
-        # Remove empty categories only from the main display, not the sidebar
         display_grouped_keys = {k: v for k, v in grouped_keys.items() if v}
         
         for category, keys in display_grouped_keys.items():
@@ -239,12 +238,18 @@ def edit_category(category_id):
         try:
             category.name = form.name.data
             db.session.commit()
+            if request.is_xhr:
+                return jsonify({'success': True, 'message': 'Category updated successfully.'})
             flash('Category updated successfully.', 'success')
             return redirect(url_for('main.manage_categories'))
         except SQLAlchemyError as e:
             db.session.rollback()
             current_app.logger.error(f'Database error in edit_category route: {str(e)}')
+            if request.is_xhr:
+                return jsonify({'success': False, 'error': 'An error occurred while updating the category. Please try again later.'})
             flash('An error occurred while updating the category. Please try again later.', 'danger')
+    if request.is_xhr:
+        return jsonify({'success': False, 'error': 'Invalid form data.'})
     return render_template('edit_category.html', form=form, category=category)
 
 @main.route('/delete_category/<int:category_id>', methods=['POST'])

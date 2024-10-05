@@ -153,6 +153,75 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    const editCategoryButtons = document.querySelectorAll('.edit-category-btn');
+    editCategoryButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const categoryId = this.getAttribute('data-category-id');
+            const categoryName = this.getAttribute('data-category-name');
+            openEditCategoryModal(categoryId, categoryName);
+        });
+    });
+
+    function openEditCategoryModal(categoryId, categoryName) {
+        const modal = document.getElementById('editCategoryModal');
+        const form = document.getElementById('editCategoryForm');
+        const nameInput = document.getElementById('editCategoryName');
+
+        nameInput.value = categoryName;
+        form.setAttribute('action', `/edit_category/${categoryId}`);
+
+        modal.style.display = 'block';
+    }
+
+    window.addEventListener('click', function(event) {
+        const modal = document.getElementById('editCategoryModal');
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    const cancelEditCategoryBtn = document.getElementById('cancelEditCategory');
+    if (cancelEditCategoryBtn) {
+        cancelEditCategoryBtn.addEventListener('click', function() {
+            document.getElementById('editCategoryModal').style.display = 'none';
+        });
+    }
+
+    const editCategoryForm = document.getElementById('editCategoryForm');
+    if (editCategoryForm) {
+        editCategoryForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const categoryId = this.getAttribute('action').split('/').pop();
+
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': getCookie('csrf_token')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showFeedback(data.message, 'success');
+                    document.getElementById('editCategoryModal').style.display = 'none';
+                    const categoryElement = document.querySelector(`[data-category-id="${categoryId}"]`);
+                    if (categoryElement) {
+                        categoryElement.textContent = formData.get('name');
+                    }
+                } else {
+                    showFeedback(data.error, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showFeedback('An error occurred while updating the category.', 'error');
+            });
+        });
+    }
+
     async function copyApiKey(keyId) {
         try {
             const response = await fetch(`/copy_key/${keyId}`, {
@@ -352,7 +421,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
-    // Fix sidebar button functionality
     const categoryListItems = document.querySelectorAll('#category-list li');
     categoryListItems.forEach(item => {
         item.addEventListener('click', function(e) {
