@@ -98,7 +98,7 @@ def wallet(category_id=None):
         else:
             api_keys = APIKey.query.filter_by(user_id=current_user.id).all()
         
-        # Sort the api_keys list after fetching
+        # Sort the api_keys list after fetching (case-insensitive)
         api_keys = sorted(api_keys, key=lambda x: x.key_name.lower())
         
         grouped_keys = {category.name: [] for category in categories}
@@ -109,6 +109,10 @@ def wallet(category_id=None):
                 grouped_keys[key.category.name].append(key)
             else:
                 grouped_keys['Uncategorized'].append(key)
+        
+        # Sort keys within each category
+        for category in grouped_keys:
+            grouped_keys[category] = sorted(grouped_keys[category], key=lambda x: x.key_name.lower())
         
         # Remove empty categories only from the main display, not the sidebar
         display_grouped_keys = {k: v for k, v in grouped_keys.items() if v}
