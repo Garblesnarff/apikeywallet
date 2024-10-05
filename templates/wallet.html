@@ -39,7 +39,7 @@
                     <h3>{{ category }}</h3>
                     <div class="api-key-carousel">
                         <div class="carousel-inner">
-                            {% for key in keys %}
+                            {% for key in keys|sort(attribute='key_name') %}
                                 <div class="api-key" data-category-id="{{ key.category_id or 'uncategorized' }}">
                                     <h4>{{ key.key_name }}</h4>
                                     <p class="masked-key">••••••••••••••••</p>
