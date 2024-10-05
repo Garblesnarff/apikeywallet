@@ -89,7 +89,7 @@ def index():
 def wallet(category_id=None):
     try:
         current_app.logger.info(f"Fetching API keys for user {current_user.id}")
-        categories = Category.query.filter_by(user_id=current_user.id).all()
+        categories = Category.query.filter_by(user_id=current_user.id).order_by(Category.name).all()
         
         if category_id == 0:  # Uncategorized
             api_keys = APIKey.query.filter_by(user_id=current_user.id, category_id=None).order_by(APIKey.key_name).all()
