@@ -226,8 +226,14 @@ def update_key_category(key_id):
 @main.route('/manage_categories')
 @login_required
 def manage_categories():
-    categories = Category.query.filter_by(user_id=current_user.id).all()
-    return render_template('manage_categories.html', categories=categories)
+    try:
+        categories = Category.query.filter_by(user_id=current_user.id).all()
+        form = AddCategoryForm()
+        return render_template('manage_categories.html', categories=categories, form=form)
+    except SQLAlchemyError as e:
+        current_app.logger.error(f'Database error in manage_categories route: {str(e)}')
+        flash('An error occurred while fetching categories. Please try again later.', 'danger')
+        return redirect(url_for('main.wallet'))
 
 @main.route('/edit_category/<int:category_id>', methods=['GET', 'POST'])
 @login_required
