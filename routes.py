@@ -92,11 +92,14 @@ def wallet(category_id=None):
         categories = Category.query.filter_by(user_id=current_user.id).order_by(Category.name).all()
         
         if category_id == 0:  # Uncategorized
-            api_keys = APIKey.query.filter_by(user_id=current_user.id, category_id=None).order_by(APIKey.key_name).all()
+            api_keys = APIKey.query.filter_by(user_id=current_user.id, category_id=None).all()
         elif category_id:
-            api_keys = APIKey.query.filter_by(user_id=current_user.id, category_id=category_id).order_by(APIKey.key_name).all()
+            api_keys = APIKey.query.filter_by(user_id=current_user.id, category_id=category_id).all()
         else:
-            api_keys = APIKey.query.filter_by(user_id=current_user.id).order_by(APIKey.key_name).all()
+            api_keys = APIKey.query.filter_by(user_id=current_user.id).all()
+        
+        # Sort the api_keys list after fetching
+        api_keys = sorted(api_keys, key=lambda x: x.key_name.lower())
         
         grouped_keys = {category.name: [] for category in categories}
         grouped_keys['Uncategorized'] = []
@@ -141,7 +144,7 @@ def add_key():
             db.session.add(new_key)
             db.session.commit()
             flash('API Key added successfully.', 'success')
-            return redirect(url_for('main.wallet'))
+            return redirect(url_for('main.wallet', category_id=new_key.category_id))
         except SQLAlchemyError as e:
             db.session.rollback()
             current_app.logger.error(f"Database error in add_key route: {str(e)}")
@@ -274,7 +277,7 @@ def edit_key(key_id):
             if new_name:
                 api_key.key_name = new_name
                 db.session.commit()
-                return jsonify({'message': 'API Key name updated successfully.'}), 200
+                return jsonify({'message': 'API Key name updated successfully.', 'new_name': new_name}), 200
             else:
                 return jsonify({'error': 'New key name is required.'}), 400
         else:

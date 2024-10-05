@@ -326,6 +326,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (keyElement) {
                     keyElement.textContent = newKeyName;
                 }
+                
+                // Re-sort the keys in the current category
+                const categoryGroup = keyElement.closest('.category-group');
+                const keys = Array.from(categoryGroup.querySelectorAll('.api-key'));
+                keys.sort((a, b) => a.querySelector('h4').textContent.localeCompare(b.querySelector('h4').textContent));
+                keys.forEach(key => categoryGroup.querySelector('.carousel-inner').appendChild(key));
             } else {
                 throw new Error(data.error || 'Failed to update API key name');
             }
