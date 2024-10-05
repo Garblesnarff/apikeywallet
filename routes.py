@@ -244,19 +244,12 @@ def edit_category(category_id):
         try:
             category.name = form.name.data
             db.session.commit()
-            if request.is_xhr:
-                return jsonify({'success': True, 'message': 'Category updated successfully.'})
-            flash('Category updated successfully.', 'success')
-            return redirect(url_for('main.manage_categories'))
+            return jsonify({'success': True, 'message': 'Category updated successfully.'})
         except SQLAlchemyError as e:
             db.session.rollback()
             current_app.logger.error(f'Database error in edit_category route: {str(e)}')
-            if request.is_xhr:
-                return jsonify({'success': False, 'error': 'An error occurred while updating the category. Please try again later.'})
-            flash('An error occurred while updating the category. Please try again later.', 'danger')
-    if request.is_xhr:
-        return jsonify({'success': False, 'error': 'Invalid form data.'})
-    return render_template('edit_category.html', form=form, category=category)
+            return jsonify({'success': False, 'error': 'An error occurred while updating the category. Please try again later.'})
+    return jsonify({'success': False, 'error': 'Invalid form data.'})
 
 @main.route('/delete_category/<int:category_id>', methods=['POST'])
 @login_required

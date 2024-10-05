@@ -154,73 +154,56 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     const editCategoryButtons = document.querySelectorAll('.edit-category-btn');
+    const editCategoryModal = document.getElementById('editCategoryModal');
+    const editCategoryForm = document.getElementById('editCategoryForm');
+    const editCategoryNameInput = document.getElementById('editCategoryName');
+    const cancelEditCategoryBtn = document.getElementById('cancelEditCategory');
+
     editCategoryButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
+        button.addEventListener('click', function() {
             const categoryId = this.getAttribute('data-category-id');
             const categoryName = this.getAttribute('data-category-name');
-            openEditCategoryModal(categoryId, categoryName);
+            editCategoryNameInput.value = categoryName;
+            editCategoryForm.setAttribute('action', `/edit_category/${categoryId}`);
+            editCategoryModal.style.display = 'block';
         });
     });
 
-    function openEditCategoryModal(categoryId, categoryName) {
-        const modal = document.getElementById('editCategoryModal');
-        const form = document.getElementById('editCategoryForm');
-        const nameInput = document.getElementById('editCategoryName');
+    cancelEditCategoryBtn.addEventListener('click', function() {
+        editCategoryModal.style.display = 'none';
+    });
 
-        nameInput.value = categoryName;
-        form.setAttribute('action', `/edit_category/${categoryId}`);
-
-        modal.style.display = 'block';
-    }
+    editCategoryForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        fetch(this.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': getCookie('csrf_token')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showFeedback(data.message, 'success');
+                editCategoryModal.style.display = 'none';
+                location.reload();
+            } else {
+                showFeedback(data.error, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showFeedback('An error occurred while updating the category.', 'error');
+        });
+    });
 
     window.addEventListener('click', function(event) {
-        const modal = document.getElementById('editCategoryModal');
-        if (event.target == modal) {
-            modal.style.display = 'none';
+        if (event.target == editCategoryModal) {
+            editCategoryModal.style.display = 'none';
         }
     });
-
-    const cancelEditCategoryBtn = document.getElementById('cancelEditCategory');
-    if (cancelEditCategoryBtn) {
-        cancelEditCategoryBtn.addEventListener('click', function() {
-            document.getElementById('editCategoryModal').style.display = 'none';
-        });
-    }
-
-    const editCategoryForm = document.getElementById('editCategoryForm');
-    if (editCategoryForm) {
-        editCategoryForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-            const categoryId = this.getAttribute('action').split('/').pop();
-
-            fetch(this.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRFToken': getCookie('csrf_token')
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    showFeedback(data.message, 'success');
-                    document.getElementById('editCategoryModal').style.display = 'none';
-                    const categoryElement = document.querySelector(`[data-category-id="${categoryId}"]`);
-                    if (categoryElement) {
-                        categoryElement.textContent = formData.get('name');
-                    }
-                } else {
-                    showFeedback(data.error, 'error');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                showFeedback('An error occurred while updating the category.', 'error');
-            });
-        });
-    }
 
     async function copyApiKey(keyId) {
         try {

@@ -1,0 +1,88 @@
+framework-5aa2cb7e3ccdca65.js:1 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-5aa2cb7e3ccdca65.js:1
+framework-5aa2cb7e3ccdca65.js:1 Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-5aa2cb7e3ccdca65.js:1
+framework-5aa2cb7e3ccdca65.js:1 Unrecognized feature: 'battery'.
+_ @ framework-5aa2cb7e3ccdca65.js:1
+framework-5aa2cb7e3ccdca65.js:1 Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-5aa2cb7e3ccdca65.js:1
+framework-5aa2cb7e3ccdca65.js:1 Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-5aa2cb7e3ccdca65.js:1
+framework-5aa2cb7e3ccdca65.js:1 Unrecognized feature: 'layout-animations'.
+_ @ framework-5aa2cb7e3ccdca65.js:1
+framework-5aa2cb7e3ccdca65.js:1 Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-5aa2cb7e3ccdca65.js:1
+framework-5aa2cb7e3ccdca65.js:1 Unrecognized feature: 'navigation-override'.
+_ @ framework-5aa2cb7e3ccdca65.js:1
+framework-5aa2cb7e3ccdca65.js:1 Unrecognized feature: 'oversized-images'.
+_ @ framework-5aa2cb7e3ccdca65.js:1
+framework-5aa2cb7e3ccdca65.js:1 Unrecognized feature: 'publickey-credentials'.
+_ @ framework-5aa2cb7e3ccdca65.js:1
+framework-5aa2cb7e3ccdca65.js:1 Unrecognized feature: 'speaker-selection'.
+_ @ framework-5aa2cb7e3ccdca65.js:1
+framework-5aa2cb7e3ccdca65.js:1 Unrecognized feature: 'unoptimized-images'.
+_ @ framework-5aa2cb7e3ccdca65.js:1
+framework-5aa2cb7e3ccdca65.js:1 Unrecognized feature: 'unsized-media'.
+_ @ framework-5aa2cb7e3ccdca65.js:1
+framework-5aa2cb7e3ccdca65.js:1 Unrecognized feature: 'web-share'.
+_ @ framework-5aa2cb7e3ccdca65.js:1
+framework-5aa2cb7e3ccdca65.js:1 Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-5aa2cb7e3ccdca65.js:1
+framework-5aa2cb7e3ccdca65.js:1 Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-5aa2cb7e3ccdca65.js:1
+apikeywallet:1 <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes">
+stallwart.build.js:1 stallwart: failed ping 1
+stallwart.build.js:1 stallwart: failed ping 2
+stallwart.build.js:1 stallwart: failed ping 3
+stallwart.build.js:1 stallwart: failed ping 4
+stallwart.build.js:1 stallwart: failed ping 5
+stallwart.build.js:1 stallwart: session stalled
+202WARNING: Too many active WebGL contexts. Oldest context will be lost.
+2anchor:1 Uncaught (in promise) Timeout (o)
+29_app-a86758808ec027a2.js:16 webglcontextlost event received
+29_app-a86758808ec027a2.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-a86758808ec027a2.js:16
+6_app-a86758808ec027a2.js:16 webglcontextlost event received
+6_app-a86758808ec027a2.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-a86758808ec027a2.js:16
+28_app-a86758808ec027a2.js:16 webglcontextlost event received
+_app-a86758808ec027a2.js:16 webglcontextrestored event received
+(anonymous) @ _app-a86758808ec027a2.js:16
+360WebGL: INVALID_OPERATION: delete: object does not belong to this context
+13_app-a86758808ec027a2.js:16 webglcontextrestored event received
+(anonymous) @ _app-a86758808ec027a2.js:16
+6_app-a86758808ec027a2.js:16 webglcontextlost event received
+20_app-a86758808ec027a2.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-a86758808ec027a2.js:16
+2_app-a86758808ec027a2.js:16 webglcontextlost event received
+2_app-a86758808ec027a2.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-a86758808ec027a2.js:16
+_app-a86758808ec027a2.js:16 webglcontextlost event received
+_app-a86758808ec027a2.js:16 webgl context not restored; firing onContextLoss
+(anonymous) @ _app-a86758808ec027a2.js:16
+_app-a86758808ec027a2.js:16 webglcontextlost event received
+_app-a86758808ec027a2.js:16 webglcontextrestored event received
+(anonymous) @ _app-a86758808ec027a2.js:16
+framework-5aa2cb7e3ccdca65.js:1 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-5aa2cb7e3ccdca65.js:1
+workspace_iframe.html:32 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32 Unrecognized feature: 'battery'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32 Unrecognized feature: 'web-share'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+3main.js:17 Uncaught TypeError: Cannot read properties of null (reading 'style')
+main.js:17 Uncaught TypeError: Cannot read properties of null (reading 'style')
+    at HTMLDocument.<anonymous> (main.js:17:11)
+296Third-party cookie will be blocked in future Chrome versions as part of Privacy Sandbox.
+_app-a86758808ec027a2.js:16 task queue exceeded allotted deadline by 24ms
