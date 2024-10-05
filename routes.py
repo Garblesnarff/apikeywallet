@@ -105,6 +105,7 @@ def wallet(category_id=None):
             else:
                 grouped_keys['Uncategorized'].append(key)
         
+        # Remove empty categories only from the main display, not the sidebar
         display_grouped_keys = {k: v for k, v in grouped_keys.items() if v}
         
         for category, keys in display_grouped_keys.items():
@@ -226,14 +227,8 @@ def update_key_category(key_id):
 @main.route('/manage_categories')
 @login_required
 def manage_categories():
-    try:
-        categories = Category.query.filter_by(user_id=current_user.id).all()
-        form = AddCategoryForm()
-        return render_template('manage_categories.html', categories=categories, form=form)
-    except SQLAlchemyError as e:
-        current_app.logger.error(f'Database error in manage_categories route: {str(e)}')
-        flash('An error occurred while fetching categories. Please try again later.', 'danger')
-        return redirect(url_for('main.wallet'))
+    categories = Category.query.filter_by(user_id=current_user.id).all()
+    return render_template('manage_categories.html', categories=categories)
 
 @main.route('/edit_category/<int:category_id>', methods=['GET', 'POST'])
 @login_required
@@ -244,12 +239,13 @@ def edit_category(category_id):
         try:
             category.name = form.name.data
             db.session.commit()
-            return jsonify({'success': True, 'message': 'Category updated successfully.'})
+            flash('Category updated successfully.', 'success')
+            return redirect(url_for('main.manage_categories'))
         except SQLAlchemyError as e:
             db.session.rollback()
             current_app.logger.error(f'Database error in edit_category route: {str(e)}')
-            return jsonify({'success': False, 'error': 'An error occurred while updating the category. Please try again later.'})
-    return jsonify({'success': False, 'error': 'Invalid form data.'})
+            flash('An error occurred while updating the category. Please try again later.', 'danger')
+    return render_template('edit_category.html', form=form, category=category)
 
 @main.route('/delete_category/<int:category_id>', methods=['POST'])
 @login_required

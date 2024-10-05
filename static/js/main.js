@@ -153,58 +153,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    const editCategoryButtons = document.querySelectorAll('.edit-category-btn');
-    const editCategoryModal = document.getElementById('editCategoryModal');
-    const editCategoryForm = document.getElementById('editCategoryForm');
-    const editCategoryNameInput = document.getElementById('editCategoryName');
-    const cancelEditCategoryBtn = document.getElementById('cancelEditCategory');
-
-    editCategoryButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const categoryId = this.getAttribute('data-category-id');
-            const categoryName = this.getAttribute('data-category-name');
-            editCategoryNameInput.value = categoryName;
-            editCategoryForm.setAttribute('action', `/edit_category/${categoryId}`);
-            editCategoryModal.style.display = 'block';
-        });
-    });
-
-    cancelEditCategoryBtn.addEventListener('click', function() {
-        editCategoryModal.style.display = 'none';
-    });
-
-    editCategoryForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const formData = new FormData(this);
-        fetch(this.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRFToken': getCookie('csrf_token')
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showFeedback(data.message, 'success');
-                editCategoryModal.style.display = 'none';
-                location.reload();
-            } else {
-                showFeedback(data.error, 'error');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showFeedback('An error occurred while updating the category.', 'error');
-        });
-    });
-
-    window.addEventListener('click', function(event) {
-        if (event.target == editCategoryModal) {
-            editCategoryModal.style.display = 'none';
-        }
-    });
-
     async function copyApiKey(keyId) {
         try {
             const response = await fetch(`/copy_key/${keyId}`, {
@@ -404,6 +352,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
+    // Fix sidebar button functionality
     const categoryListItems = document.querySelectorAll('#category-list li');
     categoryListItems.forEach(item => {
         item.addEventListener('click', function(e) {
