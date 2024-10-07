@@ -93,65 +93,31 @@ document.addEventListener('DOMContentLoaded', function() {
         editApiKey(keyId, newKeyName);
     });
 
-    const carousels = document.querySelectorAll('.api-key-carousel');
-    carousels.forEach(carousel => {
-        const inner = carousel.querySelector('.carousel-inner');
-        const prevBtn = carousel.querySelector('.prev');
-        const nextBtn = carousel.querySelector('.next');
-        let position = 0;
+    function initializeCarousels() {
+        const carousels = document.querySelectorAll('.api-key-carousel');
+        carousels.forEach(carousel => {
+            const inner = carousel.querySelector('.carousel-inner');
+            const prevBtn = carousel.querySelector('.prev');
+            const nextBtn = carousel.querySelector('.next');
+            let position = 0;
 
-        nextBtn.addEventListener('click', () => {
-            position--;
-            updateCarouselPosition();
-        });
+            nextBtn.addEventListener('click', () => {
+                position--;
+                updateCarouselPosition();
+            });
 
-        prevBtn.addEventListener('click', () => {
-            position++;
-            updateCarouselPosition();
-        });
+            prevBtn.addEventListener('click', () => {
+                position++;
+                updateCarouselPosition();
+            });
 
-        function updateCarouselPosition() {
-            const items = inner.querySelectorAll('.api-key');
-            position = Math.min(Math.max(position, -items.length + 1), 0);
-            inner.style.transform = `translateX(${position * 100}%)`;
-        }
-    });
-
-    const toggleVisibilityButtons = document.querySelectorAll('.toggle-visibility-btn');
-    toggleVisibilityButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const keyId = this.getAttribute('data-key-id');
-            const maskedKeyElement = this.closest('.api-key').querySelector('.masked-key');
-            const icon = this.querySelector('i');
-            if (icon.classList.contains('fa-eye')) {
-                fetch(`/get_key/${keyId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCookie('csrf_token')
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.key) {
-                        maskedKeyElement.textContent = data.key;
-                        icon.classList.remove('fa-eye');
-                        icon.classList.add('fa-eye-slash');
-                    } else if (data.error) {
-                        throw new Error(data.error);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    showFeedback('Failed to retrieve API key: ' + error.message, 'error');
-                });
-            } else {
-                maskedKeyElement.textContent = '••••••••••••••••';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
+            function updateCarouselPosition() {
+                const items = inner.querySelectorAll('.api-key');
+                position = Math.min(Math.max(position, -items.length + 1), 0);
+                inner.style.transform = `translateX(${position * 100}%)`;
             }
         });
-    });
+    }
 
     async function copyApiKey(keyId) {
         try {
@@ -195,14 +161,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const data = await response.json();
 
-            if (!response.ok) {
+            if (response.ok) {
+                showFeedback(data.message, 'success');
+                refreshWallet();
+            } else {
                 throw new Error(data.error || `HTTP error! status: ${response.status}`);
             }
-
-            showFeedback(data.message, 'success');
-            setTimeout(() => {
-                location.reload();
-            }, 1000);
         } catch (error) {
             console.error('Error:', error);
             showFeedback(`Error: ${error.message}`, 'error');
@@ -252,15 +216,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const data = await response.json();
             showFeedback(data.message, 'success');
-            
-            const apiKeyElement = document.querySelector(`.api-key[data-key-id="${keyId}"]`);
-            if (apiKeyElement) {
-                apiKeyElement.setAttribute('data-category-id', categoryId === '0' ? 'uncategorized' : categoryId);
-            }
-
-            setTimeout(() => {
-                location.reload();
-            }, 1000);
+            refreshWallet();
         } catch (error) {
             console.error('Error:', error);
             showFeedback('Failed to update category', 'error');
@@ -285,9 +241,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
             if (result.success) {
                 showFeedback(result.message, 'success');
-                setTimeout(() => {
-                    window.location.href = '/wallet';
-                }, 1000);
+                refreshWallet();
             } else {
                 if (result.errors) {
                     Object.keys(result.errors).forEach(field => {
@@ -322,16 +276,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (response.ok) {
                 showFeedback(data.message, 'success');
                 editModal.style.display = 'none';
-                const keyElement = document.querySelector(`.api-key[data-key-id="${keyId}"] h4`);
-                if (keyElement) {
-                    keyElement.textContent = newKeyName;
-                }
-                
-                // Re-sort the keys in the current category
-                const categoryGroup = keyElement.closest('.category-group');
-                const keys = Array.from(categoryGroup.querySelectorAll('.api-key'));
-                keys.sort((a, b) => a.querySelector('h4').textContent.toLowerCase().localeCompare(b.querySelector('h4').textContent.toLowerCase()));
-                keys.forEach(key => categoryGroup.querySelector('.carousel-inner').appendChild(key));
+                refreshWallet();
             } else {
                 throw new Error(data.error || 'Failed to update API key name');
             }
@@ -358,14 +303,155 @@ document.addEventListener('DOMContentLoaded', function() {
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
-    // Fix sidebar button functionality
-    const categoryListItems = document.querySelectorAll('#category-list li');
-    categoryListItems.forEach(item => {
-        item.addEventListener('click', function(e) {
-            if (e.target !== this.querySelector('a')) {
-                e.preventDefault();
-                this.querySelector('a').click();
-            }
+    function toggleVisibility(event) {
+        const button = event.currentTarget;
+        const keyId = button.getAttribute('data-key-id');
+        const maskedKeyElement = button.closest('.api-key').querySelector('.masked-key');
+        const icon = button.querySelector('i');
+        if (icon.classList.contains('fa-eye')) {
+            fetch(`/get_key/${keyId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrf_token')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.key) {
+                    maskedKeyElement.textContent = data.key;
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else if (data.error) {
+                    throw new Error(data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showFeedback('Failed to retrieve API key: ' + error.message, 'error');
+            });
+        } else {
+            maskedKeyElement.textContent = '••••••••••••••••';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+
+    function showEditModal(event) {
+        const button = event.currentTarget;
+        const keyId = button.getAttribute('data-key-id');
+        const keyName = button.closest('.api-key').querySelector('h4').textContent;
+        editKeyIdInput.value = keyId;
+        editKeyNameInput.value = keyName;
+        editModal.style.display = 'block';
+    }
+
+    function showDeleteModal(event) {
+        const button = event.currentTarget;
+        currentKeyId = button.getAttribute('data-key-id');
+        modal.style.display = 'block';
+    }
+
+    function updateCategoryListAndDisplay() {
+        fetch('/get_categories_and_keys')
+            .then(response => response.json())
+            .then(data => {
+                // Update category list in sidebar
+                const categoryList = document.getElementById('category-list');
+                categoryList.innerHTML = `
+                    <li data-category-id="all" class="active">
+                        <a href="#"><i class="fas fa-layer-group"></i> All Keys</a>
+                    </li>
+                `;
+                data.categories.forEach(category => {
+                    categoryList.innerHTML += `
+                        <li data-category-id="${category.id}">
+                            <a href="#"><i class="fas fa-folder"></i> ${category.name}</a>
+                        </li>
+                    `;
+                });
+                categoryList.innerHTML += `
+                    <li data-category-id="uncategorized">
+                        <a href="#"><i class="fas fa-question-circle"></i> Uncategorized</a>
+                    </li>
+                `;
+
+                // Update API key display
+                const apiKeyContent = document.querySelector('.api-key-content');
+                apiKeyContent.innerHTML = '<h2>Your KeyGuardian Wallet</h2>';
+                
+                Object.entries(data.grouped_keys).forEach(([categoryName, keys]) => {
+                    const categoryGroup = document.createElement('div');
+                    categoryGroup.className = 'category-group';
+                    categoryGroup.setAttribute('data-category-id', categoryName === 'Uncategorized' ? 'uncategorized' : data.categories.find(c => c.name === categoryName)?.id);
+                    
+                    categoryGroup.innerHTML = `
+                        <h3>${categoryName}</h3>
+                        <div class="api-key-carousel">
+                            <div class="carousel-inner">
+                                ${keys.map(key => `
+                                    <div class="api-key" data-category-id="${key.category_id || 'uncategorized'}" data-key-id="${key.id}">
+                                        <h4>${key.key_name}</h4>
+                                        <p class="masked-key">••••••••••••••••</p>
+                                        <div class="key-actions">
+                                            <button class="toggle-visibility-btn" data-key-id="${key.id}" title="Toggle Visibility"><i class="fas fa-eye"></i></button>
+                                            <button class="copy-btn" data-key-id="${key.id}" title="Copy Key"><i class="fas fa-copy"></i></button>
+                                            <button class="edit-btn" data-key-id="${key.id}" title="Edit Key"><i class="fas fa-edit"></i></button>
+                                            <button class="delete-btn" data-key-id="${key.id}" title="Delete Key"><i class="fas fa-trash-alt"></i></button>
+                                            <select class="category-select" data-key-id="${key.id}">
+                                                <option value="0">Uncategorized</option>
+                                                ${data.categories.map(c => `<option value="${c.id}" ${c.id === key.category_id ? 'selected' : ''}>${c.name}</option>`).join('')}
+                                            </select>
+                                        </div>
+                                        <p class="date-added">Added on: ${new Date(key.date_added).toLocaleString()}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <button class="carousel-control prev">&lt;</button>
+                            <button class="carousel-control next">&gt;</button>
+                        </div>
+                    `;
+                    
+                    apiKeyContent.appendChild(categoryGroup);
+                });
+
+                // Re-attach event listeners
+                attachEventListeners();
+            })
+            .catch(error => {
+                console.error('Error updating categories and keys:', error);
+                showFeedback('Failed to update categories and keys', 'error');
+            });
+    }
+
+    function attachEventListeners() {
+        // Re-attach event listeners for all dynamic elements
+        document.querySelectorAll('.toggle-visibility-btn').forEach(btn => btn.addEventListener('click', toggleVisibility));
+        document.querySelectorAll('.copy-btn').forEach(btn => btn.addEventListener('click', (e) => copyApiKey(btn.getAttribute('data-key-id'))));
+        document.querySelectorAll('.edit-btn').forEach(btn => btn.addEventListener('click', showEditModal));
+        document.querySelectorAll('.delete-btn').forEach(btn => btn.addEventListener('click', showDeleteModal));
+        document.querySelectorAll('.category-select').forEach(select => select.addEventListener('change', (e) => updateKeyCategory(select.getAttribute('data-key-id'), select.value)));
+        
+        // Re-initialize carousels
+        initializeCarousels();
+
+        // Re-attach category list item click events
+        const categoryListItems = document.querySelectorAll('#category-list li');
+        categoryListItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (e.target !== this.querySelector('a')) {
+                    e.preventDefault();
+                    this.querySelector('a').click();
+                }
+            });
         });
-    });
+    }
+
+    // Call this function after any operation that modifies categories or keys
+    function refreshWallet() {
+        updateCategoryListAndDisplay();
+    }
+
+    // Initial call to set up the wallet
+    refreshWallet();
 });
