@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const editKeyNameInput = document.getElementById('editKeyName');
     const editKeyIdInput = document.getElementById('editKeyId');
     const cancelEditBtn = document.getElementById('cancelEdit');
+    const addKeyBtn = document.querySelector('.add-key-btn');
+    const addKeyModal = document.getElementById('addKeyModal');
     let currentKeyId = null;
     
     modal.style.display = 'none';
@@ -63,6 +65,13 @@ document.addEventListener('DOMContentLoaded', function() {
             updateKeyCategory(keyId, categoryId);
         });
     });
+
+    if (addKeyBtn) {
+        addKeyBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            addKeyModal.style.display = 'block';
+        });
+    }
 
     const addKeyForm = document.getElementById('add-key-form');
     if (addKeyForm) {
@@ -241,6 +250,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
             if (result.success) {
                 showFeedback(result.message, 'success');
+                addKeyModal.style.display = 'none';
+                form.reset();
                 refreshWallet();
             } else {
                 if (result.errors) {
@@ -356,7 +367,6 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch('/get_categories_and_keys')
             .then(response => response.json())
             .then(data => {
-                // Update category list in sidebar
                 const categoryList = document.getElementById('category-list');
                 categoryList.innerHTML = `
                     <li data-category-id="all" class="active">
@@ -376,7 +386,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     </li>
                 `;
 
-                // Update API key display
                 const apiKeyContent = document.querySelector('.api-key-content');
                 apiKeyContent.innerHTML = '<h2>Your KeyGuardian Wallet</h2>';
                 
@@ -415,7 +424,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     apiKeyContent.appendChild(categoryGroup);
                 });
 
-                // Re-attach event listeners
                 attachEventListeners();
             })
             .catch(error => {
@@ -425,17 +433,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function attachEventListeners() {
-        // Re-attach event listeners for all dynamic elements
         document.querySelectorAll('.toggle-visibility-btn').forEach(btn => btn.addEventListener('click', toggleVisibility));
         document.querySelectorAll('.copy-btn').forEach(btn => btn.addEventListener('click', (e) => copyApiKey(btn.getAttribute('data-key-id'))));
         document.querySelectorAll('.edit-btn').forEach(btn => btn.addEventListener('click', showEditModal));
         document.querySelectorAll('.delete-btn').forEach(btn => btn.addEventListener('click', showDeleteModal));
         document.querySelectorAll('.category-select').forEach(select => select.addEventListener('change', (e) => updateKeyCategory(select.getAttribute('data-key-id'), select.value)));
         
-        // Re-initialize carousels
         initializeCarousels();
 
-        // Re-attach category list item click events
         const categoryListItems = document.querySelectorAll('#category-list li');
         categoryListItems.forEach(item => {
             item.addEventListener('click', function(e) {
@@ -447,11 +452,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Call this function after any operation that modifies categories or keys
     function refreshWallet() {
         updateCategoryListAndDisplay();
     }
 
-    // Initial call to set up the wallet
     refreshWallet();
 });

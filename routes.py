@@ -165,6 +165,9 @@ def add_key():
             current_app.logger.error(f"Unexpected error in add_key route: {str(e)}")
             return jsonify({'success': False, 'error': 'An unexpected error occurred. Please try again.'}), 500
     
+    if request.method == 'GET':
+        return render_template('add_key.html', form=form)
+    
     return jsonify({'success': False, 'errors': form.errors}), 400
 
 @main.route('/copy_key/<int:key_id>', methods=['POST'])

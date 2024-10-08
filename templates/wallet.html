@@ -30,9 +30,7 @@
     </div>
     <div class="api-key-content">
         <h2>Your KeyGuardian Wallet</h2>
-        <div class="add-key-container">
-            <a href="{{ url_for('main.add_key') }}" class="btn add-key-btn"><i class="fas fa-plus"></i> Add New API Key</a>
-        </div>
+        <a href="{{ url_for('main.add_key') }}" class="btn add-key-btn"><i class="fas fa-plus"></i> Add New API Key</a>
         <div class="api-key-container">
             {% for category, keys in grouped_keys.items() %}
                 <div class="category-group" data-category-id="{{ category if category != 'Uncategorized' else 'uncategorized' }}">
