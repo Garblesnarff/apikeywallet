@@ -67,10 +67,18 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     if (addKeyBtn) {
+        console.log('Add New API Key button found');
         addKeyBtn.addEventListener('click', function(e) {
+            console.log('Add New API Key button clicked');
             e.preventDefault();
             addKeyModal.style.display = 'block';
         });
+
+        setInterval(() => {
+            console.log('Add New API Key button visibility:', getComputedStyle(addKeyBtn).display);
+        }, 1000);
+    } else {
+        console.log('Add New API Key button not found');
     }
 
     const addKeyForm = document.getElementById('add-key-form');

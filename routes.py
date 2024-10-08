@@ -117,7 +117,8 @@ def wallet(category_id=None):
         for category, keys in display_grouped_keys.items():
             current_app.logger.info(f"Category '{category}' has {len(keys)} keys")
         
-        return render_template('wallet.html', grouped_keys=display_grouped_keys, all_categories=categories, current_category_id=category_id, debug=current_app.debug)
+        current_app.logger.info("Rendering wallet template with Add New API Key button")
+        return render_template('wallet.html', grouped_keys=display_grouped_keys, all_categories=categories, current_category_id=category_id, debug=current_app.debug, show_add_key_button=True)
     except Exception as e:
         current_app.logger.error(f"Error in wallet route: {str(e)}")
         current_app.logger.error(traceback.format_exc())
