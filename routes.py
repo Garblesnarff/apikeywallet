@@ -9,9 +9,36 @@ import logging
 import traceback
 from sqlalchemy.exc import SQLAlchemyError
 import os
+from itsdangerous import URLSafeTimedSerializer
+from flask_mail import Message
+from app import mail
 
 main = Blueprint('main', __name__)
 auth = Blueprint('auth', __name__)
+
+def generate_confirmation_token(email):
+    serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
+    return serializer.dumps(email, salt=current_app.config['SECURITY_PASSWORD_SALT'])
+
+def confirm_token(token, expiration=3600):
+    serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
+    try:
+        email = serializer.loads(
+            token,
+            salt=current_app.config['SECURITY_PASSWORD_SALT'],
+            max_age=expiration
+        )
+    except:
+        return False
+    return email
+
+def send_confirmation_email(user):
+    token = generate_confirmation_token(user.email)
+    confirm_url = url_for('auth.confirm_email', token=token, _external=True)
+    html = render_template('email/confirm_email.html', confirm_url=confirm_url)
+    subject = "Please confirm your email"
+    msg = Message(subject, recipients=[user.email], html=html)
+    mail.send(msg)
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
@@ -29,13 +56,35 @@ def register():
         
         new_user = User(email=email)
         new_user.set_password(password)
+        new_user.email_confirmed = False
+        new_user.confirmation_token = generate_confirmation_token(email)
         db.session.add(new_user)
         db.session.commit()
         
-        flash('Registration successful. Please log in.', 'success')
+        send_confirmation_email(new_user)
+        
+        flash('A confirmation email has been sent to your email address. Please check your inbox.', 'info')
         return redirect(url_for('auth.login'))
     
     return render_template('register.html', form=form)
+
+@auth.route('/confirm/<token>')
+def confirm_email(token):
+    try:
+        email = confirm_token(token)
+    except:
+        flash('The confirmation link is invalid or has expired.', 'danger')
+        return redirect(url_for('main.index'))
+    user = User.query.filter_by(email=email).first_or_404()
+    if user.email_confirmed:
+        flash('Account already confirmed. Please login.', 'success')
+    else:
+        user.email_confirmed = True
+        user.confirmation_token = None
+        db.session.add(user)
+        db.session.commit()
+        flash('You have confirmed your account. Thanks!', 'success')
+    return redirect(url_for('auth.login'))
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -50,6 +99,9 @@ def login():
         try:
             user = User.query.filter_by(email=email).first()
             if user and user.check_password(password):
+                if not user.email_confirmed:
+                    flash('Please confirm your email before logging in.', 'warning')
+                    return redirect(url_for('auth.login'))
                 login_user(user)
                 return redirect(url_for('main.wallet'))
             else:

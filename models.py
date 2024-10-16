@@ -11,6 +11,8 @@ class User(UserMixin, db.Model):
     date_joined = db.Column(db.DateTime, default=datetime.utcnow)
     api_keys = db.relationship('APIKey', backref='user', lazy='dynamic')
     categories = db.relationship('Category', backref='user', lazy='dynamic')
+    email_confirmed = db.Column(db.Boolean, default=False)
+    confirmation_token = db.Column(db.String(100), unique=True)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
