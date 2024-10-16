@@ -3,12 +3,17 @@
 {% block content %}
 <div class="landing-container">
     <section class="hero">
-        <h1>Welcome to KeyGuardian</h1>
-        <p class="subtitle">Your Secure API Key Management Solution</p>
-        <p class="description">KeyGuardian provides a safe and efficient way to store, manage, and organize your API keys.</p>
-        <div class="cta-buttons">
-            <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Get Started</a>
-            <a href="{{ url_for('auth.login') }}" class="btn btn-secondary">Login</a>
+        <div class="hero-content">
+            <h1 class="main-headline">Welcome to KeyGuardian</h1>
+            <p class="tagline">Manage your API keys securely and effortlessly</p>
+            <p class="description">KeyGuardian provides a safe and efficient way to store, manage, and organize your API keys.</p>
+            <div class="cta-buttons">
+                <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-cta">Get Started</a>
+                <a href="{{ url_for('auth.login') }}" class="btn btn-secondary btn-cta">Login</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="{{ url_for('static', filename='img/hero-image.svg') }}" alt="KeyGuardian in action">
         </div>
     </section>
 
@@ -16,21 +21,61 @@
         <h2>Key Features</h2>
         <div class="feature-list">
             <div class="feature-item">
-                <i class="fas fa-lock"></i>
+                <i class="fas fa-lock feature-icon"></i>
                 <h3>Secure Storage</h3>
                 <p>Your API keys are encrypted and stored safely.</p>
             </div>
             <div class="feature-item">
-                <i class="fas fa-tasks"></i>
+                <i class="fas fa-tasks feature-icon"></i>
                 <h3>Easy Management</h3>
                 <p>Organize and access your keys with ease.</p>
             </div>
             <div class="feature-item">
-                <i class="fas fa-folder"></i>
+                <i class="fas fa-folder feature-icon"></i>
                 <h3>Categorization</h3>
                 <p>Group your keys by project or purpose.</p>
             </div>
         </div>
     </section>
+
+    <section class="benefits">
+        <h2>Why Choose KeyGuardian?</h2>
+        <ul class="benefits-list">
+            <li>Save time with efficient key management</li>
+            <li>Enhance security with encrypted storage</li>
+            <li>Enjoy peace of mind knowing your keys are protected</li>
+            <li>Improve productivity with easy access and organization</li>
+        </ul>
+    </section>
+
+    <section class="faq">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-list">
+            <div class="faq-item">
+                <h3 class="faq-question">What is KeyGuardian?</h3>
+                <p class="faq-answer">KeyGuardian is a secure platform for storing and managing your API keys, offering features like encryption, categorization, and easy access.</p>
+            </div>
+            <div class="faq-item">
+                <h3 class="faq-question">How secure is KeyGuardian?</h3>
+                <p class="faq-answer">We use industry-standard encryption to protect your API keys and implement best practices for data security.</p>
+            </div>
+            <div class="faq-item">
+                <h3 class="faq-question">Can I organize my API keys?</h3>
+                <p class="faq-answer">Yes, KeyGuardian allows you to categorize and label your API keys for easy management and retrieval.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="final-cta">
+        <h2>Ready to Secure Your API Keys? Start Today.</h2>
+        <div class="cta-buttons">
+            <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-cta">Get Started</a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-secondary btn-cta">Login</a>
+        </div>
+    </section>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 {% endblock %}
