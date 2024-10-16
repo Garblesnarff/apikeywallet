@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="landing-container">
+    <h1>Welcome to KeyGuardian</h1>
+    <p class="tagline">Secure API Key Management Made Simple</p>
+    <div class="features">
+        <div class="feature">
+            <i class="fas fa-lock"></i>
+            <h3>Secure Storage</h3>
+            <p>Store your API keys with military-grade encryption</p>
+        </div>
+        <div class="feature">
+            <i class="fas fa-sync-alt"></i>
+            <h3>Easy Access</h3>
+            <p>Retrieve your keys quickly and securely</p>
+        </div>
+        <div class="feature">
+            <i class="fas fa-users"></i>
+            <h3>Team Collaboration</h3>
+            <p>Share keys safely with your team members</p>
+        </div>
+    </div>
+    <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Get Started</a>
+</div>
+{% endblock %}

@@ -36,7 +36,7 @@ migrate = Migrate(app, db)
 # Setup LoginManager
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'auth.login'
+login_manager.login_view = 'auth_bp.login'
 login_manager.login_message = 'Please log in to access this page.'
 
 @login_manager.user_loader
@@ -71,10 +71,8 @@ with app.app_context():
         logger.error(f"Error creating database tables: {str(e)}")
 
 # Import and register blueprints
-from routes import main as main_blueprint
+from routes import main_blueprint, auth_blueprint
 app.register_blueprint(main_blueprint)
-
-from routes import auth as auth_blueprint
 app.register_blueprint(auth_blueprint)
 
 if __name__ == "__main__":
