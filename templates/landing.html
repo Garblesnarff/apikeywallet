@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="landing-container">
+    <section class="hero">
+        <h1>Welcome to KeyGuardian</h1>
+        <p class="subtitle">Your Secure API Key Management Solution</p>
+        <p class="description">KeyGuardian provides a safe and efficient way to store, manage, and organize your API keys.</p>
+        <div class="cta-buttons">
+            <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Get Started</a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-secondary">Login</a>
+        </div>
+    </section>
+
+    <section class="features">
+        <h2>Key Features</h2>
+        <div class="feature-list">
+            <div class="feature-item">
+                <i class="fas fa-lock"></i>
+                <h3>Secure Storage</h3>
+                <p>Your API keys are encrypted and stored safely.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-tasks"></i>
+                <h3>Easy Management</h3>
+                <p>Organize and access your keys with ease.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-folder"></i>
+                <h3>Categorization</h3>
+                <p>Group your keys by project or purpose.</p>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

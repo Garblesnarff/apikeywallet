@@ -75,13 +75,11 @@ def logout():
     except Exception as e:
         current_app.logger.error(f"Unexpected error during logout: {str(e)}")
         flash('An unexpected error occurred. Please try again.', 'danger')
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('main.index'))
 
 @main.route('/')
 def index():
-    if current_user.is_authenticated:
-        return redirect(url_for('main.wallet'))
-    return render_template('index.html')
+    return render_template('landing.html')
 
 @main.route('/wallet')
 @main.route('/wallet/<int:category_id>')
