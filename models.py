@@ -41,3 +41,19 @@ class Category(db.Model):
     def __init__(self, *args, **kwargs):
         super(Category, self).__init__(*args, **kwargs)
         logging.info(f"Creating new Category: name={self.name}, user_id={self.user_id}")
+
+class AuditLog(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    action = db.Column(db.String(50), nullable=False)
+    api_key_id = db.Column(db.Integer, db.ForeignKey('api_key.id'), nullable=True)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+    user = db.relationship('User', backref=db.backref('audit_logs', lazy='dynamic'))
+    api_key = db.relationship('APIKey', backref=db.backref('audit_logs', lazy='dynamic'))
+
+    def __init__(self, user_id, action, api_key_id=None):
+        self.user_id = user_id
+        self.action = action
+        self.api_key_id = api_key_id
+        logging.info(f"Creating new AuditLog: user_id={self.user_id}, action={self.action}, api_key_id={self.api_key_id}")

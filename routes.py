@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, g, current_app
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import User, APIKey, Category
+from models import User, APIKey, Category, AuditLog
 from forms import RegistrationForm, LoginForm, AddAPIKeyForm, AddCategoryForm
 from app import db
 from utils import encrypt_key, decrypt_key
@@ -194,6 +194,11 @@ def add_key():
                 category_id=form.category.data if form.category.data != 0 else None
             )
             db.session.add(new_key)
+            
+            # Add audit log
+            audit_log = AuditLog(user_id=current_user.id, action="add", api_key_id=new_key.id)
+            db.session.add(audit_log)
+            
             db.session.commit()
             
             category = Category.query.get(new_key.category_id) if new_key.category_id else None
@@ -232,6 +237,12 @@ def copy_key(key_id):
             return jsonify({'error': 'API key not found or unauthorized'}), 403
         current_app.logger.info(f"API key found for key_id: {key_id}")
         decrypted_key = decrypt_key(api_key.encrypted_key)
+        
+        # Add audit log
+        audit_log = AuditLog(user_id=current_user.id, action="copy", api_key_id=key_id)
+        db.session.add(audit_log)
+        db.session.commit()
+        
         current_app.logger.info(f"API key successfully decrypted for key_id: {key_id}")
         return jsonify({'key': decrypted_key})
     except Exception as e:
@@ -245,6 +256,10 @@ def delete_key(key_id):
     try:
         api_key = APIKey.query.filter_by(id=key_id, user_id=current_user.id).first()
         if api_key:
+            # Add audit log before deleting the key
+            audit_log = AuditLog(user_id=current_user.id, action="delete", api_key_id=key_id)
+            db.session.add(audit_log)
+            
             db.session.delete(api_key)
             db.session.commit()
             return jsonify({'success': True, 'message': 'API Key deleted successfully.'}), 200
@@ -401,3 +416,9 @@ def get_categories_and_keys():
     except Exception as e:
         current_app.logger.error(f"Error in get_categories_and_keys route: {str(e)}")
         return jsonify({'error': 'An error occurred while fetching categories and keys.'}), 500
+
+@main.route('/audit_log')
+@login_required
+def view_audit_log():
+    audit_logs = AuditLog.query.filter_by(user_id=current_user.id).order_by(AuditLog.timestamp.desc()).all()
+    return render_template('audit_log.html', audit_logs=audit_logs)
