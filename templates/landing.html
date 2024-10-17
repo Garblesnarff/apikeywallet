@@ -4,18 +4,19 @@
 <div class="landing-container">
     <section class="hero">
         <div class="hero-content">
-            <h1 class="main-headline">Welcome to KeyGuardian</h1>
-            <p class="tagline">Manage your API keys securely and effortlessly</p>
+            <h1 class="main-headline">Secure Your API Keys with KeyGuardian</h1>
+            <p class="tagline">Effortless management and encryption for your valuable keys</p>
             <div class="cta-buttons">
-                <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Get Started</a>
-                <a href="{{ url_for('auth.login') }}" class="btn btn-secondary">Login</a>
+                <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg">Secure My Keys Now</a>
+                <a href="{{ url_for('auth.login') }}" class="btn btn-secondary btn-lg">Login</a>
             </div>
         </div>
         <div class="hero-image">
-            <img src="{{ url_for('static', filename='img/keyguardian-logo.webp') }}" alt="KeyGuardian Hero Image">
+            <div class="key-icon-background"></div>
         </div>
     </section>
 
+    <!-- Rest of the content remains unchanged -->
     <section class="features">
         <h2>Key Features</h2>
         <div class="feature-list">
@@ -69,8 +70,8 @@
         <h2>Ready to Secure Your API Keys?</h2>
         <p>Start managing your keys with KeyGuardian today!</p>
         <div class="cta-buttons">
-            <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Get Started Now</a>
-            <a href="{{ url_for('auth.login') }}" class="btn btn-secondary">Login</a>
+            <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg">Secure My Keys Now</a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-secondary btn-lg">Login</a>
         </div>
     </section>
 </div>

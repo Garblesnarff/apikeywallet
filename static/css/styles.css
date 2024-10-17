@@ -466,7 +466,7 @@ h2 {
 .landing-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 40px 20px;
+    padding: 60px 20px;
 }
 
 .hero {
@@ -474,28 +474,27 @@ h2 {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 60px;
+    position: relative;
+    overflow: hidden;
 }
 
 .hero-content {
     flex: 1;
     padding-right: 40px;
+    z-index: 1;
 }
 
 .hero-image {
     flex: 1;
-    text-align: center;
-}
-
-.hero-image img {
-    max-width: 100%;
-    height: auto;
+    position: relative;
 }
 
 .main-headline {
     font-size: 3.5rem;
     font-weight: 800;
     color: var(--text-color);
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    line-height: 1.2;
 }
 
 .tagline {
@@ -507,6 +506,61 @@ h2 {
 .cta-buttons {
     display: flex;
     gap: 20px;
+}
+
+.btn-lg {
+    font-size: 1.2rem;
+    padding: 15px 30px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.btn-lg:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary.btn-lg {
+    background-color: var(--button-color);
+}
+
+.btn-primary.btn-lg:hover {
+    background-color: var(--button-hover-color);
+}
+
+.btn-secondary.btn-lg {
+    background-color: var(--secondary-color);
+}
+
+.btn-secondary.btn-lg:hover {
+    background-color: var(--accent-color);
+}
+
+.key-icon-background {
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    bottom: -20%;
+    width: 70%;
+    background-image: url('/static/img/keyguardian-logo.webp');
+    background-repeat: no-repeat;
+    background-position: center right;
+    background-size: contain;
+    opacity: 0.1;
+    z-index: 0;
+    transform: rotate(15deg);
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: rotate(15deg) translateY(0px);
+    }
+    50% {
+        transform: rotate(15deg) translateY(-20px);
+    }
+    100% {
+        transform: rotate(15deg) translateY(0px);
+    }
 }
 
 .features {
@@ -654,7 +708,7 @@ h2 {
 
     .hero-content {
         padding-right: 0;
-        margin-bottom: 30px;
+        margin-bottom: 40px;
     }
 
     .main-headline {
@@ -667,6 +721,14 @@ h2 {
 
     .cta-buttons {
         justify-content: center;
+    }
+
+    .key-icon-background {
+        top: 50%;
+        right: -20%;
+        bottom: -20%;
+        width: 100%;
+        opacity: 0.05;
     }
 
     .feature-list {
