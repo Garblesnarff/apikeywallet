@@ -677,15 +677,12 @@ h2 {
 
 .faq-question::after {
     content: '\25BC';
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    float: right;
     transition: transform 0.3s ease;
 }
 
 .faq-question.active::after {
-    transform: translateY(-50%) rotate(180deg);
+    transform: rotate(180deg);
 }
 
 .faq-answer {
