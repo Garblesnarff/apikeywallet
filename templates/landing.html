@@ -3,17 +3,12 @@
 {% block content %}
 <div class="landing-container">
     <section class="hero">
-        <div class="hero-content">
-            <h1 class="main-headline">Secure Your API Keys with KeyGuardian</h1>
-            <p class="tagline">Effortless management, uncompromised security</p>
-            <p class="description">KeyGuardian provides a safe and efficient way to store, manage, and organize your API keys. Take control of your digital assets today.</p>
-            <div class="cta-buttons">
-                <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-cta">Get Started</a>
-                <a href="{{ url_for('auth.login') }}" class="btn btn-secondary btn-cta">Login</a>
-            </div>
-        </div>
-        <div class="hero-image">
-            <img src="{{ url_for('static', filename='img/hero-image.svg') }}" alt="KeyGuardian: Secure API Key Management">
+        <h1>Welcome to KeyGuardian</h1>
+        <p class="subtitle">Your Secure API Key Management Solution</p>
+        <p class="description">KeyGuardian provides a safe and efficient way to store, manage, and organize your API keys.</p>
+        <div class="cta-buttons">
+            <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Get Started</a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-secondary">Login</a>
         </div>
     </section>
 
@@ -21,44 +16,21 @@
         <h2>Key Features</h2>
         <div class="feature-list">
             <div class="feature-item">
-                <i class="fas fa-lock feature-icon"></i>
+                <i class="fas fa-lock"></i>
                 <h3>Secure Storage</h3>
                 <p>Your API keys are encrypted and stored safely.</p>
             </div>
             <div class="feature-item">
-                <i class="fas fa-tasks feature-icon"></i>
+                <i class="fas fa-tasks"></i>
                 <h3>Easy Management</h3>
                 <p>Organize and access your keys with ease.</p>
             </div>
             <div class="feature-item">
-                <i class="fas fa-folder feature-icon"></i>
+                <i class="fas fa-folder"></i>
                 <h3>Categorization</h3>
                 <p>Group your keys by project or purpose.</p>
             </div>
         </div>
     </section>
-
-    <section class="benefits">
-        <h2>Why Choose KeyGuardian?</h2>
-        <ul class="benefits-list">
-            <li>Save time with efficient key management</li>
-            <li>Enhance security with encrypted storage</li>
-            <li>Enjoy peace of mind knowing your keys are protected</li>
-            <li>Improve productivity with easy access and organization</li>
-        </ul>
-    </section>
-
-    <section class="final-cta">
-        <h2>Ready to Secure Your API Keys?</h2>
-        <p>Join thousands of developers who trust KeyGuardian for their API key management.</p>
-        <div class="cta-buttons">
-            <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-cta">Get Started Now</a>
-            <a href="{{ url_for('auth.login') }}" class="btn btn-secondary btn-cta">Login</a>
-        </div>
-    </section>
 </div>
-{% endblock %}
-
-{% block scripts %}
-<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 {% endblock %}

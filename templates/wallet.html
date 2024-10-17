@@ -27,7 +27,6 @@
         </ul>
         <a href="{{ url_for('main.add_category') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> Add Category</a>
         <a href="{{ url_for('main.manage_categories') }}" class="btn btn-sm btn-secondary"><i class="fas fa-cog"></i> Manage Categories</a>
-        <a href="{{ url_for('main.view_audit_log') }}" class="btn btn-sm btn-info"><i class="fas fa-history"></i> View Audit Log</a>
     </div>
     <div class="api-key-content">
         <h2>Your KeyGuardian Wallet</h2>
@@ -42,33 +41,11 @@
                                 <div class="api-key" data-category-id="{{ key.category_id or 'uncategorized' }}">
                                     <h4>{{ key.key_name }}</h4>
                                     <p class="masked-key">••••••••••••••••</p>
-                                    <p class="expiration-date">
-                                        Expires: 
-                                        {% if key.expiration_date %}
-                                            {{ key.expiration_date.strftime('%Y-%m-%d') }}
-                                        {% else %}
-                                            Never
-                                        {% endif %}
-                                    </p>
-                                    <p class="key-status">
-                                        Status: 
-                                        {% if key.is_active %}
-                                            <span class="active">Active</span>
-                                        {% elif key.is_revoked %}
-                                            <span class="revoked">Revoked</span>
-                                        {% else %}
-                                            <span class="expired">Expired</span>
-                                        {% endif %}
-                                    </p>
                                     <div class="key-actions">
                                         <button class="toggle-visibility-btn" data-key-id="{{ key.id }}" title="Toggle Visibility"><i class="fas fa-eye"></i></button>
                                         <button class="copy-btn" data-key-id="{{ key.id }}" title="Copy Key"><i class="fas fa-copy"></i></button>
                                         <button class="edit-btn" data-key-id="{{ key.id }}" title="Edit Key"><i class="fas fa-edit"></i></button>
                                         <button class="delete-btn" data-key-id="{{ key.id }}" title="Delete Key"><i class="fas fa-trash-alt"></i></button>
-                                        {% if key.is_active %}
-                                            <button class="revoke-btn" data-key-id="{{ key.id }}" title="Revoke Key"><i class="fas fa-ban"></i></button>
-                                        {% endif %}
-                                        <button class="update-expiration-btn" data-key-id="{{ key.id }}" title="Update Expiration"><i class="fas fa-calendar-alt"></i></button>
                                         <select class="category-select" data-key-id="{{ key.id }}">
                                             <option value="0">Uncategorized</option>
                                             {% for cat in all_categories %}
@@ -116,91 +93,4 @@
         </form>
     </div>
 </div>
-
-<div id="expirationModal" class="modal" style="display: none;">
-    <div class="modal-content">
-        <h3>Update Expiration Date</h3>
-        <form id="updateExpirationForm">
-            <input type="hidden" id="expirationKeyId">
-            <div class="form-group">
-                <label for="expirationDate">Expiration Date</label>
-                <input type="date" id="expirationDate" class="form-control">
-            </div>
-            <div class="modal-buttons">
-                <button type="submit" class="btn btn-primary">Update</button>
-                <button type="button" id="cancelExpiration" class="btn btn-secondary">Cancel</button>
-            </div>
-        </form>
-    </div>
-</div>
-{% endblock %}
-
-{% block scripts %}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // ... (keep existing JavaScript)
-
-        // Revoke key functionality
-        document.querySelectorAll('.revoke-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const keyId = this.dataset.keyId;
-                if (confirm('Are you sure you want to revoke this API key?')) {
-                    fetch(`/revoke_key/${keyId}`, { method: 'POST' })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                alert(data.message);
-                                location.reload();
-                            } else {
-                                alert(data.error);
-                            }
-                        });
-                }
-            });
-        });
-
-        // Update expiration date functionality
-        const expirationModal = document.getElementById('expirationModal');
-        const updateExpirationForm = document.getElementById('updateExpirationForm');
-        const expirationKeyId = document.getElementById('expirationKeyId');
-        const expirationDate = document.getElementById('expirationDate');
-        const cancelExpiration = document.getElementById('cancelExpiration');
-
-        document.querySelectorAll('.update-expiration-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                expirationKeyId.value = this.dataset.keyId;
-                expirationModal.style.display = 'block';
-            });
-        });
-
-        updateExpirationForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const keyId = expirationKeyId.value;
-            const newExpirationDate = expirationDate.value;
-
-            fetch(`/update_key_expiration/${keyId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ expiration_date: newExpirationDate }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert(data.message);
-                    location.reload();
-                } else {
-                    alert(data.error);
-                }
-            });
-
-            expirationModal.style.display = 'none';
-        });
-
-        cancelExpiration.addEventListener('click', function() {
-            expirationModal.style.display = 'none';
-        });
-    });
-</script>
 {% endblock %}
