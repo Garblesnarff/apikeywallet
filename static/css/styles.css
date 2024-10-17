@@ -462,7 +462,6 @@ h2 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Landing page styles */
 .landing-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -672,12 +671,28 @@ h2 {
     color: var(--button-color);
     margin-bottom: 10px;
     cursor: pointer;
+    position: relative;
+    padding-right: 30px;
+}
+
+.faq-question::after {
+    content: '\25BC';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.3s ease;
+}
+
+.faq-question.active::after {
+    transform: translateY(-50%) rotate(180deg);
 }
 
 .faq-answer {
     font-size: 1rem;
     color: var(--text-color);
     display: none;
+    padding-top: 10px;
 }
 
 .final-cta {
@@ -699,7 +714,6 @@ h2 {
     margin-bottom: 30px;
 }
 
-/* Responsive styles */
 @media (max-width: 768px) {
     .hero {
         flex-direction: column;

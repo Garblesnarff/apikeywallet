@@ -122,15 +122,8 @@ document.addEventListener('DOMContentLoaded', function() {
     faqQuestions.forEach(question => {
         question.addEventListener('click', () => {
             const answer = question.nextElementSibling;
-            const isOpen = answer.style.display === 'block';
-            
-            // Close all other answers
-            document.querySelectorAll('.faq-answer').forEach(a => {
-                a.style.display = 'none';
-            });
-
-            // Toggle the clicked answer
-            answer.style.display = isOpen ? 'none' : 'block';
+            answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+            question.classList.toggle('active');
         });
     });
 });
