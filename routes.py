@@ -1,44 +1,18 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, g, current_app
+from flask import Blueprint, render_template, redirect, url_for, flash, request, jsonify, current_app, g
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy.exc import SQLAlchemyError
+from app import db, mail
 from models import User, APIKey, Category, AuditLog
 from forms import RegistrationForm, LoginForm, AddAPIKeyForm, AddCategoryForm
-from app import db
-from utils import encrypt_key, decrypt_key
-import logging
+from utils import encrypt_key, decrypt_key, generate_confirmation_token, confirm_token, send_confirmation_email
 import traceback
-from sqlalchemy.exc import SQLAlchemyError
-import os
+from datetime import datetime, timedelta
 from itsdangerous import URLSafeTimedSerializer
 from flask_mail import Message
-from app import mail
 
 main = Blueprint('main', __name__)
 auth = Blueprint('auth', __name__)
-
-def generate_confirmation_token(email):
-    serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
-    return serializer.dumps(email, salt=current_app.config['SECURITY_PASSWORD_SALT'])
-
-def confirm_token(token, expiration=3600):
-    serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
-    try:
-        email = serializer.loads(
-            token,
-            salt=current_app.config['SECURITY_PASSWORD_SALT'],
-            max_age=expiration
-        )
-    except:
-        return False
-    return email
-
-def send_confirmation_email(user):
-    token = generate_confirmation_token(user.email)
-    confirm_url = url_for('auth.confirm_email', token=token, _external=True)
-    html = render_template('email/confirm_email.html', confirm_url=confirm_url)
-    subject = "Please confirm your email"
-    msg = Message(subject, recipients=[user.email], html=html)
-    mail.send(msg)
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
@@ -134,46 +108,30 @@ def index():
     return render_template('landing.html')
 
 @main.route('/wallet')
-@main.route('/wallet/<int:category_id>')
 @login_required
-def wallet(category_id=None):
-    try:
-        current_app.logger.info(f"Fetching API keys for user {current_user.id}")
-        categories = Category.query.filter_by(user_id=current_user.id).order_by(Category.name).all()
-        
-        if category_id == 0:  # Uncategorized
-            api_keys = APIKey.query.filter_by(user_id=current_user.id, category_id=None).all()
-        elif category_id:
-            api_keys = APIKey.query.filter_by(user_id=current_user.id, category_id=category_id).all()
+def wallet():
+    categories = Category.query.filter_by(user_id=current_user.id).order_by(Category.name).all()
+    api_keys = APIKey.query.filter_by(user_id=current_user.id).order_by(APIKey.key_name).all()
+    
+    grouped_keys = {category.name: [] for category in categories}
+    grouped_keys['Uncategorized'] = []
+    
+    for key in api_keys:
+        key_data = {
+            'id': key.id,
+            'key_name': key.key_name,
+            'category_id': key.category_id,
+            'date_added': key.date_added,
+            'expiration_date': key.expiration_date,
+            'is_revoked': key.is_revoked,
+            'is_active': key.is_active
+        }
+        if key.category:
+            grouped_keys[key.category.name].append(key_data)
         else:
-            api_keys = APIKey.query.filter_by(user_id=current_user.id).all()
-        
-        api_keys = sorted(api_keys, key=lambda x: x.key_name.lower())
-        
-        grouped_keys = {category.name: [] for category in categories}
-        grouped_keys['Uncategorized'] = []
-        
-        for key in api_keys:
-            if key.category:
-                grouped_keys[key.category.name].append(key)
-            else:
-                grouped_keys['Uncategorized'].append(key)
-        
-        for category in grouped_keys:
-            grouped_keys[category] = sorted(grouped_keys[category], key=lambda x: x.key_name.lower())
-        
-        display_grouped_keys = {k: v for k, v in grouped_keys.items() if v}
-        
-        for category, keys in display_grouped_keys.items():
-            current_app.logger.info(f"Category '{category}' has {len(keys)} keys")
-        
-        current_app.logger.info("Rendering wallet template with Add New API Key button")
-        return render_template('wallet.html', grouped_keys=display_grouped_keys, all_categories=categories, current_category_id=category_id, debug=current_app.debug, show_add_key_button=True)
-    except Exception as e:
-        current_app.logger.error(f"Error in wallet route: {str(e)}")
-        current_app.logger.error(traceback.format_exc())
-        flash('An error occurred while retrieving your wallet. Please try again later.', 'danger')
-        return redirect(url_for('main.index'))
+            grouped_keys['Uncategorized'].append(key_data)
+    
+    return render_template('wallet.html', grouped_keys=grouped_keys, all_categories=categories)
 
 @main.route('/add_key', methods=['GET', 'POST'])
 @login_required
@@ -191,7 +149,8 @@ def add_key():
                 user_id=current_user.id,
                 key_name=form.key_name.data,
                 encrypted_key=encrypted_key,
-                category_id=form.category.data if form.category.data != 0 else None
+                category_id=form.category.data if form.category.data != 0 else None,
+                expiration_date=form.expiration_date.data
             )
             db.session.add(new_key)
             
@@ -209,7 +168,10 @@ def add_key():
                     'id': new_key.id,
                     'key_name': new_key.key_name,
                     'category_id': new_key.category_id,
-                    'category_name': category.name if category else 'Uncategorized'
+                    'category_name': category.name if category else 'Uncategorized',
+                    'expiration_date': new_key.expiration_date.isoformat() if new_key.expiration_date else None,
+                    'is_revoked': new_key.is_revoked,
+                    'is_active': new_key.is_active
                 }
             }), 200
         except SQLAlchemyError as e:
@@ -269,6 +231,57 @@ def delete_key(key_id):
         db.session.rollback()
         current_app.logger.error(f'Database error in delete_key route: {str(e)}')
         return jsonify({'success': False, 'error': 'An error occurred while deleting the API key.'}), 500
+
+@main.route('/revoke_key/<int:key_id>', methods=['POST'])
+@login_required
+def revoke_key(key_id):
+    try:
+        api_key = APIKey.query.filter_by(id=key_id, user_id=current_user.id).first()
+        if api_key:
+            api_key.is_revoked = True
+            
+            # Add audit log
+            audit_log = AuditLog(user_id=current_user.id, action="revoke", api_key_id=key_id)
+            db.session.add(audit_log)
+            
+            db.session.commit()
+            return jsonify({'success': True, 'message': 'API Key revoked successfully.'}), 200
+        else:
+            return jsonify({'success': False, 'error': 'API Key not found or unauthorized.'}), 404
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        current_app.logger.error(f'Database error in revoke_key route: {str(e)}')
+        return jsonify({'success': False, 'error': 'An error occurred while revoking the API key.'}), 500
+
+@main.route('/update_key_expiration/<int:key_id>', methods=['POST'])
+@login_required
+def update_key_expiration(key_id):
+    try:
+        api_key = APIKey.query.filter_by(id=key_id, user_id=current_user.id).first()
+        if api_key:
+            expiration_date = request.json.get('expiration_date')
+            if expiration_date:
+                api_key.expiration_date = datetime.fromisoformat(expiration_date)
+            else:
+                api_key.expiration_date = None
+            
+            # Add audit log
+            audit_log = AuditLog(user_id=current_user.id, action="update_expiration", api_key_id=key_id)
+            db.session.add(audit_log)
+            
+            db.session.commit()
+            return jsonify({
+                'success': True, 
+                'message': 'API Key expiration updated successfully.',
+                'expiration_date': api_key.expiration_date.isoformat() if api_key.expiration_date else None,
+                'is_active': api_key.is_active
+            }), 200
+        else:
+            return jsonify({'success': False, 'error': 'API Key not found or unauthorized.'}), 404
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        current_app.logger.error(f'Database error in update_key_expiration route: {str(e)}')
+        return jsonify({'success': False, 'error': 'An error occurred while updating the API key expiration.'}), 500
 
 @main.route('/add_category', methods=['GET', 'POST'])
 @login_required

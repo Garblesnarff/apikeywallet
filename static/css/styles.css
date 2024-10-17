@@ -201,7 +201,99 @@
     margin-bottom: 30px;
 }
 
-/* Responsive styles */
+.api-key {
+    position: relative;
+}
+
+.expiration-date, .key-status {
+    font-size: 0.9em;
+    margin-bottom: 5px;
+}
+
+.key-status .active {
+    color: #28a745;
+}
+
+.key-status .revoked {
+    color: #dc3545;
+}
+
+.key-status .expired {
+    color: #ffc107;
+}
+
+.key-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.key-actions button, .key-actions select {
+    padding: 5px;
+    margin-right: 5px;
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.key-actions button:hover {
+    background-color: #e9ecef;
+}
+
+.key-actions .revoke-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.key-actions .revoke-btn:hover {
+    background-color: #c82333;
+}
+
+.key-actions .update-expiration-btn {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.key-actions .update-expiration-btn:hover {
+    background-color: #138496;
+}
+
+#expirationModal .modal-content {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+#expirationModal h3 {
+    margin-bottom: 15px;
+}
+
+#expirationModal .form-group {
+    margin-bottom: 15px;
+}
+
+#expirationModal label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+#expirationModal input[type="date"] {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+#expirationModal .modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#expirationModal .modal-buttons button {
+    margin-left: 10px;
+}
+
 @media (max-width: 768px) {
     .hero {
         flex-direction: column;
