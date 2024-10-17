@@ -470,36 +470,48 @@ h2 {
 }
 
 .hero {
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 60px;
 }
 
-.hero h1 {
-    font-size: 3rem;
+.hero-content {
+    flex: 1;
+    padding-right: 40px;
+}
+
+.hero-image {
+    flex: 1;
+    text-align: center;
+}
+
+.hero-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+.main-headline {
+    font-size: 3.5rem;
+    font-weight: 800;
     color: var(--text-color);
     margin-bottom: 20px;
 }
 
-.hero .subtitle {
+.tagline {
     font-size: 1.5rem;
     color: var(--button-color);
-    margin-bottom: 20px;
-}
-
-.hero .description {
-    font-size: 1.2rem;
-    color: var(--text-color);
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
 .cta-buttons {
     display: flex;
-    justify-content: center;
     gap: 20px;
 }
 
 .features {
     text-align: center;
+    margin-bottom: 60px;
 }
 
 .features h2 {
@@ -519,10 +531,16 @@ h2 {
     flex: 1;
     min-width: 250px;
     max-width: 300px;
-    padding: 20px;
+    padding: 30px;
     background-color: var(--accent-color);
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 .feature-item i {
@@ -542,23 +560,113 @@ h2 {
     color: var(--text-color);
 }
 
+.benefits {
+    background-color: var(--accent-color);
+    padding: 60px 0;
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.benefits h2 {
+    font-size: 2.5rem;
+    color: var(--text-color);
+    margin-bottom: 40px;
+}
+
+.benefits-list {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+.benefits-list li {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    background-color: var(--primary-color);
+    padding: 15px 25px;
+    border-radius: 30px;
+}
+
+.faq {
+    margin-bottom: 60px;
+}
+
+.faq h2 {
+    font-size: 2.5rem;
+    color: var(--text-color);
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.faq-list {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    background-color: var(--accent-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.faq-question {
+    font-size: 1.3rem;
+    color: var(--button-color);
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.faq-answer {
+    font-size: 1rem;
+    color: var(--text-color);
+    display: none;
+}
+
+.final-cta {
+    text-align: center;
+    background-color: var(--primary-color);
+    padding: 60px 0;
+    border-radius: 8px;
+}
+
+.final-cta h2 {
+    font-size: 2.5rem;
+    color: var(--text-color);
+    margin-bottom: 20px;
+}
+
+.final-cta p {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    margin-bottom: 30px;
+}
+
 /* Responsive styles */
 @media (max-width: 768px) {
-    .hero h1 {
+    .hero {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-content {
+        padding-right: 0;
+        margin-bottom: 30px;
+    }
+
+    .main-headline {
         font-size: 2.5rem;
     }
 
-    .hero .subtitle {
+    .tagline {
         font-size: 1.2rem;
     }
 
-    .hero .description {
-        font-size: 1rem;
-    }
-
     .cta-buttons {
-        flex-direction: column;
-        align-items: center;
+        justify-content: center;
     }
 
     .feature-list {
@@ -569,5 +677,9 @@ h2 {
     .feature-item {
         width: 100%;
         max-width: none;
+    }
+
+    .benefits-list {
+        flex-direction: column;
     }
 }

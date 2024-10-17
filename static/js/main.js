@@ -116,7 +116,21 @@ document.addEventListener('DOMContentLoaded', function() {
         editApiKey(keyId, newKeyName);
     });
 
-    // Rest of the JavaScript code remains the same
-    // ...
+    // FAQ functionality
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    
+    faqQuestions.forEach(question => {
+        question.addEventListener('click', () => {
+            const answer = question.nextElementSibling;
+            const isOpen = answer.style.display === 'block';
+            
+            // Close all other answers
+            document.querySelectorAll('.faq-answer').forEach(a => {
+                a.style.display = 'none';
+            });
 
+            // Toggle the clicked answer
+            answer.style.display = isOpen ? 'none' : 'block';
+        });
+    });
 });

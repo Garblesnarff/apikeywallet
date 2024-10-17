@@ -3,12 +3,16 @@
 {% block content %}
 <div class="landing-container">
     <section class="hero">
-        <h1>Welcome to KeyGuardian</h1>
-        <p class="subtitle">Your Secure API Key Management Solution</p>
-        <p class="description">KeyGuardian provides a safe and efficient way to store, manage, and organize your API keys.</p>
-        <div class="cta-buttons">
-            <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Get Started</a>
-            <a href="{{ url_for('auth.login') }}" class="btn btn-secondary">Login</a>
+        <div class="hero-content">
+            <h1 class="main-headline">Welcome to KeyGuardian</h1>
+            <p class="tagline">Manage your API keys securely and effortlessly</p>
+            <div class="cta-buttons">
+                <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Get Started</a>
+                <a href="{{ url_for('auth.login') }}" class="btn btn-secondary">Login</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="{{ url_for('static', filename='img/keyguardian-logo.webp') }}" alt="KeyGuardian Hero Image">
         </div>
     </section>
 
@@ -30,6 +34,43 @@
                 <h3>Categorization</h3>
                 <p>Group your keys by project or purpose.</p>
             </div>
+        </div>
+    </section>
+
+    <section class="benefits">
+        <h2>Why Choose KeyGuardian?</h2>
+        <ul class="benefits-list">
+            <li>Never worry about lost API keys again</li>
+            <li>Save time with efficient key management</li>
+            <li>Enhance security with encrypted storage</li>
+            <li>Streamline your development workflow</li>
+        </ul>
+    </section>
+
+    <section class="faq">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-list">
+            <div class="faq-item">
+                <h3 class="faq-question">How secure is KeyGuardian?</h3>
+                <p class="faq-answer">KeyGuardian uses industry-standard encryption to protect your API keys.</p>
+            </div>
+            <div class="faq-item">
+                <h3 class="faq-question">Can I categorize keys by project?</h3>
+                <p class="faq-answer">Yes, KeyGuardian allows you to organize your keys into custom categories.</p>
+            </div>
+            <div class="faq-item">
+                <h3 class="faq-question">Is my data encrypted?</h3>
+                <p class="faq-answer">Absolutely. All your API keys are encrypted before being stored in our database.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="final-cta">
+        <h2>Ready to Secure Your API Keys?</h2>
+        <p>Start managing your keys with KeyGuardian today!</p>
+        <div class="cta-buttons">
+            <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Get Started Now</a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-secondary">Login</a>
         </div>
     </section>
 </div>
