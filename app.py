@@ -1,5 +1,5 @@
 import os
-from flask import Flask, g
+from flask import Flask, g, session, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from sqlalchemy import create_engine
@@ -8,6 +8,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from urllib.parse import urlparse
 from flask_migrate import Migrate
 import logging
+from flask_dance.contrib.google import make_google_blueprint, google
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
@@ -76,6 +77,14 @@ app.register_blueprint(main_blueprint)
 
 from routes import auth as auth_blueprint
 app.register_blueprint(auth_blueprint)
+
+# Google OAuth configuration
+google_blueprint = make_google_blueprint(
+    client_id=os.environ.get("GOOGLE_CLIENT_ID"),
+    client_secret=os.environ.get("GOOGLE_CLIENT_SECRET"),
+    scope=["profile", "email"]
+)
+app.register_blueprint(google_blueprint, url_prefix="/login")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

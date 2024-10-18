@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, g, current_app
+from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, g, current_app, session
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import User, APIKey, Category
@@ -9,6 +9,7 @@ import logging
 import traceback
 from sqlalchemy.exc import SQLAlchemyError
 import os
+from flask_dance.contrib.google import google
 
 main = Blueprint('main', __name__)
 auth = Blueprint('auth', __name__)
@@ -63,6 +64,23 @@ def login():
     
     return render_template('login.html', form=form)
 
+@auth.route('/login/google')
+def login_google():
+    if not google.authorized:
+        return redirect(url_for('google.login'))
+    resp = google.get('/oauth2/v2/userinfo')
+    assert resp.ok, resp.text
+    email = resp.json()['email']
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        user = User(email=email)
+        user.set_password(os.urandom(24).hex())
+        db.session.add(user)
+        db.session.commit()
+    login_user(user)
+    flash('Logged in successfully via Google.', 'success')
+    return redirect(url_for('main.wallet'))
+
 @auth.route('/logout')
 @login_required
 def logout():
@@ -89,7 +107,7 @@ def wallet(category_id=None):
         current_app.logger.info(f"Fetching API keys for user {current_user.id}")
         categories = Category.query.filter_by(user_id=current_user.id).order_by(Category.name).all()
         
-        if category_id == 0:  # Uncategorized
+        if category_id == 0:
             api_keys = APIKey.query.filter_by(user_id=current_user.id, category_id=None).all()
         elif category_id:
             api_keys = APIKey.query.filter_by(user_id=current_user.id, category_id=category_id).all()
