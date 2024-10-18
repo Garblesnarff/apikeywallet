@@ -194,13 +194,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const addNewApiKeyBtn = safeQuerySelector('#add-new-api-key-btn');
     if (addNewApiKeyBtn) {
         addNewApiKeyBtn.addEventListener('click', handleAddNewApiKey);
-    } else {
-        console.warn('Add New API Key button not found');
     }
 
     function handleAddNewApiKey() {
-        // Implement the logic for adding a new API key
-        console.log('Add New API Key button clicked');
-        // You can redirect to the add key page or open a modal here
+        window.location.href = '/add_key';
     }
 });
