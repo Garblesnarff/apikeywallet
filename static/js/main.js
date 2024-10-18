@@ -1,21 +1,35 @@
+// Safe DOM element selector function
+function safeQuerySelector(selector) {
+    try {
+        return document.querySelector(selector);
+    } catch (error) {
+        console.error(`Error querying selector "${selector}":`, error);
+        return null;
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // FAQ functionality
-    const faqQuestions = document.querySelectorAll('.faq-question');
-    
-    faqQuestions.forEach(question => {
-        question.addEventListener('click', () => {
-            const answer = question.nextElementSibling;
-            if (answer && answer.classList.contains('faq-answer')) {
-                if (answer.style.display === 'block') {
-                    answer.style.display = 'none';
-                    question.classList.remove('active');
-                } else {
-                    answer.style.display = 'block';
-                    question.classList.add('active');
+    try {
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                if (answer && answer.classList.contains('faq-answer')) {
+                    if (answer.style.display === 'block') {
+                        answer.style.display = 'none';
+                        question.classList.remove('active');
+                    } else {
+                        answer.style.display = 'block';
+                        question.classList.add('active');
+                    }
                 }
-            }
+            });
         });
-    });
+    } catch (error) {
+        console.error('Error in FAQ functionality:', error);
+    }
 
     // API Key management functions
     function setupAPIKeyManagement() {
@@ -43,14 +57,22 @@ document.addEventListener('DOMContentLoaded', function() {
         if (maskedKeyElement) {
             if (maskedKeyElement.textContent === '••••••••••••••••') {
                 fetch(`/get_key/${keyId}`, { method: 'POST' })
-                    .then(response => response.json())
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
                     .then(data => {
                         if (data.key) {
                             maskedKeyElement.textContent = data.key;
                             event.target.innerHTML = '<i class="fas fa-eye-slash"></i>';
                         }
                     })
-                    .catch(error => console.error('Error:', error));
+                    .catch(error => {
+                        console.error('Error fetching API key:', error);
+                        alert('Failed to retrieve API key. Please try again.');
+                    });
             } else {
                 maskedKeyElement.textContent = '••••••••••••••••';
                 event.target.innerHTML = '<i class="fas fa-eye"></i>';
@@ -61,7 +83,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function copyAPIKey(event) {
         const keyId = event.target.dataset.keyId;
         fetch(`/copy_key/${keyId}`, { method: 'POST' })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.key) {
                     navigator.clipboard.writeText(data.key)
@@ -69,14 +96,22 @@ document.addEventListener('DOMContentLoaded', function() {
                         .catch(err => console.error('Error copying text: ', err));
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error copying API key:', error);
+                alert('Failed to copy API key. Please try again.');
+            });
     }
 
     function deleteAPIKey(event) {
         const keyId = event.target.dataset.keyId;
         if (confirm('Are you sure you want to delete this API Key?')) {
             fetch(`/delete_key/${keyId}`, { method: 'POST' })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     if (data.success) {
                         event.target.closest('.api-key').remove();
@@ -84,7 +119,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         alert('Failed to delete API Key');
                     }
                 })
-                .catch(error => console.error('Error:', error));
+                .catch(error => {
+                    console.error('Error deleting API key:', error);
+                    alert('Failed to delete API key. Please try again.');
+                });
         }
     }
 
@@ -102,7 +140,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 body: JSON.stringify({ key_name: newName }),
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     keyElement.querySelector('h4').textContent = data.new_name;
@@ -110,7 +153,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     alert('Failed to update API Key name');
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error updating API key name:', error);
+                alert('Failed to update API key name. Please try again.');
+            });
         }
     }
 
@@ -125,15 +171,36 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             body: JSON.stringify({ category_id: categoryId }),
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
-                // You might want to update the UI here, e.g., move the key to a different category section
                 console.log('Category updated successfully');
             } else {
                 alert('Failed to update category');
             }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            console.error('Error updating key category:', error);
+            alert('Failed to update key category. Please try again.');
+        });
+    }
+
+    // Safe DOM access for Add New API Key button
+    const addNewApiKeyBtn = safeQuerySelector('#add-new-api-key-btn');
+    if (addNewApiKeyBtn) {
+        addNewApiKeyBtn.addEventListener('click', handleAddNewApiKey);
+    } else {
+        console.warn('Add New API Key button not found');
+    }
+
+    function handleAddNewApiKey() {
+        // Implement the logic for adding a new API key
+        console.log('Add New API Key button clicked');
+        // You can redirect to the add key page or open a modal here
     }
 });
