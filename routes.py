@@ -14,6 +14,38 @@ from flask_dance.consumer import oauth_authorized
 main = Blueprint('main', __name__)
 auth = Blueprint('auth', __name__)
 
+@auth.route('/login/google')
+def login_google():
+    if not google.authorized:
+        return redirect(url_for('google.login'))
+    return redirect(url_for('main.wallet'))
+
+@auth.route('/login/google/authorized')
+def google_authorized():
+    resp = google.get("/oauth2/v2/userinfo")
+    if not resp.ok:
+        flash("Failed to get user info from Google.", "error")
+        return redirect(url_for("auth.login"))
+    
+    info = resp.json()
+    if not info.get("email"):
+        flash("Failed to get email from Google.", "error")
+        return redirect(url_for("auth.login"))
+    
+    # Get or create user
+    user = User.query.filter_by(email=info["email"]).first()
+    if not user:
+        user = User(
+            email=info["email"],
+        )
+        user.set_password(os.urandom(24).hex())
+        db.session.add(user)
+        db.session.commit()
+    
+    login_user(user)
+    flash("Successfully signed in with Google.", "success")
+    return redirect(url_for("main.wallet"))
+
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -62,12 +94,6 @@ def login():
             flash('An error occurred. Please try again later.', 'danger')
     
     return render_template('login.html', form=form)
-
-@auth.route('/login/google')
-def login_google():
-    if not google.authorized:
-        return redirect(url_for('google.login'))
-    return redirect(url_for('main.wallet'))
 
 @oauth_authorized.connect_via(google)
 def google_logged_in(blueprint, token):

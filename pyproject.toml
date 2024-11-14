@@ -19,4 +19,5 @@ dependencies = [
     "flask-dance>=6.2.0",
     "sqlalchemy>=2.0.35",
     "werkzeug>=3.0.4",
+    "requests-oauthlib",
 ]
