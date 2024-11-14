@@ -47,11 +47,10 @@ def create_app():
             client_id=os.environ.get("GOOGLE_CLIENT_ID"),
             client_secret=os.environ.get("GOOGLE_CLIENT_SECRET"),
             scope=["profile", "email"],
-            redirect_url="/login/google/authorized",
-            authorized_url="/login/google/authorized",
-            reprompt_consent=True,
-            redirect_to="auth.google_authorized"
+            redirect_url="/auth/login/google/authorized",
+            authorized_url="/auth/login/google/authorized",
+            reprompt_consent=True
         )
-        app.register_blueprint(google_bp, url_prefix="/login")
+        app.register_blueprint(google_bp, url_prefix="/auth")
 
     return app

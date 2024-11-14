@@ -22,6 +22,9 @@ def login_google():
 
 @auth.route('/login/google/authorized')
 def google_authorized():
+    if not google.authorized:
+        return redirect(url_for('auth.login'))
+        
     resp = google.get("/oauth2/v2/userinfo")
     if not resp.ok:
         flash("Failed to get user info from Google.", "error")
@@ -32,12 +35,10 @@ def google_authorized():
         flash("Failed to get email from Google.", "error")
         return redirect(url_for("auth.login"))
     
-    # Get or create user
     user = User.query.filter_by(email=info["email"]).first()
     if not user:
-        user = User(
-            email=info["email"],
-        )
+        user = User()
+        user.email = info["email"]
         user.set_password(os.urandom(24).hex())
         db.session.add(user)
         db.session.commit()
