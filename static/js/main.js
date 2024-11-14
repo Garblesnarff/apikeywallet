@@ -38,12 +38,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const deleteButtons = document.querySelectorAll('.delete-btn');
         const editButtons = document.querySelectorAll('.edit-btn');
         const categorySelects = document.querySelectorAll('.category-select');
+        const addNewApiKeyBtn = safeQuerySelector('#add-new-api-key-btn');
 
         toggleButtons.forEach(btn => btn.addEventListener('click', toggleKeyVisibility));
         copyButtons.forEach(btn => btn.addEventListener('click', copyAPIKey));
         deleteButtons.forEach(btn => btn.addEventListener('click', deleteAPIKey));
         editButtons.forEach(btn => btn.addEventListener('click', editAPIKey));
         categorySelects.forEach(select => select.addEventListener('change', updateKeyCategory));
+
+        if (addNewApiKeyBtn) {
+            addNewApiKeyBtn.addEventListener('click', handleAddNewApiKey);
+        }
     }
 
     // Call the setup function when the DOM is loaded
@@ -51,8 +56,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function definitions for API Key management
     function toggleKeyVisibility(event) {
-        const keyId = event.target.dataset.keyId;
-        const maskedKeyElement = event.target.closest('.api-key').querySelector('.masked-key');
+        const button = event.target.closest('.toggle-visibility-btn');
+        if (!button) return;
+        
+        const keyId = button.dataset.keyId;
+        const maskedKeyElement = button.closest('.api-key').querySelector('.masked-key');
         
         if (maskedKeyElement) {
             if (maskedKeyElement.textContent === '••••••••••••••••') {
@@ -66,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     .then(data => {
                         if (data.key) {
                             maskedKeyElement.textContent = data.key;
-                            event.target.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                            button.innerHTML = '<i class="fas fa-eye-slash"></i>';
                         }
                     })
                     .catch(error => {
@@ -75,13 +83,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
             } else {
                 maskedKeyElement.textContent = '••••••••••••••••';
-                event.target.innerHTML = '<i class="fas fa-eye"></i>';
+                button.innerHTML = '<i class="fas fa-eye"></i>';
             }
         }
     }
 
     function copyAPIKey(event) {
-        const keyId = event.target.dataset.keyId;
+        const button = event.target.closest('.copy-btn');
+        if (!button) return;
+        
+        const keyId = button.dataset.keyId;
         fetch(`/copy_key/${keyId}`, { method: 'POST' })
             .then(response => {
                 if (!response.ok) {
@@ -103,7 +114,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function deleteAPIKey(event) {
-        const keyId = event.target.dataset.keyId;
+        const button = event.target.closest('.delete-btn');
+        if (!button) return;
+        
+        const keyId = button.dataset.keyId;
         if (confirm('Are you sure you want to delete this API Key?')) {
             fetch(`/delete_key/${keyId}`, { method: 'POST' })
                 .then(response => {
@@ -114,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(data => {
                     if (data.success) {
-                        event.target.closest('.api-key').remove();
+                        button.closest('.api-key').remove();
                     } else {
                         alert('Failed to delete API Key');
                     }
@@ -127,8 +141,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function editAPIKey(event) {
-        const keyId = event.target.dataset.keyId;
-        const keyElement = event.target.closest('.api-key');
+        const button = event.target.closest('.edit-btn');
+        if (!button) return;
+        
+        const keyId = button.dataset.keyId;
+        const keyElement = button.closest('.api-key');
         const currentName = keyElement.querySelector('h4').textContent;
         const newName = prompt('Enter new name for the API Key:', currentName);
         
@@ -161,8 +178,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateKeyCategory(event) {
-        const keyId = event.target.dataset.keyId;
-        const categoryId = event.target.value;
+        const select = event.target;
+        const keyId = select.dataset.keyId;
+        const categoryId = select.value;
         
         fetch(`/update_key_category/${keyId}`, {
             method: 'POST',
@@ -188,12 +206,6 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error updating key category:', error);
             alert('Failed to update key category. Please try again.');
         });
-    }
-
-    // Safe DOM access for Add New API Key button
-    const addNewApiKeyBtn = safeQuerySelector('#add-new-api-key-btn');
-    if (addNewApiKeyBtn) {
-        addNewApiKeyBtn.addEventListener('click', handleAddNewApiKey);
     }
 
     function handleAddNewApiKey() {

@@ -1,15 +1,15 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, g, current_app, session
+from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, current_app
 from flask_login import login_user, login_required, logout_user, current_user
-from werkzeug.security import generate_password_hash, check_password_hash
 from models import User, APIKey, Category
 from forms import RegistrationForm, LoginForm, AddAPIKeyForm, AddCategoryForm
-from app import db
+from extensions import db
 from utils import encrypt_key, decrypt_key
 import logging
 import traceback
 from sqlalchemy.exc import SQLAlchemyError
 import os
 from flask_dance.contrib.google import google
+from flask_dance.consumer import oauth_authorized
 
 main = Blueprint('main', __name__)
 auth = Blueprint('auth', __name__)
@@ -28,7 +28,8 @@ def register():
             flash('Email already exists.', 'danger')
             return redirect(url_for('auth.register'))
         
-        new_user = User(email=email)
+        new_user = User()
+        new_user.email = email
         new_user.set_password(password)
         db.session.add(new_user)
         db.session.commit()
@@ -56,68 +57,53 @@ def login():
                 return redirect(next_page) if next_page else redirect(url_for('main.wallet'))
             else:
                 flash('Invalid email or password.', 'danger')
-        except SQLAlchemyError as e:
-            current_app.logger.error(f"Database error during login: {str(e)}")
-            flash('An error occurred while processing your request. Please try again later.', 'danger')
         except Exception as e:
-            current_app.logger.error(f"Unexpected error during login: {str(e)}")
-            flash('An unexpected error occurred. Please try again later.', 'danger')
+            current_app.logger.error(f"Error during login: {str(e)}")
+            flash('An error occurred. Please try again later.', 'danger')
     
     return render_template('login.html', form=form)
 
 @auth.route('/login/google')
 def login_google():
     if not google.authorized:
-        return google.authorize(callback=url_for('auth.authorized', _external=True))
+        return redirect(url_for('google.login'))
     return redirect(url_for('main.wallet'))
 
-@auth.route('/login/google/authorized')
-def authorized():
-    try:
-        resp = google.authorized_response()
-        if resp is None or resp.get('access_token') is None:
-            flash('Access denied: reason={} error={}'.format(
-                request.args.get('error_reason'),
-                request.args.get('error_description')
-            ), 'danger')
-            return redirect(url_for('auth.login'))
-            
-        google_data = google.get('userinfo').json()
-        email = google_data.get('email')
-        
-        if not email:
-            flash('Failed to get user info from Google.', 'danger')
-            return redirect(url_for('auth.login'))
-            
-        user = User.query.filter_by(email=email).first()
-        if not user:
-            user = User(email=email)
-            user.set_password(os.urandom(24).hex())
-            db.session.add(user)
-            db.session.commit()
-        
-        login_user(user)
-        flash('Logged in successfully via Google.', 'success')
-        next_page = request.args.get('next')
-        return redirect(next_page or url_for('main.wallet'))
-        
-    except Exception as e:
-        current_app.logger.error(f"Error in Google OAuth login: {str(e)}")
-        flash('Failed to log in with Google. Please try again.', 'danger')
-        return redirect(url_for('auth.login'))
+@oauth_authorized.connect_via(google)
+def google_logged_in(blueprint, token):
+    if not token:
+        flash("Failed to log in with Google.", category="error")
+        return False
+
+    resp = blueprint.session.get("/oauth2/v1/userinfo")
+    if not resp.ok:
+        flash("Failed to fetch user info from Google.", category="error")
+        return False
+
+    google_info = resp.json()
+    email = google_info.get("email")
+
+    if not email:
+        flash("Failed to get user email from Google.", category="error")
+        return False
+
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        user = User()
+        user.email = email
+        user.set_password(os.urandom(24).hex())
+        db.session.add(user)
+        db.session.commit()
+
+    login_user(user)
+    flash("Successfully signed in with Google.", category="success")
+    return False
 
 @auth.route('/logout')
 @login_required
 def logout():
-    try:
-        logout_user()
-        flash('You have been logged out successfully.', 'success')
-    except SQLAlchemyError as e:
-        current_app.logger.error(f"Database error during logout: {str(e)}")
-        flash('An error occurred during logout. Please try again.', 'danger')
-    except Exception as e:
-        current_app.logger.error(f"Unexpected error during logout: {str(e)}")
-        flash('An unexpected error occurred. Please try again.', 'danger')
+    logout_user()
+    flash('You have been logged out successfully.', 'success')
     return redirect(url_for('main.index'))
 
 @main.route('/')
@@ -155,11 +141,7 @@ def wallet(category_id=None):
         
         display_grouped_keys = {k: v for k, v in grouped_keys.items() if v}
         
-        for category, keys in display_grouped_keys.items():
-            current_app.logger.info(f"Category '{category}' has {len(keys)} keys")
-        
-        current_app.logger.info("Rendering wallet template with Add New API Key button")
-        return render_template('wallet.html', grouped_keys=display_grouped_keys, all_categories=categories, current_category_id=category_id, debug=current_app.debug, show_add_key_button=True)
+        return render_template('wallet.html', grouped_keys=display_grouped_keys, all_categories=categories, current_category_id=category_id, debug=current_app.debug)
     except Exception as e:
         current_app.logger.error(f"Error in wallet route: {str(e)}")
         current_app.logger.error(traceback.format_exc())
@@ -392,3 +374,19 @@ def get_categories_and_keys():
     except Exception as e:
         current_app.logger.error(f"Error in get_categories_and_keys route: {str(e)}")
         return jsonify({'error': 'An error occurred while fetching categories and keys.'}), 500
+
+# Register blueprints in the create_app function
+from flask import Flask
+from flask_login import LoginManager
+login_manager = LoginManager()
+login_manager.login_view = 'auth.login'
+
+def create_app(config_filename):
+    app = Flask(__name__)
+    app.config.from_pyfile(config_filename)
+    db.init_app(app)
+    login_manager.init_app(app)
+    app.register_blueprint(google, url_prefix='/login/google')
+    app.register_blueprint(auth, url_prefix='/auth')
+    app.register_blueprint(main)
+    return app
