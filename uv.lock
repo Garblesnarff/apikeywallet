@@ -916,6 +916,7 @@ dependencies = [
     { name = "requests" },
     { name = "sqlalchemy" },
     { name = "supabase" },
+    { name = "werkzeug" },
 ]
 
 [package.metadata]
@@ -933,6 +934,7 @@ requires-dist = [
     { name = "requests", specifier = ">=2.32.3" },
     { name = "sqlalchemy", specifier = ">=2.0.35" },
     { name = "supabase", specifier = ">=2.7.4" },
+    { name = "werkzeug", specifier = ">=3.0.4" },
 ]
 
 [[package]]

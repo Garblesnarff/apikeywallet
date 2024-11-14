@@ -52,7 +52,8 @@ def login():
             user = User.query.filter_by(email=email).first()
             if user and user.check_password(password):
                 login_user(user)
-                return redirect(url_for('main.wallet'))
+                next_page = request.args.get('next')
+                return redirect(next_page) if next_page else redirect(url_for('main.wallet'))
             else:
                 flash('Invalid email or password.', 'danger')
         except SQLAlchemyError as e:
@@ -68,18 +69,25 @@ def login():
 def login_google():
     if not google.authorized:
         return redirect(url_for('google.login'))
-    resp = google.get('/oauth2/v2/userinfo')
-    assert resp.ok, resp.text
-    email = resp.json()['email']
-    user = User.query.filter_by(email=email).first()
-    if not user:
-        user = User(email=email)
-        user.set_password(os.urandom(24).hex())
-        db.session.add(user)
-        db.session.commit()
-    login_user(user)
-    flash('Logged in successfully via Google.', 'success')
-    return redirect(url_for('main.wallet'))
+    try:
+        resp = google.get('/oauth2/v2/userinfo')
+        assert resp.ok, resp.text
+        email = resp.json()['email']
+        
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            user = User(email=email)
+            user.set_password(os.urandom(24).hex())
+            db.session.add(user)
+            db.session.commit()
+        
+        login_user(user)
+        flash('Logged in successfully via Google.', 'success')
+        return redirect(url_for('main.wallet'))
+    except Exception as e:
+        current_app.logger.error(f"Error in Google OAuth login: {str(e)}")
+        flash('Failed to log in with Google. Please try again.', 'danger')
+        return redirect(url_for('auth.login'))
 
 @auth.route('/logout')
 @login_required
