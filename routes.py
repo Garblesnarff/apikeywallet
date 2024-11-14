@@ -68,12 +68,27 @@ def login():
 @auth.route('/login/google')
 def login_google():
     if not google.authorized:
-        return redirect(url_for('google.login'))
+        return google.authorize(callback=url_for('auth.authorized', _external=True))
+    return redirect(url_for('main.wallet'))
+
+@auth.route('/login/google/authorized')
+def authorized():
     try:
-        resp = google.get('/oauth2/v2/userinfo')
-        assert resp.ok, resp.text
-        email = resp.json()['email']
+        resp = google.authorized_response()
+        if resp is None or resp.get('access_token') is None:
+            flash('Access denied: reason={} error={}'.format(
+                request.args.get('error_reason'),
+                request.args.get('error_description')
+            ), 'danger')
+            return redirect(url_for('auth.login'))
+            
+        google_data = google.get('userinfo').json()
+        email = google_data.get('email')
         
+        if not email:
+            flash('Failed to get user info from Google.', 'danger')
+            return redirect(url_for('auth.login'))
+            
         user = User.query.filter_by(email=email).first()
         if not user:
             user = User(email=email)
@@ -83,7 +98,9 @@ def login_google():
         
         login_user(user)
         flash('Logged in successfully via Google.', 'success')
-        return redirect(url_for('main.wallet'))
+        next_page = request.args.get('next')
+        return redirect(next_page or url_for('main.wallet'))
+        
     except Exception as e:
         current_app.logger.error(f"Error in Google OAuth login: {str(e)}")
         flash('Failed to log in with Google. Please try again.', 'danger')

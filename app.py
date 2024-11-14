@@ -3,6 +3,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 from flask_login import LoginManager
+from datetime import timedelta
 import logging
 
 # Configure logging
@@ -25,6 +26,11 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
     "pool_pre_ping": True,
 }
 
+# Session configuration
+app.config['SESSION_COOKIE_SECURE'] = True
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
+
 # Initialize SQLAlchemy with app
 db.init_app(app)
 
@@ -42,13 +48,21 @@ from routes import auth as auth_blueprint
 app.register_blueprint(auth_blueprint)
 
 # Google OAuth configuration
-from flask_dance.contrib.google import make_google_blueprint
-google_blueprint = make_google_blueprint(
+from flask_dance.contrib.google import make_google_blueprint, google
+
+google_bp = make_google_blueprint(
     client_id=os.environ.get("GOOGLE_CLIENT_ID"),
     client_secret=os.environ.get("GOOGLE_CLIENT_SECRET"),
-    scope=["profile", "email"]
+    scope=["profile", "email"],
+    redirect_url="/login/google/authorized"
 )
-app.register_blueprint(google_blueprint, url_prefix="/login")
+app.register_blueprint(google_bp, url_prefix="/login")
+
+# Import models after db initialization
+with app.app_context():
+    import models
+    db.create_all()
+    logger.info("Database tables created successfully")
 
 @login_manager.user_loader
 def load_user(user_id):
