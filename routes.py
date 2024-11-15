@@ -8,46 +8,29 @@ import logging
 import traceback
 from sqlalchemy.exc import SQLAlchemyError
 import os
-from flask_dance.contrib.google import google
-from flask_dance.consumer import oauth_authorized
+from replit import web
 
 main = Blueprint('main', __name__)
-auth = Blueprint('auth', __name__)
+auth_bp = Blueprint('auth', __name__)
 
-@auth.route('/login/google')
-def login_google():
-    if not google.authorized:
-        return redirect(url_for('google.login'))
-    return redirect(url_for('main.wallet'))
+@auth_bp.route('/login/replit')
+def login_replit():
+    return web.auth.sign_in_with_replit()
 
-@auth.route('/login/google/authorized')
-def google_authorized():
-    if not google.authorized:
-        return redirect(url_for('auth.login'))
-        
-    resp = google.get("/oauth2/v2/userinfo")
-    if not resp.ok:
-        flash("Failed to get user info from Google.", "error")
-        return redirect(url_for("auth.login"))
-    
-    info = resp.json()
-    if not info.get("email"):
-        flash("Failed to get email from Google.", "error")
-        return redirect(url_for("auth.login"))
-    
-    user = User.query.filter_by(email=info["email"]).first()
-    if not user:
-        user = User()
-        user.email = info["email"]
-        user.set_password(os.urandom(24).hex())
-        db.session.add(user)
-        db.session.commit()
-    
-    login_user(user)
-    flash("Successfully signed in with Google.", "success")
-    return redirect(url_for("main.wallet"))
+@auth_bp.route('/login/replit/callback')
+def replit_callback():
+    user_info = web.auth.verify_request()
+    if user_info:
+        user = User.query.filter_by(replit_id=str(user_info.id)).first()
+        if not user:
+            user = User(replit_id=str(user_info.id))
+            db.session.add(user)
+            db.session.commit()
+        login_user(user)
+        return redirect(url_for('main.wallet'))
+    return redirect(url_for('auth.login'))
 
-@auth.route('/register', methods=['GET', 'POST'])
+@auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('main.wallet'))
@@ -72,7 +55,7 @@ def register():
     
     return render_template('register.html', form=form)
 
-@auth.route('/login', methods=['GET', 'POST'])
+@auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('main.wallet'))
@@ -96,37 +79,7 @@ def login():
     
     return render_template('login.html', form=form)
 
-@oauth_authorized.connect_via(google)
-def google_logged_in(blueprint, token):
-    if not token:
-        flash("Failed to log in with Google.", category="error")
-        return False
-
-    resp = blueprint.session.get("/oauth2/v1/userinfo")
-    if not resp.ok:
-        flash("Failed to fetch user info from Google.", category="error")
-        return False
-
-    google_info = resp.json()
-    email = google_info.get("email")
-
-    if not email:
-        flash("Failed to get user email from Google.", category="error")
-        return False
-
-    user = User.query.filter_by(email=email).first()
-    if not user:
-        user = User()
-        user.email = email
-        user.set_password(os.urandom(24).hex())
-        db.session.add(user)
-        db.session.commit()
-
-    login_user(user)
-    flash("Successfully signed in with Google.", category="success")
-    return False
-
-@auth.route('/logout')
+@auth_bp.route('/logout')
 @login_required
 def logout():
     logout_user()
@@ -413,7 +366,7 @@ def create_app(config_filename):
     app.config.from_pyfile(config_filename)
     db.init_app(app)
     login_manager.init_app(app)
-    app.register_blueprint(google, url_prefix='/login/google')
-    app.register_blueprint(auth, url_prefix='/auth')
+    # app.register_blueprint(google, url_prefix='/login/google') # Removed
+    app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(main)
     return app

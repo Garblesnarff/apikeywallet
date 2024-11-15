@@ -20,10 +20,6 @@ def create_app():
         "pool_pre_ping": True,
     }
 
-    # Google OAuth Configuration
-    app.config['GOOGLE_OAUTH_CLIENT_ID'] = os.environ.get('GOOGLE_CLIENT_ID')
-    app.config['GOOGLE_OAUTH_CLIENT_SECRET'] = os.environ.get('GOOGLE_CLIENT_SECRET')
-
     # Initialize extensions
     db.init_app(app)
     
@@ -37,20 +33,8 @@ def create_app():
         db.create_all()
 
         # Import and register blueprints
-        from routes import main, auth
+        from routes import main, auth_bp
         app.register_blueprint(main)
-        app.register_blueprint(auth, url_prefix='/auth')
-
-        # Configure Google OAuth
-        from flask_dance.contrib.google import make_google_blueprint
-        google_bp = make_google_blueprint(
-            client_id=os.environ.get("GOOGLE_CLIENT_ID"),
-            client_secret=os.environ.get("GOOGLE_CLIENT_SECRET"),
-            scope=["profile", "email"],
-            redirect_url="/auth/login/google/authorized",
-            authorized_url="/auth/login/google/authorized",
-            reprompt_consent=True
-        )
-        app.register_blueprint(google_bp, url_prefix="/auth")
+        app.register_blueprint(auth_bp, url_prefix='/auth')
 
     return app

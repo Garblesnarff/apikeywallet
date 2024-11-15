@@ -779,3 +779,25 @@ h2 {
 .btn-google i {
     margin-right: 10px;
 }
+
+/* Add the new styles at the end of the file */
+.btn-replit {
+    background-color: #11111b;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    margin-top: 10px;
+    text-decoration: none;
+}
+
+.btn-replit:hover {
+    background-color: #222235;
+    color: white;
+    text-decoration: none;
+}
+
+.btn-replit i {
+    margin-right: 10px;
+}
