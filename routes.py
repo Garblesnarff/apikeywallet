@@ -4,6 +4,8 @@ from models import User, APIKey, Category
 from forms import RegistrationForm, LoginForm, AddAPIKeyForm, AddCategoryForm
 from extensions import db
 from utils import encrypt_key, decrypt_key
+from utils.email import send_verification_email
+from datetime import datetime
 import logging
 import traceback
 from sqlalchemy.exc import SQLAlchemyError
@@ -47,13 +49,57 @@ def register():
         new_user = User()
         new_user.email = email
         new_user.set_password(password)
-        db.session.add(new_user)
-        db.session.commit()
-        
-        flash('Registration successful. Please log in.', 'success')
-        return redirect(url_for('auth.login'))
+        try:
+            db.session.add(new_user)
+            db.session.commit()
+            
+            # Send verification email
+            send_verification_email(new_user)
+            
+            flash('Registration successful. Please check your email to verify your account.', 'success')
+            return redirect(url_for('auth.login'))
+        except Exception as e:
+            db.session.rollback()
+            current_app.logger.error(f"Error during registration: {str(e)}")
+            flash('An error occurred during registration. Please try again.', 'danger')
+            return redirect(url_for('auth.register'))
     
     return render_template('register.html', form=form)
+
+@auth_bp.route('/verify_email/<token>')
+def verify_email(token):
+    try:
+        user = User.query.filter_by(verification_token=token).first()
+        if user and user.verification_token_expires > datetime.utcnow():
+            user.verify_email()
+            db.session.commit()
+            flash('Your email has been verified! You can now log in.', 'success')
+        else:
+            flash('The verification link is invalid or has expired.', 'danger')
+    except Exception as e:
+        current_app.logger.error(f"Error during email verification: {str(e)}")
+        flash('An error occurred during verification. Please try again.', 'danger')
+    
+    return redirect(url_for('auth.login'))
+
+@auth_bp.route('/resend_verification', methods=['GET', 'POST'])
+def resend_verification():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        user = User.query.filter_by(email=email).first()
+        
+        if user and not user.email_verified:
+            try:
+                send_verification_email(user)
+                flash('A new verification email has been sent. Please check your inbox.', 'success')
+                return redirect(url_for('auth.login'))
+            except Exception as e:
+                current_app.logger.error(f"Error sending verification email: {str(e)}")
+                flash('An error occurred while sending the verification email. Please try again.', 'danger')
+        else:
+            flash('No unverified account found with this email address.', 'warning')
+    
+    return render_template('resend_verification.html')
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -68,6 +114,10 @@ def login():
         try:
             user = User.query.filter_by(email=email).first()
             if user and user.check_password(password):
+                if not user.email_verified:
+                    flash('Please verify your email before logging in.', 'warning')
+                    return redirect(url_for('auth.resend_verification'))
+                
                 login_user(user)
                 next_page = request.args.get('next')
                 return redirect(next_page) if next_page else redirect(url_for('main.wallet'))
