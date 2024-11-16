@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, current_app
+from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, current_app, session
 from flask_login import login_user, login_required, logout_user, current_user
 from models import User, APIKey, Category
 from forms import RegistrationForm, LoginForm, AddAPIKeyForm, AddCategoryForm
@@ -17,18 +17,20 @@ auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/login/replit')
 def login_replit():
-    return web.app.login_with_replit()
+    return web.auth.sign_in_with_replit()
 
 @auth_bp.route('/login/replit/callback')
 def replit_callback():
-    user_id = web.app.get_current_user()
-    if user_id:
-        user = User.query.filter_by(replit_id=str(user_id)).first()
-        if not user:
-            user = User(replit_id=str(user_id))
-            db.session.add(user)
+    user = web.auth.get_current_user()
+    if user:
+        # Get or create user in our database
+        db_user = User.query.filter_by(replit_id=str(user.id)).first()
+        if not db_user:
+            db_user = User(replit_id=str(user.id))
+            db.session.add(db_user)
             db.session.commit()
-        login_user(user)
+        
+        login_user(db_user)
         return redirect(url_for('main.wallet'))
     return redirect(url_for('auth.login'))
 

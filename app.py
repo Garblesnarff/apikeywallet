@@ -20,6 +20,11 @@ def create_app():
         "pool_pre_ping": True,
     }
     
+    # Replit authentication configuration
+    app.config['REPLIT_AUTH'] = True
+    app.config['REPLIT_SIGN_IN_PATH'] = '/auth/login/replit'
+    app.config['REPLIT_CALLBACK_PATH'] = '/auth/login/replit/callback'
+    
     # Email configuration
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
     app.config['MAIL_PORT'] = 587
