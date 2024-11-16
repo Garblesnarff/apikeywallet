@@ -17,15 +17,15 @@ auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/login/replit')
 def login_replit():
-    return web.auth.sign_in_with_replit()
+    return web.app.login_with_replit()
 
 @auth_bp.route('/login/replit/callback')
 def replit_callback():
-    user_info = web.auth.verify_request()
-    if user_info:
-        user = User.query.filter_by(replit_id=str(user_info.id)).first()
+    user_id = web.app.get_current_user()
+    if user_id:
+        user = User.query.filter_by(replit_id=str(user_id)).first()
         if not user:
-            user = User(replit_id=str(user_info.id))
+            user = User(replit_id=str(user_id))
             db.session.add(user)
             db.session.commit()
         login_user(user)
