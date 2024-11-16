@@ -21,15 +21,6 @@
             </div>
             {{ form.submit(class="btn btn-primary btn-block") }}
         </form>
-        <div class="resend-verification">
-            <p class="centered-text mt-2">Didn't receive verification email? <a href="{{ url_for('auth.resend_verification') }}">Resend</a></p>
-        </div>
-        <div class="oauth-options">
-            <p class="centered-text">Or sign in with:</p>
-            <a href="{{ url_for('auth.login_replit') }}" class="btn btn-replit btn-block">
-                <i class="fas fa-terminal"></i> Sign in with Replit
-            </a>
-        </div>
         <p class="mt-3 centered-text">Don't have an account? <a href="{{ url_for('auth.register') }}">Register here</a></p>
     </div>
 </div>

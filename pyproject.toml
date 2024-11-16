@@ -14,12 +14,4 @@ dependencies = [
     "cryptography>=43.0.1",
     "supabase>=2.7.4",
     "flask-migrate>=4.0.7",
-    "flask-oauthlib>=0.9.6",
-    "requests>=2.32.3",
-    "flask-dance>=6.2.0",
-    "sqlalchemy>=2.0.35",
-    "werkzeug>=3.0.4",
-    "requests-oauthlib",
-    "replit>=4.1.0",
-    "flask-mail>=0.10.0",
 ]

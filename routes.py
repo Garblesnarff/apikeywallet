@@ -1,40 +1,19 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, current_app, session
+from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify, g, current_app
 from flask_login import login_user, login_required, logout_user, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
 from models import User, APIKey, Category
 from forms import RegistrationForm, LoginForm, AddAPIKeyForm, AddCategoryForm
-from extensions import db
+from app import db
 from utils import encrypt_key, decrypt_key
-from utils.email import send_verification_email
-from datetime import datetime
 import logging
 import traceback
 from sqlalchemy.exc import SQLAlchemyError
 import os
-from replit import web
 
 main = Blueprint('main', __name__)
-auth_bp = Blueprint('auth', __name__)
+auth = Blueprint('auth', __name__)
 
-@auth_bp.route('/login/replit')
-def login_replit():
-    return web.auth.sign_in_with_replit()
-
-@auth_bp.route('/login/replit/callback')
-def replit_callback():
-    user = web.auth.get_current_user()
-    if user:
-        # Get or create user in our database
-        db_user = User.query.filter_by(replit_id=str(user.id)).first()
-        if not db_user:
-            db_user = User(replit_id=str(user.id))
-            db.session.add(db_user)
-            db.session.commit()
-        
-        login_user(db_user)
-        return redirect(url_for('main.wallet'))
-    return redirect(url_for('auth.login'))
-
-@auth_bp.route('/register', methods=['GET', 'POST'])
+@auth.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('main.wallet'))
@@ -48,62 +27,17 @@ def register():
             flash('Email already exists.', 'danger')
             return redirect(url_for('auth.register'))
         
-        new_user = User()
-        new_user.email = email
+        new_user = User(email=email)
         new_user.set_password(password)
-        try:
-            db.session.add(new_user)
-            db.session.commit()
-            
-            # Send verification email
-            send_verification_email(new_user)
-            
-            flash('Registration successful. Please check your email to verify your account.', 'success')
-            return redirect(url_for('auth.login'))
-        except Exception as e:
-            db.session.rollback()
-            current_app.logger.error(f"Error during registration: {str(e)}")
-            flash('An error occurred during registration. Please try again.', 'danger')
-            return redirect(url_for('auth.register'))
+        db.session.add(new_user)
+        db.session.commit()
+        
+        flash('Registration successful. Please log in.', 'success')
+        return redirect(url_for('auth.login'))
     
     return render_template('register.html', form=form)
 
-@auth_bp.route('/verify_email/<token>')
-def verify_email(token):
-    try:
-        user = User.query.filter_by(verification_token=token).first()
-        if user and user.verification_token_expires > datetime.utcnow():
-            user.verify_email()
-            db.session.commit()
-            flash('Your email has been verified! You can now log in.', 'success')
-        else:
-            flash('The verification link is invalid or has expired.', 'danger')
-    except Exception as e:
-        current_app.logger.error(f"Error during email verification: {str(e)}")
-        flash('An error occurred during verification. Please try again.', 'danger')
-    
-    return redirect(url_for('auth.login'))
-
-@auth_bp.route('/resend_verification', methods=['GET', 'POST'])
-def resend_verification():
-    if request.method == 'POST':
-        email = request.form.get('email')
-        user = User.query.filter_by(email=email).first()
-        
-        if user and not user.email_verified:
-            try:
-                send_verification_email(user)
-                flash('A new verification email has been sent. Please check your inbox.', 'success')
-                return redirect(url_for('auth.login'))
-            except Exception as e:
-                current_app.logger.error(f"Error sending verification email: {str(e)}")
-                flash('An error occurred while sending the verification email. Please try again.', 'danger')
-        else:
-            flash('No unverified account found with this email address.', 'warning')
-    
-    return render_template('resend_verification.html')
-
-@auth_bp.route('/login', methods=['GET', 'POST'])
+@auth.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('main.wallet'))
@@ -116,26 +50,31 @@ def login():
         try:
             user = User.query.filter_by(email=email).first()
             if user and user.check_password(password):
-                if not user.email_verified:
-                    flash('Please verify your email before logging in.', 'warning')
-                    return redirect(url_for('auth.resend_verification'))
-                
                 login_user(user)
-                next_page = request.args.get('next')
-                return redirect(next_page) if next_page else redirect(url_for('main.wallet'))
+                return redirect(url_for('main.wallet'))
             else:
                 flash('Invalid email or password.', 'danger')
+        except SQLAlchemyError as e:
+            current_app.logger.error(f"Database error during login: {str(e)}")
+            flash('An error occurred while processing your request. Please try again later.', 'danger')
         except Exception as e:
-            current_app.logger.error(f"Error during login: {str(e)}")
-            flash('An error occurred. Please try again later.', 'danger')
+            current_app.logger.error(f"Unexpected error during login: {str(e)}")
+            flash('An unexpected error occurred. Please try again later.', 'danger')
     
     return render_template('login.html', form=form)
 
-@auth_bp.route('/logout')
+@auth.route('/logout')
 @login_required
 def logout():
-    logout_user()
-    flash('You have been logged out successfully.', 'success')
+    try:
+        logout_user()
+        flash('You have been logged out successfully.', 'success')
+    except SQLAlchemyError as e:
+        current_app.logger.error(f"Database error during logout: {str(e)}")
+        flash('An error occurred during logout. Please try again.', 'danger')
+    except Exception as e:
+        current_app.logger.error(f"Unexpected error during logout: {str(e)}")
+        flash('An unexpected error occurred. Please try again.', 'danger')
     return redirect(url_for('main.index'))
 
 @main.route('/')
@@ -150,7 +89,7 @@ def wallet(category_id=None):
         current_app.logger.info(f"Fetching API keys for user {current_user.id}")
         categories = Category.query.filter_by(user_id=current_user.id).order_by(Category.name).all()
         
-        if category_id == 0:
+        if category_id == 0:  # Uncategorized
             api_keys = APIKey.query.filter_by(user_id=current_user.id, category_id=None).all()
         elif category_id:
             api_keys = APIKey.query.filter_by(user_id=current_user.id, category_id=category_id).all()
@@ -173,7 +112,11 @@ def wallet(category_id=None):
         
         display_grouped_keys = {k: v for k, v in grouped_keys.items() if v}
         
-        return render_template('wallet.html', grouped_keys=display_grouped_keys, all_categories=categories, current_category_id=category_id, debug=current_app.debug)
+        for category, keys in display_grouped_keys.items():
+            current_app.logger.info(f"Category '{category}' has {len(keys)} keys")
+        
+        current_app.logger.info("Rendering wallet template with Add New API Key button")
+        return render_template('wallet.html', grouped_keys=display_grouped_keys, all_categories=categories, current_category_id=category_id, debug=current_app.debug, show_add_key_button=True)
     except Exception as e:
         current_app.logger.error(f"Error in wallet route: {str(e)}")
         current_app.logger.error(traceback.format_exc())
@@ -406,19 +349,3 @@ def get_categories_and_keys():
     except Exception as e:
         current_app.logger.error(f"Error in get_categories_and_keys route: {str(e)}")
         return jsonify({'error': 'An error occurred while fetching categories and keys.'}), 500
-
-# Register blueprints in the create_app function
-from flask import Flask
-from flask_login import LoginManager
-login_manager = LoginManager()
-login_manager.login_view = 'auth.login'
-
-def create_app(config_filename):
-    app = Flask(__name__)
-    app.config.from_pyfile(config_filename)
-    db.init_app(app)
-    login_manager.init_app(app)
-    # app.register_blueprint(google, url_prefix='/login/google') # Removed
-    app.register_blueprint(auth_bp, url_prefix='/auth')
-    app.register_blueprint(main)
-    return app

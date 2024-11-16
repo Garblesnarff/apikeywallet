@@ -1,54 +1,81 @@
 import os
-from flask import Flask
+from flask import Flask, g
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import DeclarativeBase
+from flask_login import LoginManager
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.exc import SQLAlchemyError
+from urllib.parse import urlparse
+from flask_migrate import Migrate
+import logging
 
-class Base(DeclarativeBase):
-    pass
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
-db = SQLAlchemy(model_class=Base)
+# Initialize SQLAlchemy
+db = SQLAlchemy()
 
-def create_app():
-    app = Flask(__name__)
-    
-    # Configure app
-    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', os.urandom(24))
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
-        "pool_recycle": 300,
-        "pool_pre_ping": True,
-    }
-    
-    # Replit authentication configuration
-    app.config['REPLIT_AUTH'] = True
-    app.config['REPLIT_SIGN_IN_PATH'] = '/auth/login/replit'
-    app.config['REPLIT_CALLBACK_PATH'] = '/auth/login/replit/callback'
-    
-    # Email configuration
-    app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-    app.config['MAIL_PORT'] = 587
-    app.config['MAIL_USE_TLS'] = True
-    app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
-    app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
-    app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_DEFAULT_SENDER')
+# Create the app
+app = Flask(__name__)
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', os.urandom(24))
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ECHO'] = True  # Enable SQLAlchemy echo mode for debugging
 
-    # Initialize extensions
-    db.init_app(app)
-    
-    with app.app_context():
-        # Import and initialize extensions
-        from extensions import login_manager, mail
-        login_manager.init_app(app)
-        mail.init_app(app)
+# Log the database URL (make sure to remove any sensitive information)
+parsed_url = urlparse(app.config['SQLALCHEMY_DATABASE_URI'])
+logger.info(f"Database URL: {parsed_url.scheme}://{parsed_url.hostname}:{parsed_url.port}{parsed_url.path}")
 
-        # Import models and create tables
-        import models
+# Initialize SQLAlchemy with the app
+db.init_app(app)
+
+# Initialize Flask-Migrate
+migrate = Migrate(app, db)
+
+# Setup LoginManager
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'auth.login'
+login_manager.login_message = 'Please log in to access this page.'
+
+@login_manager.user_loader
+def load_user(user_id):
+    from models import User
+    return User.query.get(int(user_id))
+
+def get_db_session():
+    engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'], pool_pre_ping=True, pool_recycle=3600)
+    db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
+    return db_session
+
+@app.before_request
+def before_request():
+    g.db = get_db_session()
+
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db = g.pop('db', None)
+    if db is not None:
+        db.close()
+
+# Import models
+from models import User, APIKey, Category
+
+# Create tables
+with app.app_context():
+    try:
         db.create_all()
+        logger.info("Database tables created successfully")
+    except SQLAlchemyError as e:
+        logger.error(f"Error creating database tables: {str(e)}")
 
-        # Import and register blueprints
-        from routes import main, auth_bp
-        app.register_blueprint(main)
-        app.register_blueprint(auth_bp, url_prefix='/auth')
+# Import and register blueprints
+from routes import main as main_blueprint
+app.register_blueprint(main_blueprint)
 
-    return app
+from routes import auth as auth_blueprint
+app.register_blueprint(auth_blueprint)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
